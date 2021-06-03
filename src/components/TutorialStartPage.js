@@ -2,9 +2,8 @@
 This function component renders the start page of the app introduction when participants first open the app
  */
 
-import React, {Fragment} from 'react';
+import React from 'react';
 const {shell} = require("electron");
-import Accordion from "./Accordion";
 // import the task-symbol image
 import TaskSymbolImage from "./base64Images/TutorialImage";
 // import the App Symbol Image

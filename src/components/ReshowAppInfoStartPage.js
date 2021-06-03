@@ -2,8 +2,8 @@
 This function component renders the start page of the app introduction when participants first open the app
  */
 
-import React, {Fragment} from 'react';
-import Accordion from "./Accordion";
+import React from 'react';
+
 // import the task-symbol image
 import TaskSymbolImage from "./base64Images/TutorialImage"
 import AppSymbolImage from "./base64Images/AppSymbolImage";
@@ -79,48 +79,6 @@ export default function ReshowAppInfoStartPage (props) {
                 Wirtschaftspsychologie <br/>
                 E-Mail: <a href={"mailto:paul.freihaut@psychologie.uni-freiburg.de"}>paul.freihaut@psychologie.uni-freiburg.de</a>
             </p>
-
-            {/*<h5>Weitere Fragen und Antworten zur Studien-App</h5>*/}
-
-            {/*<div>*/}
-            {/*    <hr/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Ich habe die Studien-App beendet. Wie kann ich die Studien-App erneut starten?"}*/}
-            {/*        text={*/}
-            {/*            <Fragment>*/}
-            {/*                Um die Studien-App nach dem Beenden erneut zu starten, klicken Sie auf das <strong>Studien-App Symbol</strong>*/}
-            {/*                &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/>,*/}
-            {/*                welches durch die Installation der Studien-App auf Ihrem Desktop hinzugefügt wurde.*/}
-            {/*            </Fragment>*/}
-            {/*        }/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Unterbricht die Studien-App andere Programme (z.B. ein Video), wenn sie ein Fenster zur Datenerhebung öffnet?"}*/}
-            {/*        text={"Nein, wenn Sie ein anderes Programm geöffnet haben, öffnet sich das Studien-App Fenster zur Datenerhebung im " +*/}
-            {/*        "Hintergrund."}/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Was passiert, wenn die Studien-App ein Fenster zur Datenerhebung öffnet und ich dieses schließe?"}*/}
-            {/*        text={"Wenn sie das Fenster zur Dateneingabe schließen ohne die Aufgabe fertig bearbeitet zu haben und die anschließenden" +*/}
-            {/*        " Fragen zu beantworten, beenden Sie die Dateneingabe und Ihre Daten dieser Eingabe werden nicht gespeichert." +*/}
-            {/*        " Das Schließen des Fensters zur Datenerhebung beendet die Studien-App nicht."}/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Wann endet die Studie?"}*/}
-            {/*        text={"Die Studie endet nach xx Wochen. Die Studien-App zeigt Ihnen an, dass die Studie beendet ist."}/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Wie kann ich meine Teilnahme an der Studie beenden und die Studien-App von meinem Computer entfernen?"}*/}
-            {/*        text={"Sie können die Studien-App wie jedes andere Programm deinstallieren. Falls Sie sich entscheiden, " +*/}
-            {/*        "die Studien-App zu deinstallieren, endet Ihre Teilnahme an der Studie und Sie können die Studienteilnahme " +*/}
-            {/*        "nicht wieder aufnehmen."}/>*/}
-            {/*    <Accordion*/}
-            {/*        header={"Ich habe weitere Fragen zur Studien-App. Wen kann ich kontaktieren?"}*/}
-            {/*        text={<Fragment>*/}
-            {/*            Paul Freihaut, M.Sc. <br/>*/}
-            {/*            Universität Freiburg <br/>*/}
-            {/*            Wirtschaftspsychologie <br/>*/}
-            {/*            Engelbergerstraße 41 <br/>*/}
-            {/*            D-79085 Freiburg <br/>*/}
-            {/*            E-Mail: <a href={"mailto:paul.freihaut@psychologie.uni-freiburg.de"}>paul.freihaut@psychologie.uni-freiburg.de</a>*/}
-            {/*        </Fragment>}/>*/}
-            {/*</div>*/}
 
             <br/>
 
