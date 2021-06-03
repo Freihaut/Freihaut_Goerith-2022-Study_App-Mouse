@@ -61,7 +61,7 @@ const createWindow = (appPage, data) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -142,38 +142,17 @@ if (!gotTheLock) {
 
     // check if a json exists that indicates that the app has started
     dataStorage.has("started", function (error, hasKey) {
-      //TODO: Should the app throw an error if the data storage reading fails (yes, because otherwise it might
-      // show the tutorial altough the study has already started)
+      // throw an error if the data reading fails
       if (error) throw error;
       // if the json exists, the user has finished the tutorial and is participating in the study
       if (hasKey) {
-        // get the start time of the study start
-        dataStorage.get("started", (err, data) => {
-          // get the time difference in days between the start of the current date and the study start date
-          let timeDiff = Math.floor((Date.now() - data.started)/1000/60/60/24);
-          // if the start time is older than xx days, show the study end page
-          if (timeDiff >= 60) {
-            // disable the auto app start on the start of windows
-            app.setLoginItemSettings({openAtLogin: false});
-            // show the study endPage
-            createWindow("studyEnd");
-          } else {
-            // if the study is younger than xx days, it is still running --> start the logger
-            //TODO: Set a time until the logging starts on APP Start!
-            startLogger(1 * 30 * 1000);
-          }
-        });
-
+        // start the logger after 10 seconds (very shortly after the computer started with a short delay)
+        startLogger(10 * 1000);
       } else {
         // if the json does not exist yet (user hasnt finished the tutorial), start the tutorial
         createWindow("tutorial");
       }
     })
-
-    //TODO: If the study ended, show a study has ended screen and disable the autostart setting by setting
-    // openAtLogin to false in the app.setLoginItemSetting
-
-
 
   });
 
@@ -228,22 +207,40 @@ ipcMain.on("tutorialEnd", () => {
 // xx minutes
 const startLogger = (startTime) => {
 
-  let mousePositions = [];
+  // check if the startTime of the Browser window creation is after the time limit of the study (30 days)
+  dataStorage.get("started", (err, data) => {
+    // get the time difference in days between the start of the current date and the study start date
+    let timeDiff = Math.floor((Date.now() - data.started)/1000/60/60/24);
+    // if the start time is older than 30 days (length of the study), disable autostart and show the study end page
+    if (timeDiff >= 30) {
+      // disable the auto app start on the start of windows
+      app.setLoginItemSettings({openAtLogin: false});
+      // show the study endPage
+      createWindow("studyEnd");
+    } else {
+      // if the study is not finished yet, start the logger Process
 
-  // set a timeout that starts logging the mouse positions after 5 seconds and then sets another timeout that ends
-  // mouse logging after another 5 seconds and opens a browser window with the logger task
-  setTimeout(()=> {
-    // start an interval that logs the cursor position every xx milliseconds and push it into an array
-    //TODO: Set logging interval of mouse data logging
-    const logMousePosition = setInterval(() => {
-      mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), {"time": Date.now()}));
-    }, 20);
-    // set another timeout that ends the cursor position logging and opens a browser window
-    setTimeout(() => {
-      clearInterval(logMousePosition);
-      createWindow("logger", mousePositions)},
-        // stop recording mouse position data and open the data logger window after 10 seconds
-        //TODO: Choose a logging window for the "free mouse data logging"
-        10 * 1000)
-    }, startTime);
+      // initialize a variable to store the free logged mouse data
+      let mousePositions = [];
+
+      // set a timeout that starts logging the mouse positions after 5 seconds and then sets another timeout that ends
+      // mouse logging after another 5 seconds and opens a browser window with the logger task
+      setTimeout(()=> {
+        // start an interval that logs the cursor position every 20 milliseconds (or choose an alternative logging interval)
+        // and push it into an array
+        const logMousePosition = setInterval(() => {
+          mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), {"time": Date.now()}));
+        }, 20);
+        // set another timeout that ends the cursor position logging and opens a browser window
+        setTimeout(() => {
+              clearInterval(logMousePosition);
+              createWindow("logger", mousePositions)},
+            // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
+            // interval)
+            // minutes * 60 seconds * 1000 milliseconds
+            5 * 60 * 1000)
+      }, startTime);
+
+    }
+  });
 }
