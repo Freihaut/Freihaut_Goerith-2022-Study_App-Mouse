@@ -27,7 +27,7 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            eventType: "MousePositionChanged",
+            ev: "Move",
             time: Date.now(),
             x: e.x === undefined ? "undefined" : e.x,
             y: e.y === undefined ? "undefined" : e.y,
@@ -44,7 +44,7 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            eventType: "MouseClick",
+            ev: "Click",
             time: Date.now(),
             x: e.x === undefined ? "undefined" : e.x,
             y: e.y === undefined ? "undefined" : e.y,
@@ -61,7 +61,7 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            eventType: "MouseScroll",
+            ev: "Scroll",
             time: Date.now(),
             pageX: window.scrollX === undefined ? "undefined" : window.scrollX,
             pageY: window.scrollY === undefined ? "undefined" : window.scrollY
