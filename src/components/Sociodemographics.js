@@ -64,6 +64,7 @@ export default class Soziodemographics extends Component {
                                     placeholder="Ihr Alter"
                                     value={this.props.answers.age === -99 ? "" : this.props.answers.age}
                                     onChange={this.handleInputChange}
+                                    onWheel={()=> document.activeElement.blur()}
                                 />
                             </label>
                         </div>
