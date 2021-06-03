@@ -30,10 +30,10 @@ export default class MouseTask extends Component {
 
         // getting a random number var randomnumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
         // return a random number between 0 and 24
-        const randomNumber = Math.floor(Math.random() * 25);
+        this.randomNumber = Math.floor(Math.random() * 25);
 
         // select a randomly chosen click order from all 25 possible click orders
-        this.clickOrder = allClickOrders[randomNumber];
+        this.clickOrder = allClickOrders[this.randomNumber];
 
         // create the coordinates for the circles in the task (4 by 4 grid)
         this.gridCoords = [];
@@ -62,16 +62,17 @@ export default class MouseTask extends Component {
 
     circleClicked(num) {
 
+        // if the participant clicks on the correct circle, go to the next circle
         if (num === this.clickOrder[this.state.clickedCircles]) {
             this.setState({clickedCircles: this.state.clickedCircles + 1}, () => {
                 if (this.state.clickedCircles === this.clickOrder.length) {
                     // end the task and send the task mouse data as well the info about the connected input device
-                   setTimeout(() => this.props.endTask({mouseTaskData: this.mouseData, noMouseConnected: this.noMouseConnected}), 1250);
+                   setTimeout(() => this.props.endTask({mouseTaskData: this.mouseData, noMouseConnected: this.noMouseConnected,
+                   clickOrder: this.clickOrder, taskNumber: this.randomNumber}), 1250);
                 }
             });
-            // if the wrong circle is clicked, reset the task (should this be included or not?)
         } else {
-            this.setState({clickedCircles: 0})
+            // if the wrong circle is clicked, do nothing
         }
             };
 
