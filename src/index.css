@@ -1,0 +1,113 @@
+body {
+  /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;*/
+  user-select: none;
+}
+
+
+/*
+Stylization for Custom Range Slider
+*/
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: hsl(204, 86%, 53%);
+  cursor: pointer;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+/*
+Stylization for labels at the beginning and end of the slider
+*/
+
+.slider-labels {
+  list-style: none;
+}
+
+.slider-labels li {
+  text-align: center;
+  color: #b2b2b2;
+  /*font-size: 14px;*/
+  font-weight: bold;
+  margin: 5px -5% 0;
+}
+
+.slider-start-label {
+  float: left;
+}
+
+.slider-end-label {
+  float: right;
+}
+
+/*
+Animation for the check boxes in the mouse task
+*/
+
+.animatedCheckMark {
+  stroke-dasharray: 21.25;
+  stroke-dashoffset: 21.25;
+  animation: check 0.65s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes check {
+  from {
+    stroke-dashoffset: 21.25;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+Accordion Styles
+ */
+
+
+.accordion-header {
+  cursor: pointer;
+  width: 95%;
+  text-align: left;
+}
+
+.accordion-header:after{
+  content: '\002B';
+  float: right;
+}
+
+.header-is-active:after{
+    content: "\2212";
+}
+
+
+.accordion-text{
+  margin-left: 0.5em;
+}
+
+/*
+Sociodemographic question text
+ */
+
+.questionTextStyle {
+  text-align: left;
+  font-weight: bold;
+}
