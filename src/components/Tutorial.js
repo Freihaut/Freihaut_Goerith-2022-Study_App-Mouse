@@ -93,7 +93,7 @@ export default class Tutorial extends Component {
                                 </div>
                         </nav>
 
-                        <div className="section" style={{maxWidth: "900px", marginTop: "25px"}}>
+                        <div className="section" style={{maxWidth: "800px", marginTop: "25px"}}>
                             {this.renderTutorialPage(this.state.page)}
                         </div>
                     </div>
