@@ -66,8 +66,8 @@ const createWindow = (appPage, data) => {
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
     // after closing of a logger window, start the logging process again
-    //TODO: Choose a time until the logger starts
-    mainWindow.on("closed", ()=> {startLogger(2 * 60 * 1000)})
+    //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
+    mainWindow.on("closed", ()=> {startLogger(85 * 60 * 1000)})
   } else if (appPage === "tutorial") {
     // handle close events
     mainWindow.on("close", (ev)=> {
@@ -94,8 +94,8 @@ const createWindow = (appPage, data) => {
         }
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
-        //TODO: Set a timer to start the logger after x minutes
-        startLogger(2 * 60 * 1000);
+        //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
+        startLogger(85 * 60 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app

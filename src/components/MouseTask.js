@@ -110,14 +110,13 @@ export default class MouseTask extends Component {
                                     <div className="media-content">
                                         <p>
                                            Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
-                                            vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild links).
+                                            vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
                                         </p>
                                         <br/>
                                         <p>
                                             Der Punkt, den Sie anklicken müssen ist schwarz markiert. Wenn Sie den schwarz markierten Punkt
-                                            angeklickt haben, wird dies farblich angezeigt und Sie müssen den nächsten schwarzen
-                                            Punkt anklicken (siehe unteres Bild links). Falls Sie einen anderen Punkt als den schwarz markierten Punkt anklicken,
-                                            beginnt die Aufgabe von vorne.
+                                            angeklickt haben, wird dies angezeigt und Sie müssen den nächsten schwarzen
+                                            Punkt anklicken (siehe unteres Bild).
                                         </p>
                                         <br/>
                                         <p>

@@ -44,10 +44,10 @@ Stylization for labels at the beginning and end of the slider
 
 .slider-labels li {
   text-align: center;
-  color: #b2b2b2;
+  color: dimgray; /* old: #b2b2b2*/
   /*font-size: 14px;*/
   font-weight: bold;
-  margin: 5px -5% 0;
+  /*margin: 5px -5% 0;*/
 }
 
 .slider-start-label {

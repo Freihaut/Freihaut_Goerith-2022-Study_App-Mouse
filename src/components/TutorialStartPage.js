@@ -3,7 +3,6 @@ This function component renders the start page of the app introduction when part
  */
 
 import React from 'react';
-const {shell} = require("electron");
 // import the task-symbol image
 import TaskSymbolImage from "./base64Images/TutorialImage";
 // import the App Symbol Image
@@ -21,14 +20,11 @@ export default function TutorialStartPage (props) {
    return(
        <div className="content">
            <h3 className={"title is-4"}>
-               Vielen Dank für die Installation dieser Studien-App
+               Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
            </h3>
-           <h4 className={"subtitle is-6"}>
-               und willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
-           </h4>
            <p>
                Diese Einführung beinhaltet
-               4 Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studie beginnen".
+               vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studie beginnen".
                Sobald Sie alle vier Schritte der Einführung abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle
                Informationen aufmerksam durch.
            </p>
@@ -37,18 +33,18 @@ export default function TutorialStartPage (props) {
               1. Allgemeine Informationen zur Studien-App
            </h4>
            <p>
-               Während Sie an der Studie teilnehmen und solange die Studien-App gestartet ist, öffnet die Studien-App in
-               regelmäßigen Zeitabständen von ca. xx Stunden ein Fenster zur Datenerhebung. Die Datenerhebung umfasst dabei zwei Teile.
+               Während Sie an der Studie teilnehmen und solange die Studien-App ausgeführt wird, öffnet die Studien-App in
+               regelmäßigen Zeitabständen von 90 Minuten ein Fenster zur Datenerhebung. Die Datenerhebung umfasst dabei zwei Teile.
                Im ersten Teil geht es darum, eine Aufgabe zu bearbeiten. Im zweiten Teil werden Sie gebeten, Fragen zu beantworten.
-               Die Aufgabe wird Ihnen in Schritt 2: "Vorschau Aufgabe" und die Fragen in Schritt 3: "Vorschau Fragen" gleich genauer erläutert.
+               Beide Teile werden Ihnen in Schritt 2: "Vorschau Aufgabe" und Schritt 3: "Vorschau Fragen" genauer erläutert.
            </p>
            <p>
-               Nach Beginn der Studie läuft die Studien-App passiv im Hintergrund und startet automatisch beim Start ihres Computers.
-               Solange die Studien-App gestartet ist (wie auch jetzt),
+               Nach Beginn der Studie läuft die Studien-App im Hintergrund und wird automatisch beim Start ihres Computers ausgeführt.
+               Solange die Studien-App ausgeführt ist,
                sehen Sie das <strong>Studien-App Symbol</strong>
                &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> in Ihrer <strong><i>Systemleiste</i></strong> (siehe Bild).
-               Sie können die Studien-App jederzeit beenden, in dem Sie auf dieses Studien-App Symbol klicken und dann "Studien-App beenden" auswählen. Solange
-               die Studien-App beendet ist, öffnet sich kein Fenster zur Datenerhebung. Falls Sie die Studien-App nach dem Beenden
+               Sie können die Studien-App jederzeit beenden, in dem Sie auf dieses Studien-App Symbol klicken und dann "Studien-App beenden" auswählen.
+               Falls Sie die Studien-App nach dem Beenden
                erneut starten möchten, klicken Sie auf das <strong>Studien-App Symbol</strong>
                &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> auf Ihrem <strong><i>Desktop</i></strong>,
                welches durch die Installation der Studien-App dort hinzugefügt wurde.
@@ -69,17 +65,14 @@ export default function TutorialStartPage (props) {
            <p>
                Wenn die Studien-App ein Fenster zur Datenerhebung öffnet und Sie nicht an dieser Datenerhebung teilnehmen möchten,
                schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/>.
-               Das Schließen des Fensters beendet die Datenerhebung und es werden keine Daten dieser
-               Datenerhebung gespeichert. Das Schließen des Fensters der Datenerhebung beendet die Studien-App nicht.
            </p>
            <p>
-               Die Datenerhebung der Studie endet nach xxx Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
+               Die Studie endet nach 30 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
                und es öffnet sich kein Fenster zur Datenerhebung mehr.
            </p>
            <p>
-               Nach Ende der Datenerhebung oder falls Sie Ihre Studienteilnahme vorzeitig beenden möchten, können Sie die
-               Studien-App deinstallieren. Eine Anleitung zur Deinstallation der Studien-App finden Sie
-               in den <a onClick={() => {shell.openExternal("https://www.google.com")}}>Studiendokumenten</a>. Sobald Sie die Studien-App
+               Nach dem Ende der Studie oder falls Sie Ihre Studienteilnahme vorzeitig beenden möchten, können Sie die
+               Studien-App deinstallieren. Sobald Sie die Studien-App
                deinstallieren endet Ihre Teilnahme an dieser Studie und Sie können die Studienteilnahme nicht wieder aufnehmen.
            </p>
 
