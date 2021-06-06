@@ -161,16 +161,20 @@ export default class App extends Component {
         console.log("File was saved locally with the save string " + saveString.toString());
     }
 
-    // remove from here
+    // UI Dev functions
 
     // For UI Development only: Create a startpage to switch between the tutorial and the Data Grabber
+    /*
     setPage(page) {
 
         this.setState({
             page: page
         })
     }
+    */
+
     // For UI Development
+    /*
     renderStartPage() {
         return(
             <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
@@ -196,6 +200,7 @@ export default class App extends Component {
             </div>
         )
     }
+    */
 
     // to here (plus the navbar and the renderstartpage in the render function
 
@@ -203,18 +208,18 @@ export default class App extends Component {
         return (
 
             <div>
-                <nav className="navbar is-fixed-bottom">
+                {/*<nav className="navbar is-fixed-bottom">
                     <a className="navbar-item" onClick={() => this.setPage("start")}>
                         Go to Debug Page
                     </a>
-                </nav>
+                </nav>*/}
                 {
-                    this.state.page === "start" ? this.renderStartPage() :
-                        this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}/> :
-                            this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}/> :
-                                this.state.page === "reshowTut" ? <ReshowAppInfo/> :
-                                    this.state.page === "studyEnd" ? <StudyEnd/>
-                                        : null
+                    /*this.state.page === "start" ? this.renderStartPage() : */
+                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}/> :
+                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}/> :
+                            this.state.page === "reshowTut" ? <ReshowAppInfo/> :
+                                this.state.page === "studyEnd" ? <StudyEnd/>
+                                    : null
                 }
             </div>
         );
