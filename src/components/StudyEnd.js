@@ -3,10 +3,9 @@ This function component renders the end page that shows that the study has ended
  */
 
 import React from 'react'
-const {ipcRenderer, shell} = require("electron");
+const {ipcRenderer} = require("electron");
 
 
-//TODO: Make this prettier!!
 export default function StudyEnd () {
 
     // scroll to the top of the page
@@ -29,8 +28,6 @@ export default function StudyEnd () {
                         <p>
                             Die Studie ist beendet und die Datenerhebung mit der Studien-App ist abgeschlossen. Die Studien-App
                             erfüllt nun kein Zweck mehr und Sie können die Studien-App deinstallieren.
-                            Eine detaillierte Anleitung zur Deinstallation der Studien-App
-                            finden Sie in den <a onClick={() => {shell.openExternal("https://www.google.com")}}>Studiendokumenten</a>.
                         </p>
                         <h4>
                             Vielen herzlichen Dank für ihre Teilnahme an dieser Studie und Ihren Beitrag zur Wissenschaft!

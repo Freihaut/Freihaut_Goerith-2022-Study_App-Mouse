@@ -66,7 +66,7 @@ export default class App extends Component {
             if (user) {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/firebase.User
-                console.log("User signed in with user ID: " + user.uid);
+                //console.log("User signed in with user ID: " + user.uid);
                 this.setState({userId: user.uid});
                 // check if there is locally saved data that hasnt been pushed to firebase yet (e.g. because the user was offline)
                 const storage = {...localStorage};
@@ -77,12 +77,12 @@ export default class App extends Component {
                             // put the close window in the callback function?
                             if (error) {
                                 // dont do anything
-                                console.log("Could not save file " + key);
+                                // console.log("Could not save file " + key);
                             } else {
                                 // if the data was saved successfully delete the locally saved datafile
-                                console.log("File " + key + " successfully saved in firebase");
+                                // console.log("File " + key + " successfully saved in firebase");
                                 window.localStorage.removeItem(key);
-                                console.log("Locally saved file " + key + " was successfully removed");
+                                // console.log("Locally saved file " + key + " was successfully removed");
                             }
                         });
                     }
