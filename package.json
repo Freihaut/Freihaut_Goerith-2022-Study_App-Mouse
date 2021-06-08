@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "Paul Freihaut",
+    "name": "Studien-App/Paul Freihaut",
     "email": "paul.freihaut@psychologie.uni-freiburg.de"
   },
   "license": "MIT",
@@ -28,7 +28,7 @@
           "config": {
             "name": "Studien-App",
             "iconURL": "https://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/64/lightbulb-icon.png",
-            "authors": "Paul Freihaut"
+            "authors": "Studien-App/Paul Freihaut"
           }
         },
         {
