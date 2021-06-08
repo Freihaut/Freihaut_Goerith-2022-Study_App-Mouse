@@ -27,12 +27,12 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            ev: "Move",
-            time: Date.now(),
+            e: "Mo",
+            t: Date.now(),
             x: e.x === undefined ? "undefined" : e.x,
             y: e.y === undefined ? "undefined" : e.y,
-            pageX: e.pageX === undefined ? "undefined" : e.pageX,
-            pageY: e.pageY === undefined ? "undefined" : e.pageY,
+            pX: e.pageX === undefined ? "undefined" : e.pageX,
+            pY: e.pageY === undefined ? "undefined" : e.pageY,
         });
     }
 
@@ -44,12 +44,12 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            ev: "Click",
-            time: Date.now(),
+            e: "Cl",
+            t: Date.now(),
             x: e.x === undefined ? "undefined" : e.x,
             y: e.y === undefined ? "undefined" : e.y,
-            pageX: e.pageX === undefined ? "undefined" : e.pageX,
-            pageY: e.pageY === undefined ? "undefined" : e.pageY
+            pX: e.pageX === undefined ? "undefined" : e.pageX,
+            pY: e.pageY === undefined ? "undefined" : e.pageY
         });
     }
 
@@ -61,10 +61,10 @@ export default class MouseTracker extends Component {
         // }
 
         this.props.onEvent({
-            ev: "Scroll",
-            time: Date.now(),
-            pageX: window.scrollX === undefined ? "undefined" : window.scrollX,
-            pageY: window.scrollY === undefined ? "undefined" : window.scrollY
+            e: "Sc",
+            t: Date.now(),
+            pX: window.scrollX === undefined ? "undefined" : window.scrollX,
+            pY: window.scrollY === undefined ? "undefined" : window.scrollY
         });
     }
 

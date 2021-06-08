@@ -76,9 +76,10 @@ export default class MouseTask extends Component {
         }
             };
 
+    // add the info about which circle was clicked last to the data: keep the string as short as possible to save data
     onMouseEvent(datapoint) {
         const taskInfo = {
-            circlesClicked: this.state.clickedCircles
+            cN: this.state.clickedCircles
         }
 
         Object.assign(datapoint, taskInfo);
