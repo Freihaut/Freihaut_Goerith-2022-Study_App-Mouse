@@ -35,12 +35,17 @@ export default class Soziodemographics extends Component {
     render() {
 
         return(
+            <div className="section" style={{maxWidth: "800px", marginTop: "25px"}}>
                 <div className="content">
                     <div>
                         <h4>4. Einführung abschließen und Studie beginnen</h4>
                         <p>
                             Sie sind am Ende der Einführung in die Studien-App angekommen. Machen Sie abschließend bitte noch
                             einige Angaben zu Ihrer Person und bestätigen Sie dann, dass Sie die Studie beginnen möchten.
+                        </p>
+                        <p>
+                            Wenn Sie auf "Studie beginnen" klicken, schließt sich dieses Fenster und die Studien-App
+                            bleibt passiv im Hintergrund ausgeführt, bis sie nach etwa 90 Minuten ein Fenster zur Datenerhebung öffnet.
                         </p>
                         <p>
                             Falls Sie die Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen erneut
@@ -194,6 +199,7 @@ export default class Soziodemographics extends Component {
                         <button className="button is-link" onClick={() => this.props.endSociodem()}>Studie beginnen</button>
                     </div>
 
+                </div>
             </div>
         );
     }

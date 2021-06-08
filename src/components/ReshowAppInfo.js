@@ -61,7 +61,7 @@ export default class ReshowAppInfo extends Component {
                         </div>
 
                     </nav>
-                    <div className="section" style={{maxWidth: "800px", marginTop: "25px"}}>
+                    <div>
                         {this.renderTutorialPage(this.state.page)}
                     </div>
                 </div>
