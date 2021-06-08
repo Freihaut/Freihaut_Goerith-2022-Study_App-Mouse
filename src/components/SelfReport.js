@@ -86,7 +86,7 @@ export default class SelfReport extends Component {
 
 
         return(
-            <div className="container is-fluid">
+            <div className="container is-fluid" style={{marginTop: "25px"}}>
                 <div>
                     <h3 className="title is-5">
                         Bitte verschieben Sie die Regler so, dass sie Ihrem aktuellen Befinden am besten entsprechen.

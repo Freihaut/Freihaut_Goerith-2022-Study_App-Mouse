@@ -30,8 +30,8 @@ const createWindow = (appPage, data) => {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800, //800
-    height: 775, // 775
+    width: 750, //800
+    height: 725, // 775
     resizable: false,
     show: false,
     icon: iconPath,
