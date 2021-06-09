@@ -49,7 +49,7 @@ export default class DataGrabber extends Component {
                         {this.state.phase === "mouseTask" ? <MouseTask intro={false} endTask={(data) => this.endMouseTask(data)}/>
                             :
                             this.state.phase === "selfReport" ? <SelfReport intro={false}
-                                                                            buttonText={"Datenerhebung abschließen"}
+                                                                            buttonText={"Eingabe abschließen"}
                                                                             endReport={(e) => this.endGrabber(e)}/>
                                 : null}
                 </div>
