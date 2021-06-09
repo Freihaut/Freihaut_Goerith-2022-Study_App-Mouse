@@ -86,7 +86,7 @@ export default class SelfReport extends Component {
 
 
         return(
-            <div className="container is-fluid" style={{marginTop: "25px"}}>
+            <div className="container is-fluid" style={{marginTop: "50px"}}>
                 <div>
                     <h3 className="title is-5">
                         Bitte verschieben Sie die Regler so, dass sie Ihrem aktuellen Befinden am besten entsprechen.
@@ -94,7 +94,7 @@ export default class SelfReport extends Component {
                     <hr style={{margin: "0 0", height: "3px"}}/>
                 </div>
 
-                <div style={{marginTop: "3rem"}}>
+                <div style={{marginTop: "2.5rem"}}>
                     <p className="title is-5">Ich fühle mich...</p>
                     <input className="slider" step="1" min="0" max="100" name="valence" value={this.state.selfReport.valence} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
