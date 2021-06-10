@@ -6,10 +6,9 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": {
@@ -17,35 +16,24 @@
     "email": "paul.freihaut@psychologie.uni-freiburg.de"
   },
   "license": "MIT",
+  "build": {
+    "appId": "com.freihaut.studienapp",
+    "productName": "Studien-App",
+    "win": {
+      "target": "nsis",
+      "icon": "src/icon-arrows-alt-solid.png"
+    },
+    "nsis": {
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "oneClick": true,
+      "deleteAppDataOnUninstall": true,
+      "runAfterFinish": true,
+      "include": "src/installer.nsh"
+    }
+  },
   "config": {
     "forge": {
-      "packagerConfig": {
-        "icon": "src/Lightbulb"
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "Studien-App",
-            "iconURL": "https://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/64/lightbulb-icon.png",
-            "authors": "Studien-App/Paul Freihaut"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
       "plugins": [
         [
           "@electron-forge/plugin-webpack",
@@ -72,20 +60,19 @@
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "@electron-forge/plugin-webpack": "6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^4.2.1",
     "electron": "12.0.1",
+    "electron-builder": "^22.10.5",
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1"
   },
   "dependencies": {
     "bulma": "^0.9.2",
     "electron-json-storage": "^4.5.0",
-    "electron-squirrel-startup": "^1.0.0",
     "file-loader": "^6.2.0",
     "firebase": "^8.3.2",
     "react": "^17.0.1",

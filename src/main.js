@@ -1,11 +1,10 @@
-const { app, BrowserWindow, Menu, Tray, ipcMain, screen, dialog} = require('electron');
+const { app, BrowserWindow, Menu, Tray, ipcMain, screen, dialog } = require('electron');
 const path = require('path');
+const url = require('url');
 const iconPath = path.join(__dirname, "Lightbulb.ico");
 
 // Auto Start
 const appFolder = path.dirname(process.execPath);
-const updateExe = path.resolve(appFolder, "..", "Update.exe");
-const exeName = path.basename(process.execPath);
 
 //save user Data
 const dataStorage = require("electron-json-storage");
@@ -16,11 +15,6 @@ let tutorialHasFinished = false;
 // primary instance lock (dont allow app to open a second time)
 let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
-}
 
 // Add a system Tray: add an icon and context menu to the system's notification area
 let tray = null;
@@ -47,13 +41,28 @@ const createWindow = (appPage, data) => {
   mainWindow.setMenu(null);
 
   // and load the index.html of the app.
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  //mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);  
+
+  const startUrl = process.env.ELECTRON_START_URL || url.format(
+    {
+       pathname: path.join(__dirname, "index.html"),
+       protocol: 'file:',
+       slashes: true
+    });
+
+    mainWindow.loadURL(startUrl);  
+
+  /*mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'build', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }));*/
 
   // send a message to the page to load the correct component and show the main window after it finished loading
   // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
   // main window does not work with "ready-to-show"
 
-  mainWindow.webContents.on("did-finish-load", ()=> {
+  mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render
     mainWindow.webContents.send("appPageToRender", appPage, data);
     // show the window
@@ -67,24 +76,24 @@ const createWindow = (appPage, data) => {
   if (appPage === "logger") {
     // after closing of a logger window, start the logging process again
     //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-    mainWindow.on("closed", ()=> {startLogger(85 * 60 * 1000)})
+    mainWindow.on("closed", () => { startLogger(85 * 60 * 1000) })
   } else if (appPage === "tutorial") {
     // handle close events
-    mainWindow.on("close", (ev)=> {
+    mainWindow.on("close", (ev) => {
 
       // show a Message box if the tutorial hasnt finished yet
       if (!tutorialHasFinished) {
 
         const message = dialog.showMessageBoxSync(
-            mainWindow,
-            {
-              type: 'question',
-              buttons: ['Studieneinführung weiterführen', 'Studieneinführung beenden'],
-              title: 'Abbruch der Studieneinführung',
-              message: 'Um die Studie zu beginnen, müssen Sie die Studieneinführung abschließen. Falls Sie dieses Fenster' +
-                  ' schließen, brechen Sie die Studieneinführung ab und beenden die Studien-App. Wollen Sie die Studieneinführung ' +
-                  'wirklich abbrechen und die Studien-App beenden?'
-            });
+          mainWindow,
+          {
+            type: 'question',
+            buttons: ['Studieneinführung weiterführen', 'Studieneinführung beenden'],
+            title: 'Abbruch der Studieneinführung',
+            message: 'Um die Studie zu beginnen, müssen Sie die Studieneinführung abschließen. Falls Sie dieses Fenster' +
+              ' schließen, brechen Sie die Studieneinführung ab und beenden die Studien-App. Wollen Sie die Studieneinführung ' +
+              'wirklich abbrechen und die Studien-App beenden?'
+          });
 
         if (message === 1) {
           // if the user agrees to close the window
@@ -127,14 +136,14 @@ if (!gotTheLock) {
     // create a System Tray context menu
     const contextMenu = Menu.buildFromTemplate([
       // option to quit the app
-      {label: "Studien-App beenden", click: () => {app.quit()}},
+      { label: "Studien-App beenden", click: () => { app.quit() } },
       // option to show the task tutorial again
-      {label: "Studien-App Informationen anzeigen", click: () => {createWindow("reshowTut")}},
+      { label: "Studien-App Informationen anzeigen", click: () => { createWindow("reshowTut") } },
       // option to show the study information page
     ]);
     tray.setToolTip("Studien-App");
     tray.setContextMenu(contextMenu);
-    tray.on("click", ()=> {tray.popUpContextMenu()})
+    tray.on("click", () => { tray.popUpContextMenu() })
 
     // Check if a file exists which indicates that the tutorial is finished and the study has started
     // -> if there is no such file (when the app is started for the first time), start the tutorial
@@ -176,21 +185,8 @@ ipcMain.on("close", () => {
 
 // end of tutorial event
 ipcMain.on("tutorialEnd", () => {
-
-  // enable autostart (after the tutorial is done, the program will automatically start on autostart)
-  app.setLoginItemSettings({
-    openAtLogin: true,
-    path: updateExe,
-    args: [
-      "--processStart",
-      `"${exeName}"`,
-      "--process-start-args",
-      `"--hidden"`
-    ]
-  });
-
   // write a file to notify that the program has started
-  dataStorage.set("started", {started: Date.now()}, function (error) {
+  dataStorage.set("started", { started: Date.now() }, function (error) {
     if (error) {
       // throw an error if the json save does not work (because the study wont work properly and show the tutorial again
       // on app restart
@@ -210,11 +206,11 @@ const startLogger = (startTime) => {
   // check if the startTime of the Browser window creation is after the time limit of the study (30 days)
   dataStorage.get("started", (err, data) => {
     // get the time difference in days between the start of the current date and the study start date
-    let timeDiff = Math.floor((Date.now() - data.started)/1000/60/60/24);
+    let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than 30 days (length of the study), disable autostart and show the study end page
     if (timeDiff >= 30) {
       // disable the auto app start on the start of windows
-      app.setLoginItemSettings({openAtLogin: false});
+      app.setLoginItemSettings({ openAtLogin: false });
       // show the study endPage
       createWindow("studyEnd");
     } else {
@@ -225,20 +221,21 @@ const startLogger = (startTime) => {
 
       // set a timeout that starts logging the mouse positions after 5 seconds and then sets another timeout that ends
       // mouse logging after another 5 seconds and opens a browser window with the logger task
-      setTimeout(()=> {
+      setTimeout(() => {
         // start an interval that logs the cursor position every 20 milliseconds (or choose an alternative logging interval)
         // and push it into an array
         const logMousePosition = setInterval(() => {
-          mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), {"time": Date.now()}));
+          mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), { "time": Date.now() }));
         }, 20);
         // set another timeout that ends the cursor position logging and opens a browser window
         setTimeout(() => {
-              clearInterval(logMousePosition);
-              createWindow("logger", mousePositions)},
-            // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
-            // interval)
-            // minutes * 60 seconds * 1000 milliseconds
-            5 * 60 * 1000)
+          clearInterval(logMousePosition);
+          createWindow("logger", mousePositions)
+        },
+          // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
+          // interval)
+          // minutes * 60 seconds * 1000 milliseconds
+          5 * 60 * 1000)
       }, startTime);
 
     }
