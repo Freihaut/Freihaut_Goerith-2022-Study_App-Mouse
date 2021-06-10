@@ -14,7 +14,7 @@ export default function ReshowAppInfoStartPage (props) {
     window.scrollTo(0, 0);
 
     return(
-        <div className="section" style={{maxWidth: "800px", marginTop: "25px"}}>
+        <div className="section" style={{marginTop: "1.5rem"}}>
             <div className="content">
                 <h4>
                     1. Allgemeine Informationen zur Studien-App
@@ -51,7 +51,7 @@ export default function ReshowAppInfoStartPage (props) {
 
                 <p>
                     Wenn die Studien-App ein Fenster zur Datenerhebung öffnet und Sie nicht an dieser Datenerhebung teilnehmen möchten,
-                    schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/>.
+                    schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/>
                 </p>
                 <p>
                     Die Studie endet nach 30 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist

@@ -35,9 +35,8 @@ export default class Soziodemographics extends Component {
     render() {
 
         return(
-            <div className="section" style={{maxWidth: "800px", marginTop: "25px"}}>
+            <div className="section" style={{marginTop: "1.5rem"}}>
                 <div className="content">
-                    <div>
                         <h4>4. Einführung abschließen und Studie beginnen</h4>
                         <p>
                             Sie sind am Ende der Einführung in die Studien-App angekommen. Machen Sie abschließend bitte noch
@@ -199,7 +198,6 @@ export default class Soziodemographics extends Component {
                         <button className="button is-link" onClick={() => this.props.endSociodem()}>Studie beginnen</button>
                     </div>
 
-                </div>
             </div>
         );
     }

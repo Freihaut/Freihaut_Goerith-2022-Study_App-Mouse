@@ -66,7 +66,7 @@ export default class Tutorial extends Component {
             <div>
                 <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
                     <div style={{margin: "auto"}}>
-                        <nav className="navbar is-fixed-top is-expanded" role="navigation" aria-label="main navigation">
+                        <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
                                 <div className="tabs is-small is-toggle is-fullwidth">
                                     <ul>
                                         <li className={this.state.page === "welcome" ? "is-active" : ""}>

@@ -22,10 +22,13 @@ let tray = null;
 // function to create the app window in which the app is shown
 const createWindow = (appPage, data) => {
 
+  // keep the window size in line with the scale Factor of the screen
+  let factor = screen.getPrimaryDisplay().scaleFactor;
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 750, //800
-    height: 725, // 775
+    width: 750 / factor, //800
+    height: 725 / factor, // 775
     resizable: false,
     show: false,
     icon: iconPath,
@@ -34,6 +37,7 @@ const createWindow = (appPage, data) => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      zoomFactor: 1.0 / factor
     }
   });
 
