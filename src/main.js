@@ -4,8 +4,7 @@ const dataStorage = require("electron-json-storage");
 
 // paths
 const path = require('path');
-const iconPath = path.join(__dirname, "Lightbulb.ico");
-const appFolder = path.dirname(process.execPath);
+const iconPath = path.join(__dirname, "Study-App-Icon.ico");
 
 // check if the tutorial has finished
 let tutorialHasFinished = false;
@@ -57,13 +56,13 @@ const createWindow = (appPage, data) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
     // after closing of a logger window, start the logging process again
     //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-    mainWindow.on("closed", () => { startLogger(85 * 60 * 1000) })
+    mainWindow.on("closed", () => { startLogger(1 * 60 * 1000) })
   } else if (appPage === "tutorial") {
     // handle close events
     mainWindow.on("close", (ev) => {
@@ -91,7 +90,7 @@ const createWindow = (appPage, data) => {
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
         //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(85 * 60 * 1000);
+        startLogger(1 * 60 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app
@@ -142,7 +141,7 @@ if (!gotTheLock) {
       if (error) throw error;
       // if the json exists, the user has finished the tutorial and is participating in the study
       if (hasKey) {
-        // start the logger after 10 seconds (very shortly after the computer started with a short delay)
+        // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
         startLogger(10 * 1000);
       } else {
         // if the json does not exist yet (user hasnt finished the tutorial), start the tutorial
@@ -157,6 +156,9 @@ if (!gotTheLock) {
 // From, the documents: The default electron behavior is to quit the app if all windows are closed unless, the
 // window-all-closed event listener is called
 app.on('window-all-closed', (event) => {
+  // reset the mainWindow to null to prevent an error message that shows when the app is started but in the system tray
+  // and the user clicks on the app symbol on the desktop
+  mainWindow = null;
   // Do nothing: Program should still run with a app symbol in the system tray (from there, the app can be quit)
   event.preventDefault();
 });
@@ -196,8 +198,6 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than 30 days (length of the study), disable autostart and show the study end page
     if (timeDiff >= 30) {
-      // disable the auto app start on the start of windows
-      app.setLoginItemSettings({ openAtLogin: false });
       // show the study endPage
       createWindow("studyEnd");
     } else {
@@ -221,8 +221,8 @@ const startLogger = (startTime) => {
         },
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
-          // minutes * 60 seconds * 1000 milliseconds
-          5 * 60 * 1000)
+          // TODO: set interval to: minutes * 60 seconds * 1000 milliseconds
+          1 * 1 * 1000)
       }, startTime);
 
     }

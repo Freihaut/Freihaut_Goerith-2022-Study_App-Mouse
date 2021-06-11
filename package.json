@@ -21,7 +21,7 @@
     "productName": "Studien-App",
     "win": {
       "target": "nsis",
-      "icon": "src/icon-arrows-alt-solid.png"
+      "icon": "src/Study-App-Icon.ico"
     },
     "nsis": {
       "createDesktopShortcut": true,
