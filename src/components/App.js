@@ -106,7 +106,7 @@ export default class App extends Component {
                 // put the close window in the callback function?
                 if (error) {
                     // Data Save error --> save the data locally and end the tutorial
-                    // this.saveDataLocally(tutData); // disabled in test version
+                    this.saveDataLocally(tutData); // disabled in test version
                     ipcRenderer.send("tutorialEnd");
                 } else {
                     // Data saved successfully in firebase
@@ -116,7 +116,7 @@ export default class App extends Component {
         } else {
             // if the login was not successful
             // send the data into the main process to save it locally and end the tutorial
-            // this.saveDataLocally(tutData); //disabled in test version
+            this.saveDataLocally(tutData); //disabled in test version
             ipcRenderer.send("tutorialEnd");
         }
 
@@ -134,7 +134,7 @@ export default class App extends Component {
                 // put the close window in the callback function?
                 if (error) {
                     // Data Save error --> Save the data locally
-                    // this.saveDataLocally(grabbedData); // disabled in test version
+                    this.saveDataLocally(grabbedData); // disabled in test version
                     // close the logger window
                     ipcRenderer.send("close");
                 } else {
@@ -144,7 +144,7 @@ export default class App extends Component {
             });
         } else {
             // if the login was not successful save the data locally and close the window
-            // this.saveDataLocally(grabbedData); disabled in test version
+            this.saveDataLocally(grabbedData); // disabled in test version
             ipcRenderer.send("close");
         }
 
