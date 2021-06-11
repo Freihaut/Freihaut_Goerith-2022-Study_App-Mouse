@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "publish": "electron-forge publish",
-    "pack": "electron-builder --dir",
+    "package": "electron-forge package",    
     "dist": "electron-builder"
   },
   "keywords": [],

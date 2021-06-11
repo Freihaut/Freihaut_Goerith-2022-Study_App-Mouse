@@ -1,13 +1,11 @@
+// core imports
 const { app, BrowserWindow, Menu, Tray, ipcMain, screen, dialog } = require('electron');
-const path = require('path');
-const url = require('url');
-const iconPath = path.join(__dirname, "Lightbulb.ico");
-
-// Auto Start
-const appFolder = path.dirname(process.execPath);
-
-//save user Data
 const dataStorage = require("electron-json-storage");
+
+// paths
+const path = require('path');
+const iconPath = path.join(__dirname, "Lightbulb.ico");
+const appFolder = path.dirname(process.execPath);
 
 // check if the tutorial has finished
 let tutorialHasFinished = false;
@@ -16,7 +14,7 @@ let tutorialHasFinished = false;
 let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
-// Add a system Tray: add an icon and context menu to the system's notification area
+// declare system tray variable
 let tray = null;
 
 // function to create the app window in which the app is shown
@@ -37,30 +35,15 @@ const createWindow = (appPage, data) => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
-      zoomFactor: 1.0 / factor
+      zoomFactor: 1.0 / factor,
     }
   });
 
-  // // do not show a menu in the app
+  // do not show a menu in the app
   mainWindow.setMenu(null);
 
-  // and load the index.html of the app.
-  //mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);  
-
-  const startUrl = process.env.ELECTRON_START_URL || url.format(
-    {
-       pathname: path.join(__dirname, "index.html"),
-       protocol: 'file:',
-       slashes: true
-    });
-
-    mainWindow.loadURL(startUrl);  
-
-  /*mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'build', 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }));*/
+  // load the entrypoint index.html of the app
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // send a message to the page to load the correct component and show the main window after it finished loading
   // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
@@ -74,7 +57,7 @@ const createWindow = (appPage, data) => {
   })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
