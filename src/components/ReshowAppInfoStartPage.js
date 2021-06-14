@@ -21,8 +21,8 @@ export default function ReshowAppInfoStartPage (props) {
                 </h4>
                 <p>
                     Während Sie an der Studie teilnehmen und solange die Studien-App ausgeführt wird, öffnet die Studien-App in
-                    regelmäßigen Zeitabständen von 90 Minuten ein Fenster zur Datenerhebung. Die Datenerhebung umfasst dabei zwei Teile.
-                    Im ersten Teil geht es darum, eine Aufgabe zu bearbeiten. Im zweiten Teil werden Sie gebeten, Fragen zu beantworten.
+                    regelmäßigen Zeitabständen von 90 Minuten ein Fenster zur Datenerhebung. Die Datenerhebung umfasst dabei zwei Teile und dauert
+                    etwa 30-60 Sekunden. Im ersten Teil geht es darum, eine Aufgabe zu bearbeiten. Im zweiten Teil werden Sie gebeten, Fragen zu beantworten.
                     Beide Teile werden Ihnen in Schritt 2: "Vorschau Aufgabe" und Schritt 3: "Vorschau Fragen" genauer erläutert.
                 </p>
                 <p>
@@ -51,7 +51,8 @@ export default function ReshowAppInfoStartPage (props) {
 
                 <p>
                     Wenn die Studien-App ein Fenster zur Datenerhebung öffnet und Sie nicht an dieser Datenerhebung teilnehmen möchten,
-                    schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/>
+                    schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/> Das
+                    Auslassen einer Datenerhebung beendet nicht Ihre Studienteilnahme.
                 </p>
                 <p>
                     Die Studie endet nach 30 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
