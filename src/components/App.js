@@ -32,7 +32,8 @@ export default class App extends Component {
 
         this.state = {
             page: null,
-            userId: undefined
+            userId: undefined,
+            zoom: 1
         }
 
         // initialize a variable that holds the mouse position data of the main process (if there is any)
@@ -40,8 +41,8 @@ export default class App extends Component {
 
         // listen to the message from the main process that tells the renderer process which page to load and
         // additionally sends data if the mouse position was logged
-        ipcRenderer.on("appPageToRender", (event, page, data)=> {
-            this.setState({page: page});
+        ipcRenderer.on("appPageToRender", (event, page, data, factor) => {
+            this.setState({page: page, zoom: factor});
             if (data) {
                 this.mousePosMainProcess = data;
             }
@@ -215,10 +216,10 @@ export default class App extends Component {
                 </nav>*/}
                 {
                     /*this.state.page === "start" ? this.renderStartPage() : */
-                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}/> :
-                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}/> :
-                            this.state.page === "reshowTut" ? <ReshowAppInfo/> :
-                                this.state.page === "studyEnd" ? <StudyEnd/>
+                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)} zoom={this.state.zoom}/> :
+                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)} zoom={this.state.zoom}/> :
+                            this.state.page === "reshowTut" ? <ReshowAppInfo zoom={this.state.zoom}/> :
+                                this.state.page === "studyEnd" ? <StudyEnd zoom={this.state.zoom}/>
                                     : null
                 }
             </div>

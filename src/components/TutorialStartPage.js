@@ -19,7 +19,7 @@ export default function TutorialStartPage (props) {
 
    return(
        <div className="section" style={{marginTop: "1.5rem"}}>
-           <div className="content">
+           <div className={props.zoom ? "content is-medium": "content"}>
                <h3 className={"title is-4"}>
                    Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
                </h3>
@@ -69,7 +69,7 @@ export default function TutorialStartPage (props) {
                    Auslassen einer Datenerhebung beendet nicht Ihre Studienteilnahme.
                </p>
                <p>
-                   Die Studie endet nach 30 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
+                   Die Studie endet nach 3 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
                    und es öffnet sich kein Fenster zur Datenerhebung mehr.
                </p>
                <p>
@@ -95,7 +95,7 @@ export default function TutorialStartPage (props) {
 
                <br/>
                <div className="control" style={{width: "100%", textAlign: "center"}}>
-                   <button className="button is-link" onClick={() => props.endCurrentPage()}>Weiter</button>
+                   <button className={props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
                </div>
            </div>
        </div>

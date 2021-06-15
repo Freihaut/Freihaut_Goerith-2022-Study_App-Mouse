@@ -50,7 +50,7 @@ const createWindow = (appPage, data) => {
 
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render
-    mainWindow.webContents.send("appPageToRender", appPage, data);
+    mainWindow.webContents.send("appPageToRender", appPage, data, factor);
     // show the window
     mainWindow.showInactive();
     // set the zoom factor of the page (always show it the same, independent of the window zoom)
@@ -58,7 +58,7 @@ const createWindow = (appPage, data) => {
   })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -198,8 +198,9 @@ const startLogger = (startTime) => {
   dataStorage.get("started", (err, data) => {
     // get the time difference in days between the start of the current date and the study start date
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
-    // if the start time is older than 30 days (length of the study), disable autostart and show the study end page
-    if (timeDiff >= 30) {
+    // if the start time is older than xx days (length of the study), show the study end page
+    //TODO: Set an end time of the study
+    if (timeDiff >= 4) {
       // show the study endPage
       createWindow("studyEnd");
     } else {

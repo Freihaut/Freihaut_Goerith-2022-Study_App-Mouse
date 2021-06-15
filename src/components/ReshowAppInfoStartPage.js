@@ -15,7 +15,7 @@ export default function ReshowAppInfoStartPage (props) {
 
     return(
         <div className="section" style={{marginTop: "1.5rem"}}>
-            <div className="content">
+            <div className={props.zoom ? "content is-medium": "content"}>
                 <h4>
                     1. Allgemeine Informationen zur Studien-App
                 </h4>
@@ -55,7 +55,7 @@ export default function ReshowAppInfoStartPage (props) {
                     Auslassen einer Datenerhebung beendet nicht Ihre Studienteilnahme.
                 </p>
                 <p>
-                    Die Studie endet nach 30 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
+                    Die Studie endet nach 3 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
                     und es öffnet sich kein Fenster zur Datenerhebung mehr.
                 </p>
                 <p>
@@ -81,7 +81,7 @@ export default function ReshowAppInfoStartPage (props) {
 
                 <br/>
                 <div className="control" style={{width: "100%", textAlign: "center"}}>
-                    <button className="button is-link" onClick={() => props.endCurrentPage()}>Weiter</button>
+                    <button className={props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
                 </div>
             </div>
         </div>

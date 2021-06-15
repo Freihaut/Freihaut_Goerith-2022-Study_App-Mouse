@@ -46,17 +46,19 @@ export default class Tutorial extends Component {
 
     renderTutorialPage(state) {
         if (state === "welcome") {
-            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}/>)
+            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")} zoom={this.props.zoom}/>)
         } else if (state === "task") {
-            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")}/>)
+            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")} zoom={this.props.zoom}/>)
         } else if (state === "selfReport") {
             return (<SelfReport intro={true}
                                 buttonText={"Weiter"}
-                                endReport={() => this.switchPage("sociodem")}/>)
+                                endReport={() => this.switchPage("sociodem")}
+                                zoom={this.props.zoom}/>)
         } else if (state === "sociodem") {
             return (<Sociodemographics answers={this.state.socioDemographics}
                                        inputChange={(data) => this.handleSocioDemInput(data)}
-                                       endSociodem={() => this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})}/>)
+                                       endSociodem={() => this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})}
+                                       zoom={this.props.zoom}/>)
         }
     }
 
@@ -68,7 +70,7 @@ export default class Tutorial extends Component {
                     <div style={{margin: "auto"}}>
                         <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
                                 <div className="tabs is-small is-toggle is-fullwidth">
-                                    <ul>
+                                    <ul className={this.props.zoom > 1 ? "is-size-6" : ""}>
                                         <li className={this.state.page === "welcome" ? "is-active" : ""}>
                                             <a onClick={() => this.switchPage("welcome")}>
                                                 <span>1. Studien-App Infos</span>

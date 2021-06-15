@@ -102,13 +102,13 @@ export default class MouseTask extends Component {
                     <section className="modal-card-body">
                             <div>
                                 <div className="media">
-                                    <div className="media-left">
+                                    <div className="media-left" style={{display: "flex", alignSelf: "center"}}>
                                         <figure className="image" style={{width: "175px"}}>
                                             <img src={MouseTaskImage}
                                                  alt={"Placeholder image"}/>
                                         </figure>
                                     </div>
-                                    <div className="media-content">
+                                    <div className={this.props.zoom > 1 ? "media-content is-size-5" : "media-content"}>
                                         <p>
                                            Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
                                             vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
@@ -117,7 +117,8 @@ export default class MouseTask extends Component {
                                         <p>
                                             Der Punkt, den Sie anklicken müssen ist schwarz markiert. Wenn Sie den schwarz markierten Punkt
                                             angeklickt haben, wird dies angezeigt und Sie müssen den nächsten schwarzen
-                                            Punkt anklicken (siehe unteres Bild).
+                                            Punkt anklicken (siehe unteres Bild) bis Sie alle schwarz markierten Punkte
+                                            angeklickt haben.
                                         </p>
                                         <br/>
                                         <p>
@@ -129,7 +130,7 @@ export default class MouseTask extends Component {
 
                     </section>
                     <footer className="modal-card-foot">
-                        <button className="button is-link" onClick={() => this.closeModal()}>Aufgabe starten</button>
+                        <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
                     </footer>
                 </div>
             </div>

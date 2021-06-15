@@ -46,11 +46,13 @@ export default class DataGrabber extends Component {
         return(
             <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
                 <div style={{margin: "auto"}}>
-                        {this.state.phase === "mouseTask" ? <MouseTask intro={false} endTask={(data) => this.endMouseTask(data)}/>
+                        {this.state.phase === "mouseTask" ? <MouseTask intro={false} endTask={(data) => this.endMouseTask(data)}
+                                                                       zoom={this.props.zoom}/>
                             :
                             this.state.phase === "selfReport" ? <SelfReport intro={false}
                                                                             buttonText={"Eingabe abschließen"}
-                                                                            endReport={(e) => this.endGrabber(e)}/>
+                                                                            endReport={(e) => this.endGrabber(e)}
+                                                                            zoom={this.props.zoom}/>
                                 : null}
                 </div>
             </div>

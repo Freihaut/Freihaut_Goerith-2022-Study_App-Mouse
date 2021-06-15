@@ -24,13 +24,14 @@ export default class ReshowAppInfo extends Component {
 
     renderTutorialPage(state) {
         if (state === "infoPage") {
-            return (<ReshowAppInfoStartPage endCurrentPage={() => this.switchPage("task")}/>)
+            return (<ReshowAppInfoStartPage endCurrentPage={() => this.switchPage("task")} zoom={this.props.zoom}/>)
         } else if (state === "task") {
-            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")}/>)
+            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")} zoom={this.props.zoom}/>)
         } else if (state === "selfReport") {
             return (<SelfReport intro={true}
                                 buttonText={"Fenster schließen"}
-                                endReport={() => ipcRenderer.send("close")}/>)
+                                endReport={() => ipcRenderer.send("close")}
+                                zoom={this.props.zoom}/>)
         }
     }
 
@@ -41,7 +42,7 @@ export default class ReshowAppInfo extends Component {
                 <div style={{margin: "auto"}}>
                     <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
                         <div className="tabs is-small is-toggle is-fullwidth">
-                            <ul>
+                            <ul className={this.props.zoom > 1 ? "is-size-6" : ""}>
                                 <li className={this.state.page === "infoPage" ? "is-active" : ""}>
                                     <a onClick={() => this.switchPage("infoPage")}>
                                         <span>1. Studien-App Infos</span>

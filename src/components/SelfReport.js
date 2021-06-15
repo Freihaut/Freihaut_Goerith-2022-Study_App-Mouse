@@ -54,7 +54,7 @@ export default class SelfReport extends Component {
                     </header>
                     <section className="modal-card-body">
 
-                        <div className="content">
+                        <div className={this.props.zoom > 1 ? "content is-medium" : "content"}>
                             <p>
                                Nachdem Sie die Aufgabe beendet haben, werden Ihnen noch 3 Fragen zu Ihrem aktuellen Befinden
                                 angezeigt.
@@ -67,7 +67,7 @@ export default class SelfReport extends Component {
                         </div>
                     </section>
                     <footer className="modal-card-foot">
-                        <button className="button is-link" onClick={() => this.closeModal()}>Fragen anzeigen</button>
+                        <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Fragen anzeigen</button>
                     </footer>
                 </div>
             </div>
@@ -88,41 +88,41 @@ export default class SelfReport extends Component {
         return(
             <div className="container is-fluid" style={{marginTop: "50px"}}>
                 <div>
-                    <h3 className="title is-5">
+                    <h3 className={this.props.zoom > 1 ? "title is-4" : "title is-5"}>
                         Bitte verschieben Sie die Regler so, dass sie Ihrem aktuellen Befinden am besten entsprechen.
                     </h3>
                     <hr style={{margin: "0 0", height: "3px"}}/>
                 </div>
 
                 <div style={{marginTop: "2.5rem"}}>
-                    <p className="title is-5">Ich fühle mich...</p>
+                    <p className={this.props.zoom > 1 ? "title is-4" : "title is-5"}>Ich fühle mich...</p>
                     <input className="slider" step="1" min="0" max="100" name="valence" value={this.state.selfReport.valence} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
-                        <li className="slider-start-label title is-5">negativ</li>
-                        <li className="slider-end-label title is-5">positiv</li>
+                        <li className={this.props.zoom > 1 ? "slider-start-label title is-4" : "slider-start-label title is-5"}>negativ</li>
+                        <li className={this.props.zoom > 1 ? "slider-end-label title is-4" : "slider-end-label title is-5"}>positiv</li>
                     </ul>
                 </div>
 
                 <div style={{marginTop: "5rem"}}>
-                    <p className="title is-5">Ich fühle mich...</p>
+                    <p className={this.props.zoom > 1 ? "title is-4" : "title is-5"}>Ich fühle mich...</p>
                     <input className="slider" step="1" min="0" max="100" name="arousal" value={this.state.selfReport.arousal} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
-                        <li className="slider-start-label title is-5">aufgeregt</li>
-                        <li className="slider-end-label title is-5">ruhig</li>
+                        <li className={this.props.zoom > 1 ? "slider-start-label title is-4" : "slider-start-label title is-5"}>aufgeregt</li>
+                        <li className={this.props.zoom > 1 ? "slider-end-label title is-4" : "slider-end-label title is-5"}>ruhig</li>
                     </ul>
                 </div>
 
                 <div style={{marginTop: "5rem"}}>
-                    <p className="title is-5">Ich fühle mich...</p>
+                    <p className={this.props.zoom > 1 ? "title is-4" : "title is-5"}>Ich fühle mich...</p>
                     <input className="slider" step="1" min="0" max="100" name="stress" value={this.state.selfReport.stress} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
-                        <li className="slider-start-label title is-5">gestresst</li>
-                        <li className="slider-end-label title is-5">entspannt</li>
+                        <li className={this.props.zoom > 1 ? "slider-start-label title is-4" : "slider-start-label title is-5"}>gestresst</li>
+                        <li className={this.props.zoom > 1 ? "slider-end-label title is-4" : "slider-end-label title is-5"}>entspannt</li>
                     </ul>
                 </div>
 
                 <div style={{marginTop: "5rem", width: "100%", textAlign: "center"}}>
-                    <button className="button is-link" onClick={() => this.props.endReport({selfReportData: this.state.selfReport})}>{this.props.buttonText}</button>
+                    <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endReport({selfReportData: this.state.selfReport})}>{this.props.buttonText}</button>
                 </div>
                 {this.renderInstruction()}
             </div>
