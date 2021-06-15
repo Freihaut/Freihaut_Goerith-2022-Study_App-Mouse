@@ -40,8 +40,8 @@ export default class MouseTask extends Component {
 
         for (let i=1; i<5; i++) {
             for (let k=1; k<5; k++) {
-                const xCoord = 70 + ((i%4) * 120);
-                const yCoord = 70 + ((k%4) * 120);
+                const xCoord = 80 + ((i%4) * 130); // 70 * 120
+                const yCoord = 80 + ((k%4) * 130);
                 this.gridCoords.push([xCoord, yCoord]);
             }
         }
@@ -109,7 +109,6 @@ export default class MouseTask extends Component {
                                         </figure>
                                     </div>
                                     <div className="media-content">
-                                        <br/>
                                         <p>
                                            Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
                                             vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
@@ -153,7 +152,7 @@ export default class MouseTask extends Component {
             <div>
                 <MouseTracker onEvent={(e) => this.onMouseEvent(e)}/>
                 <div className="box">
-                    <svg style={{width:"500", height:"500", viewbox:"0 0 3 2", border:"2px solid black"}}>
+                    <svg style={{width:"550", height:"550", border:"2px solid black"}}>
                         {/*Create the basic circles*/}
                         {this.gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}

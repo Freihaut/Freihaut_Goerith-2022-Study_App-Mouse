@@ -19,13 +19,14 @@ let tray = null;
 // function to create the app window in which the app is shown
 const createWindow = (appPage, data) => {
 
-  // keep the window size in line with the scale Factor of the screen
+  // keep the window size in line with the scale Factor of the screen (always
+  // show the electron browser window in the same scale on the screen)
   let factor = screen.getPrimaryDisplay().scaleFactor;
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 750 / factor, //800
-    height: 725 / factor, // 775
+    width: Math.floor(800 / factor), //800
+    height: Math.floor(775 / factor), // 775
     resizable: false,
     show: false,
     icon: iconPath,
@@ -34,7 +35,6 @@ const createWindow = (appPage, data) => {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
-      zoomFactor: 1.0 / factor,
     }
   });
 
@@ -53,6 +53,8 @@ const createWindow = (appPage, data) => {
     mainWindow.webContents.send("appPageToRender", appPage, data);
     // show the window
     mainWindow.showInactive();
+    // set the zoom factor of the page (always show it the same, independent of the window zoom)
+    mainWindow.webContents.setZoomFactor(1.0 / factor);
   })
 
   // Open the DevTools.
@@ -62,7 +64,7 @@ const createWindow = (appPage, data) => {
   if (appPage === "logger") {
     // after closing of a logger window, start the logging process again
     //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-    mainWindow.on("closed", () => { startLogger(1 * 60 * 1000) })
+    mainWindow.on("closed", () => { startLogger(85 * 60 * 1000) })
   } else if (appPage === "tutorial") {
     // handle close events
     mainWindow.on("close", (ev) => {
@@ -90,7 +92,7 @@ const createWindow = (appPage, data) => {
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
         //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(1 * 60 * 1000);
+        startLogger(85 * 60 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app
@@ -222,7 +224,7 @@ const startLogger = (startTime) => {
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
           // TODO: set interval to: minutes * 60 seconds * 1000 milliseconds
-          1 * 1 * 1000)
+          5 * 60 * 1000)
       }, startTime);
 
     }
