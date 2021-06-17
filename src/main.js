@@ -22,6 +22,7 @@ const createWindow = (appPage, data) => {
   // keep the window size in line with the scale Factor of the screen (always
   // show the electron browser window in the same scale on the screen)
   let factor = screen.getPrimaryDisplay().scaleFactor;
+  console.log(factor);
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -58,7 +59,7 @@ const createWindow = (appPage, data) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {

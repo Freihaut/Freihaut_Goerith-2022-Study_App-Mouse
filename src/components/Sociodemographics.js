@@ -36,7 +36,7 @@ export default class Soziodemographics extends Component {
 
         return(
             <div className="section" style={{marginTop: "1.5rem"}}>
-                <div className={this.props.zoom ? "content is-medium": "content"}>
+                <div className={this.props.zoom > 1 ? "content is-medium": "content"}>
                         <h4>4. Einführung abschließen und Studie beginnen</h4>
                         <p>
                             Sie sind am Ende der Einführung in die Studien-App angekommen. Machen Sie abschließend bitte noch
@@ -195,7 +195,7 @@ export default class Soziodemographics extends Component {
                     </div>
 
                     <div style={{marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                        <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endSociodem()}>Studie beginnen</button>
+                        <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endSociodem()}>Studie beginnen</button>
                     </div>
 
             </div>

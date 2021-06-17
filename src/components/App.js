@@ -127,8 +127,9 @@ export default class App extends Component {
     endDataGrabber(grabberData) {
 
         // get the mouse data from the mouse task, the self report data and add the main process mouse data, which was
-        // collected before the dataGrabber window started
-        const grabbedData = {"grabbedData": {...grabberData, ...{"mouseMainProcess": this.mousePosMainProcess}, ...{"time": Date.now()}}};
+        // collected before the dataGrabber window started, add the timestamp when the data was saved and the zoom level
+        const grabbedData = {"grabbedData": {...grabberData, ...{"mouseMainProcess": this.mousePosMainProcess}, ...{"time": Date.now()},
+            ...{"zoom": this.state.zoom}}};
 
         if (this.state.userId) {
             firebase.database().ref(this.state.userId).push(grabbedData, (error) => {

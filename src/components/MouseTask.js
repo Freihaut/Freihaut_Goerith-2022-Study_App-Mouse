@@ -130,7 +130,7 @@ export default class MouseTask extends Component {
 
                     </section>
                     <footer className="modal-card-foot">
-                        <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
+                        <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
                     </footer>
                 </div>
             </div>

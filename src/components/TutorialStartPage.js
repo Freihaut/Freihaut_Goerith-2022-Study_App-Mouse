@@ -19,7 +19,7 @@ export default function TutorialStartPage (props) {
 
    return(
        <div className="section" style={{marginTop: "1.5rem"}}>
-           <div className={props.zoom ? "content is-medium": "content"}>
+           <div className={props.zoom > 1 ? "content is-medium": "content"}>
                <h3 className={"title is-4"}>
                    Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
                </h3>
@@ -95,7 +95,7 @@ export default function TutorialStartPage (props) {
 
                <br/>
                <div className="control" style={{width: "100%", textAlign: "center"}}>
-                   <button className={props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
+                   <button className={props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
                </div>
            </div>
        </div>

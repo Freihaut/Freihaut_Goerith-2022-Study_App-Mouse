@@ -67,7 +67,7 @@ export default class SelfReport extends Component {
                         </div>
                     </section>
                     <footer className="modal-card-foot">
-                        <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Fragen anzeigen</button>
+                        <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Fragen anzeigen</button>
                     </footer>
                 </div>
             </div>
@@ -122,7 +122,7 @@ export default class SelfReport extends Component {
                 </div>
 
                 <div style={{marginTop: "5rem", width: "100%", textAlign: "center"}}>
-                    <button className={this.props.zoom ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endReport({selfReportData: this.state.selfReport})}>{this.props.buttonText}</button>
+                    <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endReport({selfReportData: this.state.selfReport})}>{this.props.buttonText}</button>
                 </div>
                 {this.renderInstruction()}
             </div>
