@@ -1,5 +1,5 @@
 // core imports
-const { app, BrowserWindow, Menu, Tray, ipcMain, screen, dialog } = require('electron');
+const { app, BrowserWindow, Menu, Tray, ipcMain, screen, dialog, Notification } = require('electron');
 const dataStorage = require("electron-json-storage");
 
 // paths
@@ -50,7 +50,6 @@ const createWindow = (appPage) => {
   // send a message to the page to load the correct component and show the main window after it finished loading
   // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
   // main window does not work with "ready-to-show"
-
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the zoom factor of the screen
     mainWindow.webContents.send("appPageToRender", appPage, factor);
@@ -58,6 +57,14 @@ const createWindow = (appPage) => {
     mainWindow.showInactive();
     // set the zoom factor of the page (always show it the same, independent of the window zoom)
     mainWindow.webContents.setZoomFactor(1.0 / factor);
+    // if it the browser window is the logger
+    if (appPage === "logger") {
+      // send a windows notification that the logger started
+      const notificationTitle = "Studien-App Datenerhebung";
+      const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
+
+      new Notification({title: notificationTitle, body: notificationBody, icon: iconPath}).show();
+    }
   })
 
   // Open the DevTools.
@@ -74,7 +81,7 @@ const createWindow = (appPage) => {
       ipcMain.removeAllListeners("mouseTaskStarted");
       // after closing of a logger window, start the logging process again
       //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-      startLogger(85 * 60 * 1000) })
+      startLogger(1 * 30 * 1000) })
   } else if (appPage === "tutorial") {
 
     // handle close events
@@ -103,7 +110,7 @@ const createWindow = (appPage) => {
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
         //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(85 * 60 * 1000);
+        startLogger(1 * 30 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app
@@ -243,7 +250,7 @@ const startLogger = (startTime) => {
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
           // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
-          5 * 60 * 1000)
+          1 * 1 * 1000)
 
         // add a listener that listens to the start of the mouse task and send the mouse data that was recorded until 5
         // minutes prior to the start into the renderer process

@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "build": {
-    "appId": "com.freihaut.studienapp",
+    "appId": "freihaut.studien-app",
     "productName": "Studien-App",
     "win": {
       "target": "nsis",

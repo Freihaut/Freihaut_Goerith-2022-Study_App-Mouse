@@ -54,7 +54,7 @@ export default class App extends Component {
             .catch(function (error) {
                 let errorCode = error.code;
                 let errorMessage = error.message;
-                console.log(errorCode, errorMessage)
+                // console.log(errorCode, errorMessage)
             });
 
         // if the user successfully logged in, set the user id to the state
