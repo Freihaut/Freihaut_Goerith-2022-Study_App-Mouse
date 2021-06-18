@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+const {ipcRenderer} = require("electron");
 
 // import the mouse Tracker
 import MouseTracker from "./MouseTracker";
@@ -50,13 +51,22 @@ export default class MouseTask extends Component {
         // mouse or not!
         this.noMouseConnected = window.matchMedia('not (pointer: fine), not (hover: hover)').matches;
 
-        // initialize an Array to store the task mouse datapoints
-        this.mouseData = [];
-
         // settings for the modal if its the task intro and the modal is triggered
         if (this.props.intro) {
             document.body.classList.add("is-clipped");
         }
+
+        // initialize an Array to store the task mouse datapoints
+        this.mouseTaskData = [];
+
+        // initialize a variable that stores the main process mouse position data
+        this.mainProcesesMouseData = null;
+
+        // add a listener that grabs the main process mouse data
+        ipcRenderer.once("sendMousePositionData", (event, data) => {
+            this.mainProcesesMouseData = data;
+        })
+
     }
 
 
@@ -65,10 +75,17 @@ export default class MouseTask extends Component {
         // if the participant clicks on the correct circle, go to the next circle
         if (num === this.clickOrder[this.state.clickedCircles]) {
             this.setState({clickedCircles: this.state.clickedCircles + 1}, () => {
-                if (this.state.clickedCircles === this.clickOrder.length) {
+                if (this.state.clickedCircles === 1) {
+                    // tell the main process to stop recording mouse positions
+                    ipcRenderer.send("mouseTaskStarted");
+                } else if (this.state.clickedCircles === this.clickOrder.length) {
                     // end the task and send the task mouse data as well the info about the connected input device
-                   setTimeout(() => this.props.endTask({mouseTaskData: this.mouseData, noMouseConnected: this.noMouseConnected,
-                   clickOrder: this.clickOrder, taskNumber: this.randomNumber}), 1250);
+                   setTimeout(() => this.props.endTask({
+                       mTaskData: this.mouseTaskData,
+                       mFreeUseData: this.mainProcesesMouseData,
+                       noMouseCon: this.noMouseConnected,
+                       clickOrd: this.clickOrder,
+                       taskNum: this.randomNumber}), 1250);
                 }
             });
         } else {
@@ -84,7 +101,7 @@ export default class MouseTask extends Component {
 
         Object.assign(datapoint, taskInfo);
 
-        this.mouseData.push(datapoint);
+        this.mouseTaskData.push(datapoint);
     }
 
 

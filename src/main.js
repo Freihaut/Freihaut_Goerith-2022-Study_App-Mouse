@@ -16,13 +16,15 @@ const gotTheLock = app.requestSingleInstanceLock();
 // declare system tray variable
 let tray = null;
 
+// initialize an empty variable for logging the mousePositions (will be set to an interval later)
+let logMousePosition;
+
 // function to create the app window in which the app is shown
-const createWindow = (appPage, data) => {
+const createWindow = (appPage) => {
 
   // keep the window size in line with the scale Factor of the screen (always
   // show the electron browser window in the same scale on the screen)
   let factor = screen.getPrimaryDisplay().scaleFactor;
-  console.log(factor);
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -50,8 +52,8 @@ const createWindow = (appPage, data) => {
   // main window does not work with "ready-to-show"
 
   mainWindow.webContents.on("did-finish-load", () => {
-    // send the info about which page to render
-    mainWindow.webContents.send("appPageToRender", appPage, data, factor);
+    // send the info about which page to render and the zoom factor of the screen
+    mainWindow.webContents.send("appPageToRender", appPage, factor);
     // show the window
     mainWindow.showInactive();
     // set the zoom factor of the page (always show it the same, independent of the window zoom)
@@ -63,10 +65,18 @@ const createWindow = (appPage, data) => {
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
-    // after closing of a logger window, start the logging process again
-    //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-    mainWindow.on("closed", () => { startLogger(85 * 60 * 1000) })
+
+    mainWindow.on("closed", () => {
+      // clear the interval of the mousePositionLogger (if the participant closes the logger window without participating
+      clearInterval(logMousePosition);
+      // remove the event listener in the start logger function that listens for the task start to send the last 5 minutes
+      // to the renderer process
+      ipcMain.removeAllListeners("mouseTaskStarted");
+      // after closing of a logger window, start the logging process again
+      //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
+      startLogger(85 * 60 * 1000) })
   } else if (appPage === "tutorial") {
+
     // handle close events
     mainWindow.on("close", (ev) => {
 
@@ -200,7 +210,7 @@ const startLogger = (startTime) => {
     // get the time difference in days between the start of the current date and the study start date
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
-    //TODO: Set an end time of the study
+    //TODO: Set an end time of the study in days
     if (timeDiff >= 4) {
       // show the study endPage
       createWindow("studyEnd");
@@ -210,23 +220,41 @@ const startLogger = (startTime) => {
       // initialize a variable to store the free logged mouse data
       let mousePositions = [];
 
-      // set a timeout that starts logging the mouse positions after 5 seconds and then sets another timeout that ends
-      // mouse logging after another 5 seconds and opens a browser window with the logger task
+      // set a timeout that starts logging the mouse positions every 20 milliseconds after a chosen time (e.g. after
+      // 85 minutes)
       setTimeout(() => {
+
         // start an interval that logs the cursor position every 20 milliseconds (or choose an alternative logging interval)
         // and push it into an array
-        const logMousePosition = setInterval(() => {
-          mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), { "time": Date.now() }));
+        logMousePosition = setInterval(() => {
+          mousePositions.push(Object.assign({}, screen.getCursorScreenPoint(), { "t": Date.now() }));
+          // if the array is longer than 15.000 entries, always delete the first mouse Position after adding a new
+          // mouse position to only keep the mouse Position data of the last 5 minutes
+          // 5 minutes = 5 * 60 * 1000 = 300.000 milliseconds -> 15.000 datapoints if one datapoint is logged every 20ms
+          if (mousePositions.length > 15000) {
+            mousePositions.shift();
+          }
         }, 20);
         // set another timeout that ends the cursor position logging and opens a browser window
         setTimeout(() => {
-          clearInterval(logMousePosition);
-          createWindow("logger", mousePositions)
+          // clearInterval(logMousePosition);
+          createWindow("logger")
         },
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
-          // TODO: set interval to: minutes * 60 seconds * 1000 milliseconds
+          // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
           5 * 60 * 1000)
+
+        // add a listener that listens to the start of the mouse task and send the mouse data that was recorded until 5
+        // minutes prior to the start into the renderer process
+        ipcMain.once("mouseTaskStarted", (event) => {
+          // clear the mouse logging interval
+          clearInterval(logMousePosition);
+          // console.log("Logging ended with " + String(mousePositions.length) + " mouse datapoints");
+          // send the logged mouse position data into the renderer process
+          event.reply("sendMousePositionData", mousePositions);
+        })
+
       }, startTime);
 
     }

@@ -36,16 +36,10 @@ export default class App extends Component {
             zoom: 1
         }
 
-        // initialize a variable that holds the mouse position data of the main process (if there is any)
-        this.mousePosMainProcess = null;
-
         // listen to the message from the main process that tells the renderer process which page to load and
-        // additionally sends data if the mouse position was logged
-        ipcRenderer.on("appPageToRender", (event, page, data, factor) => {
+        // which windows zoom level the participant uses
+        ipcRenderer.once("appPageToRender", (event, page, factor) => {
             this.setState({page: page, zoom: factor});
-            if (data) {
-                this.mousePosMainProcess = data;
-            }
         })
     }
 
@@ -126,10 +120,9 @@ export default class App extends Component {
     // handle the end of the data grabbing
     endDataGrabber(grabberData) {
 
-        // get the mouse data from the mouse task, the self report data and add the main process mouse data, which was
-        // collected before the dataGrabber window started, add the timestamp when the data was saved and the zoom level
-        const grabbedData = {"grabbedData": {...grabberData, ...{"mouseMainProcess": this.mousePosMainProcess}, ...{"time": Date.now()},
-            ...{"zoom": this.state.zoom}}};
+        // get the mouse data from the mouse task, the self report data and the main process mouse data (which is saved
+        // in the grabberData, add the timestamp when the data was saved and the zoom level
+        const grabbedData = {"grabbedData": {...grabberData, ...{"time": Date.now()}, ...{"zoom": this.state.zoom}}};
 
         if (this.state.userId) {
             firebase.database().ref(this.state.userId).push(grabbedData, (error) => {
@@ -160,7 +153,7 @@ export default class App extends Component {
 
         // save the data file locally as a string in the browser local storage
         window.localStorage.setItem(saveString.toString(), JSON.stringify(data));
-        console.log("File was saved locally with the save string " + saveString.toString());
+        // console.log("File was saved locally with the save string " + saveString.toString());
     }
 
     // UI Dev functions
