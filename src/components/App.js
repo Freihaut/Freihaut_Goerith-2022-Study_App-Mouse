@@ -33,7 +33,8 @@ export default class App extends Component {
         this.state = {
             page: null,
             userId: undefined,
-            zoom: 1
+            zoom: 1,
+            online: false
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
@@ -88,6 +89,22 @@ export default class App extends Component {
             }
         });
 
+        // check if the user is online or offline (required to determine if sending data into the database if possible
+        // if the user is offline, firebase tries to resent the data until a connection is established, which causes
+        // the app to fail closing the browser window at the end of the tutorial/data collection (where data is sent to
+        // firebase
+        const connectedRef = firebase.database().ref(".info/connected");
+
+        connectedRef.on("value", (snap) => {
+            if (snap.val() === true) {
+                // set online state if the user is online
+                this.setState({online: true})
+            } else {
+                // set offline state if the user is offline
+                this.setState({online: false})
+            }
+        });
+
     }
 
     // Define functions that do the data handling when the user is done with the tutorial or data logger
@@ -96,7 +113,8 @@ export default class App extends Component {
     endTutorial(tutData) {
 
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
-        if (this.state.userId) {
+        // check if the user logged into firebase and check if the user is online or offline
+        if (this.state.userId && this.state.online) {
             firebase.database().ref(this.state.userId).push(tutData, (error) => {
                 // put the close window in the callback function?
                 if (error) {
@@ -109,7 +127,7 @@ export default class App extends Component {
                 }
             });
         } else {
-            // if the login was not successful
+            // if the login was not successful or the user is offline when trying to send the data
             // send the data into the main process to save it locally and end the tutorial
             this.saveDataLocally(tutData); //disabled in test version
             ipcRenderer.send("tutorialEnd");
@@ -124,7 +142,8 @@ export default class App extends Component {
         // in the grabberData, add the timestamp when the data was saved and the zoom level
         const grabbedData = {"grabbedData": {...grabberData, ...{"time": Date.now()}, ...{"zoom": this.state.zoom}}};
 
-        if (this.state.userId) {
+        // check if the user has an id and check if the user is offline or online
+        if (this.state.userId && this.state.online) {
             firebase.database().ref(this.state.userId).push(grabbedData, (error) => {
                 // put the close window in the callback function?
                 if (error) {
@@ -138,7 +157,7 @@ export default class App extends Component {
                 }
             });
         } else {
-            // if the login was not successful save the data locally and close the window
+            // if the login was not successful or if the user is offline save the data locally and close the window
             this.saveDataLocally(grabbedData); // disabled in test version
             ipcRenderer.send("close");
         }
