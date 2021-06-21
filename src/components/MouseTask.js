@@ -36,13 +36,25 @@ export default class MouseTask extends Component {
         // select a randomly chosen click order from all 25 possible click orders
         this.clickOrder = allClickOrders[this.randomNumber];
 
+        // get the window size to set the task size window of the mouse task (add 5 to account for the navigation bar
+        // on tutorial page + reshow app info page)
+        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * this.props.zoom) - 205;
+
         // create the coordinates for the circles in the task (4 by 4 grid)
         this.gridCoords = [];
 
+        // define a start position of the point and the size of each step between two points
+        // the start pos is 17,5% from the top and left side of the task box
+        // the end pos is 17,5% from the top and right side of the task box
+        // the steps fill up the space between the start circle and end circle equally
+        const startPos = Math.floor(this.mouseTaskSize * 0.175);
+        const step = Math.floor((this.mouseTaskSize - (2 * startPos)) / 3);
+
+        // do a 4x4 loop and create the coordinates of each mouse circle in the task
         for (let i=1; i<5; i++) {
             for (let k=1; k<5; k++) {
-                const xCoord = 80 + ((i%4) * 130); // 70 * 120
-                const yCoord = 80 + ((k%4) * 130);
+                const xCoord = startPos + ((i%4) * step); // 70 * 120
+                const yCoord = startPos + ((k%4) * step);
                 this.gridCoords.push([xCoord, yCoord]);
             }
         }
@@ -84,8 +96,11 @@ export default class MouseTask extends Component {
                        mTaskData: this.mouseTaskData,
                        mFreeUseData: this.mainProcesesMouseData,
                        noMouseCon: this.noMouseConnected,
-                       clickOrd: this.clickOrder,
-                       taskNum: this.randomNumber}), 1250);
+                       taskInf: {
+                           clickOrd: this.clickOrder,
+                           taskNum: this.randomNumber
+                       }
+                       }), 1250);
                 }
             });
         } else {
@@ -170,11 +185,11 @@ export default class MouseTask extends Component {
             <div>
                 <MouseTracker onEvent={(e) => this.onMouseEvent(e)}/>
                 <div className="box">
-                    <svg style={{width:"550", height:"550", border:"2px solid black"}}>
+                    <svg style={{width:String(this.mouseTaskSize), height:String(this.mouseTaskSize), border:"2px solid black"}}>
                         {/*Create the basic circles*/}
                         {this.gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}
-                                    r="12"
+                                    r="15"
                                     fill={this.clickOrder[this.state.clickedCircles] === ind ? "hsl(0, 0%, 21%)" :
                                         this.clickOrder.slice(0, this.state.clickedCircles).includes(ind) ? "hsl(217, 71%, 53%)" : "hsl(0, 0%, 86%)"}
                                     key={ind}

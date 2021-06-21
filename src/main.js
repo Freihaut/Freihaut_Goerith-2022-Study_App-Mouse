@@ -24,12 +24,35 @@ const createWindow = (appPage) => {
 
   // keep the window size in line with the scale Factor of the screen (always
   // show the electron browser window in the same scale on the screen)
-  let factor = screen.getPrimaryDisplay().scaleFactor;
+  const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
+  // get the screen size without the taskbar
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+
+  // always make a window size that takes up 85% of the screen height (or width if the screen is turned)
+  // choose the smaller value (height or width) and set the target size to that value to make sure that the targetSize
+  // always fits on the screen
+  let targetSize;
+  if (screen.getPrimaryDisplay().rotation === 0 || screen.getPrimaryDisplay().rotation === 180) {
+    if (screenSize.width > screenSize.height) {
+      targetSize = screenSize.height;
+    } else {
+      targetSize = screenSize.width;
+    }
+  } else {
+    if (screenSize.width > screenSize.height) {
+      targetSize = screenSize.height;
+    } else {
+      targetSize = screenSize.width;
+    }
+  }
+
+  // let the browser window target take up 85% of the available screen size
+  targetSize = Math.floor(targetSize * 0.85);
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: Math.floor(800 / factor), //800
-    height: Math.floor(775 / factor), // 775
+    width: targetSize, // old fixed values: 800 or 900
+    height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
     icon: iconPath,
@@ -41,6 +64,11 @@ const createWindow = (appPage) => {
     }
   });
 
+  // get and log some infos about how the browser window is displayed on the screen
+  const windowBounds = mainWindow.getBounds();
+  const windowOnDisplay = screen.dipToScreenRect(mainWindow,
+      {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
+
   // do not show a menu in the app
   mainWindow.setMenu(null);
 
@@ -51,12 +79,13 @@ const createWindow = (appPage) => {
   // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
   // main window does not work with "ready-to-show"
   mainWindow.webContents.on("did-finish-load", () => {
-    // send the info about which page to render and the zoom factor of the screen
-    mainWindow.webContents.send("appPageToRender", appPage, factor);
+    // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
+    mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay});
     // show the window
     mainWindow.showInactive();
     // set the zoom factor of the page (always show it the same, independent of the window zoom)
-    mainWindow.webContents.setZoomFactor(1.0 / factor);
+    mainWindow.webContents.setZoomFactor(1.0 / zoomFactor);
     // if it the browser window is the logger
     if (appPage === "logger") {
       // send a windows notification that the logger started
@@ -68,7 +97,7 @@ const createWindow = (appPage) => {
   })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -81,7 +110,7 @@ const createWindow = (appPage) => {
       ipcMain.removeAllListeners("mouseTaskStarted");
       // after closing of a logger window, start the logging process again
       //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-      startLogger(55 * 60 * 1000) })
+      startLogger(1 * 30 * 1000) })
   } else if (appPage === "tutorial") {
 
     // handle close events
@@ -110,7 +139,7 @@ const createWindow = (appPage) => {
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
         //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(55 * 60 * 1000);
+        startLogger(1 * 30 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app
@@ -218,7 +247,7 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff >= 4) {
+    if (timeDiff >= 100) {
       // show the study endPage
       createWindow("studyEnd");
     } else {
@@ -250,7 +279,7 @@ const startLogger = (startTime) => {
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
           // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
-          5 * 60 * 1000)
+          1 * 1 * 1000)
 
         // add a listener that listens to the start of the mouse task and send the mouse data that was recorded until 5
         // minutes prior to the start into the renderer process

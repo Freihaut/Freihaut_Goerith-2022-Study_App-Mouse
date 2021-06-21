@@ -24,9 +24,13 @@ export default class ReshowAppInfo extends Component {
 
     renderTutorialPage(state) {
         if (state === "infoPage") {
-            return (<ReshowAppInfoStartPage endCurrentPage={() => this.switchPage("task")} zoom={this.props.zoom}/>)
+            return (<ReshowAppInfoStartPage endCurrentPage={() => this.switchPage("task")}
+                                            zoom={this.props.zoom}/>)
         } else if (state === "task") {
-            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")} zoom={this.props.zoom}/>)
+            return (<MouseTask intro={true}
+                               endTask={() => this.switchPage("selfReport")}
+                               zoom={this.props.zoom}
+                               mouseTaskSize={this.props.mouseTaskSize}/>)
         } else if (state === "selfReport") {
             return (<SelfReport intro={true}
                                 buttonText={"Fenster schließen"}

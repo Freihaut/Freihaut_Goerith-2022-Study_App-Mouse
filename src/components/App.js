@@ -38,9 +38,10 @@ export default class App extends Component {
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
-        // which windows zoom level the participant uses
-        ipcRenderer.once("appPageToRender", (event, page, factor) => {
-            this.setState({page: page, zoom: factor});
+        // which windows zoom level the participant uses (in addition to other screen related infos)
+        ipcRenderer.once("appPageToRender", (event, page, displayInfo) => {
+            this.displayInfo = displayInfo;
+            this.setState({page: page, zoom: displayInfo.zoom});
         })
     }
 
@@ -140,7 +141,7 @@ export default class App extends Component {
 
         // get the mouse data from the mouse task, the self report data and the main process mouse data (which is saved
         // in the grabberData, add the timestamp when the data was saved and the zoom level
-        const grabbedData = {"grabbedData": {...grabberData, ...{"time": Date.now()}, ...{"zoom": this.state.zoom}}};
+        const grabbedData = {"grabbedData": {...grabberData, ...{"time": Date.now()}, ...{disInf: this.displayInfo}}};
 
         // check if the user has an id and check if the user is offline or online
         if (this.state.userId && this.state.online) {
@@ -229,9 +230,14 @@ export default class App extends Component {
                 </nav>*/}
                 {
                     /*this.state.page === "start" ? this.renderStartPage() : */
-                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)} zoom={this.state.zoom}/> :
-                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)} zoom={this.state.zoom}/> :
-                            this.state.page === "reshowTut" ? <ReshowAppInfo zoom={this.state.zoom}/> :
+                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}
+                                                               zoom={this.state.zoom}
+                                                               mouseTaskSize={this.displayInfo.windBounds.width}/> :
+                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}
+                                                                    zoom={this.state.zoom}
+                                                                    mouseTaskSize={this.displayInfo.windBounds.width}/> :
+                            this.state.page === "reshowTut" ? <ReshowAppInfo zoom={this.state.zoom}
+                                                                             mouseTaskSize={this.displayInfo.windBounds.width}/> :
                                 this.state.page === "studyEnd" ? <StudyEnd zoom={this.state.zoom}/>
                                     : null
                 }

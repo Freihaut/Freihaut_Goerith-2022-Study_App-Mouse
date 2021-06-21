@@ -46,9 +46,13 @@ export default class Tutorial extends Component {
 
     renderTutorialPage(state) {
         if (state === "welcome") {
-            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")} zoom={this.props.zoom}/>)
+            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}
+                                       zoom={this.props.zoom}/>)
         } else if (state === "task") {
-            return (<MouseTask intro={true} endTask={() => this.switchPage("selfReport")} zoom={this.props.zoom}/>)
+            return (<MouseTask intro={true}
+                               endTask={() => this.switchPage("selfReport")}
+                               zoom={this.props.zoom}
+                               mouseTaskSize={this.props.mouseTaskSize}/>)
         } else if (state === "selfReport") {
             return (<SelfReport intro={true}
                                 buttonText={"Weiter"}
