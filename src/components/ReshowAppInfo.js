@@ -44,9 +44,9 @@ export default class ReshowAppInfo extends Component {
         return(
             <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
                 <div style={{margin: "auto"}}>
-                    <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
-                        <div className="tabs is-small is-toggle is-fullwidth">
-                            <ul className={this.props.zoom > 1 ? "is-size-6" : ""}>
+                    <nav className="navbar is-fixed-top is-expanded" role="navigation" aria-label="main navigation">
+                        <div className={this.props.zoom > 1 ? "tabs is-toggle is-fullwidth" : "tabs is-small is-toggle is-fullwidth"}>
+                            <ul>
                                 <li className={this.state.page === "infoPage" ? "is-active" : ""}>
                                     <a onClick={() => this.switchPage("infoPage")}>
                                         <span>1. Studien-App Infos</span>

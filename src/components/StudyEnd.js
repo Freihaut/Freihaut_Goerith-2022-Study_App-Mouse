@@ -18,7 +18,7 @@ export default function StudyEnd (props) {
                 <nav className="navbar is-fixed-top is-expanded is-info" role="navigation" aria-label="main navigation">
                 </nav>
                 <div className="section" style={{maxWidth: "900px"}}>
-                    <div className={props.zoom > 1 ? "content is-medium": "content"}>
+                    <div className={props.zoom > 2 ? "content is-large" : props.zoom > 1 ? "content is-medium" : "content"}>
                         <h3>
                             Die Datenerhebung ist beendet
                         </h3>
@@ -47,7 +47,8 @@ export default function StudyEnd (props) {
                         </p>
                         <br/>
                         <div className="control" style={{width: "100%", textAlign: "center"}}>
-                            <button className={props.zoom > 1 ? "button is-link is-medium": "button is-link"}
+                            <button className={props.zoom > 2 ? "button is-link is-large" :
+                                props.zoom > 1 ? "button is-link is-medium" : "button is-link"}
                                     onClick={() => ipcRenderer.send("close")}>
                                 Studien-App beenden
                             </button>

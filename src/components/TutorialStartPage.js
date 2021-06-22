@@ -19,13 +19,13 @@ export default function TutorialStartPage (props) {
 
    return(
        <div className="section" style={{marginTop: "1.5rem"}}>
-           <div className={props.zoom > 1 ? "content is-medium": "content"}>
+           <div className={props.zoom > 2 ? "content is-large" : props.zoom > 1 ? "content is-medium" : "content"}>
                <h3 className={"title is-4"}>
                    Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
                </h3>
                <p>
                    Diese Einführung beinhaltet
-                   vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studie beginnen".
+                   vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studienstart".
                    Sobald Sie alle vier Schritte der Einführung abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle
                    Informationen aufmerksam durch.
                </p>
@@ -95,7 +95,8 @@ export default function TutorialStartPage (props) {
 
                <br/>
                <div className="control" style={{width: "100%", textAlign: "center"}}>
-                   <button className={props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
+                   <button className={props.zoom > 2 ? "button is-link is-large" :
+                       props.zoom > 1 ? "button is-link is-medium" : "button is-link"} onClick={() => props.endCurrentPage()}>Weiter</button>
                </div>
            </div>
        </div>

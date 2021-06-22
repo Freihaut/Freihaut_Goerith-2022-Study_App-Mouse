@@ -36,7 +36,7 @@ export default class Soziodemographics extends Component {
 
         return(
             <div className="section" style={{marginTop: "1.5rem"}}>
-                <div className={this.props.zoom > 1 ? "content is-medium": "content"}>
+                <div className={this.props.zoom > 2 ? "content is-large" : this.props.zoom > 1 ? "content is-medium" : "content"}>
                         <h4>4. Einführung abschließen und Studie beginnen</h4>
                         <p>
                             Sie sind am Ende der Einführung in die Studien-App angekommen. Machen Sie abschließend bitte noch
@@ -56,14 +56,14 @@ export default class Soziodemographics extends Component {
                         <hr/>
                     </div>
 
-                    <div className={this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "25px"}}>
+                    <div className={this.props.zoom > 2 ? "field is-size-4" : this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "25px"}}>
                         <p className="questionTextStyle">Ihr Alter in Jahren:</p>
                         <div className="control">
                             <label>
                                 <input
                                     style={{width: "150px"}}
                                     name="age"
-                                    className={this.props.zoom > 1 ? "input is-medium" : "input"}
+                                    className={this.props.zoom > 2 ? "input is-large" : this.props.zoom > 1 ? "input is-medium" : "input"}
                                     type="number"
                                     placeholder="Ihr Alter"
                                     value={this.props.answers.age === -99 ? "" : this.props.answers.age}
@@ -74,11 +74,11 @@ export default class Soziodemographics extends Component {
                         </div>
                     </div>
 
-                    <div className={this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "26px"}}>
+                    <div className={this.props.zoom > 2 ? "field is-size-4" : this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "26px"}}>
                     <span>
                         <p className="questionTextStyle">Ihr Geschlecht:</p>
                         <div className={"control"}>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -88,7 +88,7 @@ export default class Soziodemographics extends Component {
                                     onChange={this.handleInputChange}
                                 />weiblich
                             </label>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -98,7 +98,7 @@ export default class Soziodemographics extends Component {
                                     onChange={this.handleInputChange}
                                 />männlich
                             </label>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
                                 <input style={{marginRight: 5}}
                                        type="radio"
                                        value="2"
@@ -111,14 +111,14 @@ export default class Soziodemographics extends Component {
                     </span>
                     </div>
 
-                    <div className={this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "25px"}}>
+                    <div className={this.props.zoom > 2 ? "field is-size-4" : this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "25px"}}>
                         <p className="questionTextStyle">Ihr Beruf:</p>
                         <div className="control">
                             <label>
                                 <input
                                     style={{width: "300px"}}
                                     name="occupation"
-                                    className={this.props.zoom > 1 ? "input is-medium" : "input"}
+                                    className={this.props.zoom > 2 ? "input is-large" : this.props.zoom > 1 ? "input is-medium" : "input"}
                                     type="text"
                                     placeholder="Ihr Beruf"
                                     value={this.props.answers.occupation === -99 ? "" : this.props.answers.occupation}
@@ -128,11 +128,11 @@ export default class Soziodemographics extends Component {
                         </div>
                     </div>
 
-                    <div className={this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "40px"}}>
+                    <div className={this.props.zoom > 2 ? "field is-size-4" : this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "40px"}}>
                     <span>
                         <p className="questionTextStyle">Mit welcher Hand bedienen Sie die Computer-Maus:</p>
                         <div className={"control"}>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -142,7 +142,7 @@ export default class Soziodemographics extends Component {
                                     onChange={this.handleInputChange}
                                 />rechts
                             </label>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -156,11 +156,11 @@ export default class Soziodemographics extends Component {
                     </span>
                     </div>
 
-                    <div className={this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "40px"}}>
+                    <div className={this.props.zoom > 2 ? "field is-size-4" : this.props.zoom > 1 ? "field is-size-5" : "field"} style={{marginTop: "40px"}}>
                     <span>
                         <p className="questionTextStyle">Wie nutzen Sie Ihren Computer überwiegend?</p>
                         <div className={"control"}>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -170,7 +170,7 @@ export default class Soziodemographics extends Component {
                                     onChange={this.handleInputChange}
                                 />beruflich
                             </label>
-                            <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
+                            <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -180,7 +180,7 @@ export default class Soziodemographics extends Component {
                                     onChange={this.handleInputChange}
                                 />privat
                             </label>
-                             <label className={this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
+                             <label className={this.props.zoom > 2 ? "radio is-size-4" : this.props.zoom > 1 ? "radio is-size-5" : "radio"} style={{marginLeft: 25}}>
                                 <input
                                     style={{marginRight: 5}}
                                     type="radio"
@@ -195,7 +195,8 @@ export default class Soziodemographics extends Component {
                     </div>
 
                     <div style={{marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                        <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.props.endSociodem()}>Studie beginnen</button>
+                        <button className={this.props.zoom > 2 ? "button is-link is-large" :
+                            this.props.zoom > 1 ? "button is-link is-medium" : "button is-link"} onClick={() => this.props.endSociodem()}>Studie beginnen</button>
                     </div>
 
             </div>

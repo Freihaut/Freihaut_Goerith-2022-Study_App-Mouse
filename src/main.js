@@ -97,7 +97,7 @@ const createWindow = (appPage) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -110,7 +110,7 @@ const createWindow = (appPage) => {
       ipcMain.removeAllListeners("mouseTaskStarted");
       // after closing of a logger window, start the logging process again
       //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-      startLogger(1 * 30 * 1000) })
+      startLogger(55 * 60 * 1000) })
   } else if (appPage === "tutorial") {
 
     // handle close events
@@ -139,7 +139,7 @@ const createWindow = (appPage) => {
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
         //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(1 * 30 * 1000);
+        startLogger(55 * 60 * 1000);
       }
     })
     // if the End Study Window is closed, close the study app
@@ -247,7 +247,7 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff >= 100) {
+    if (timeDiff >= 2) {
       // show the study endPage
       createWindow("studyEnd");
     } else {
@@ -279,7 +279,7 @@ const startLogger = (startTime) => {
           // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
           // interval)
           // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
-          1 * 1 * 1000)
+          5 * 60 * 1000)
 
         // add a listener that listens to the start of the mouse task and send the mouse data that was recorded until 5
         // minutes prior to the start into the renderer process

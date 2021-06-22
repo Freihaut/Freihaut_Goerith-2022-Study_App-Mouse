@@ -36,9 +36,9 @@ export default class MouseTask extends Component {
         // select a randomly chosen click order from all 25 possible click orders
         this.clickOrder = allClickOrders[this.randomNumber];
 
-        // get the window size to set the task size window of the mouse task (add 5 to account for the navigation bar
+        // get the window size to set the task size window of the mouse task (add 10 to account for the navigation bar
         // on tutorial page + reshow app info page)
-        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * this.props.zoom) - 205;
+        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * this.props.zoom) - 210;
 
         // create the coordinates for the circles in the task (4 by 4 grid)
         this.gridCoords = [];
@@ -140,7 +140,8 @@ export default class MouseTask extends Component {
                                                  alt={"Placeholder image"}/>
                                         </figure>
                                     </div>
-                                    <div className={this.props.zoom > 1 ? "media-content is-size-5" : "media-content"}>
+                                    <div className={this.props.zoom > 2 ? "media-content is-size-4" :
+                                        this.props.zoom > 1 ? "media-content is-size-5" : "media-content"}>
                                         <p>
                                            Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
                                             vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
@@ -162,7 +163,8 @@ export default class MouseTask extends Component {
 
                     </section>
                     <footer className="modal-card-foot">
-                        <button className={this.props.zoom > 1 ? "button is-link is-medium": "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
+                        <button className={this.props.zoom > 2 ? "button is-link is-large" :
+                            this.props.zoom > 1 ? "button is-link is-medium" : "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
                     </footer>
                 </div>
             </div>
