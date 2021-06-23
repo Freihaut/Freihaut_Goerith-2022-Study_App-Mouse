@@ -15,9 +15,7 @@ export default function StudyEnd (props) {
 
         <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
             <div style={{margin: "auto"}}>
-                <nav className="navbar is-fixed-top is-expanded is-info" role="navigation" aria-label="main navigation">
-                </nav>
-                <div className="section" style={{maxWidth: "900px"}}>
+                <div className="section">
                     <div className={props.zoom > 2 ? "content is-large" : props.zoom > 1 ? "content is-medium" : "content"}>
                         <h3>
                             Die Datenerhebung ist beendet
@@ -32,6 +30,22 @@ export default function StudyEnd (props) {
                         <h4>
                             Vielen herzlichen Dank für ihre Teilnahme an dieser Studie und Ihren Beitrag zur Wissenschaft!
                         </h4>
+                        <br/>
+                        <p>
+                            Falls Sie Psychologie an der Albert-Ludwigs Universität Freiburg studieren und für Ihre
+                            Studienteilnahme Versuchspersonenstunden erhalten möchten, finden Sie hier einen
+                            Code, mit dem Sie Ihre Studienteilnahme verifizieren können. Der Code wird unabhängig
+                            von Ihren Daten gespeichert, sodass keine Zuordnung Ihrer Daten zu Ihrer Person möglich ist.
+                            Um die Versuchspersonenstunden zu erhalten, tragen Sie Folgendes auf Ihrem Versuchspersonenzettel
+                            ein und wenden Sie sich dann mit Ihrem Code an den Studienverantwortlichen, der Ihre Teilnahme verifiziert:
+                        </p>
+                        <p>
+                            <strong>Datum:</strong> Das aktuelle Datum <br/>
+                            <strong>Titel der Studie:</strong> Computernutzung und Stress <br/>
+                            <strong>Dauer:</strong> 2 Stunden <br/>
+                            <strong>Verantwortl. Dozent:</strong> Paul Freihaut
+                        </p>
+                        <h6>Ihr Versuchspersonencode: <i>{props.participantCode}</i></h6>
                         <br/>
                         <p>
                             Falls Sie noch Rückfragen zu der Studie oder der Studien-App haben, können Sie mich

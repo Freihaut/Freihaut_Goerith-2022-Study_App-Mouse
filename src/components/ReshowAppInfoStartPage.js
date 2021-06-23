@@ -70,6 +70,12 @@ export default function ReshowAppInfoStartPage (props) {
                 </p>
 
                 <p>
+                    Falls Sie Psychologie an der Albert-Ludwigs Universität Freiburg studieren und für Ihre
+                    Studienteilnahme Versuchspersonenstunden erhalten möchten, finden Sie einen Versuchspersonencode sowie eine Anleitung
+                    zur Einlösung der Versuchspersonenstunden am Ende der Studie.
+                </p>
+
+                <p>
                     Bei weiteren Fragen zur Studien-App wenden Sie sich an:
                 </p>
                 <p>

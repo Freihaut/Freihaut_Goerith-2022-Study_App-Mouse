@@ -34,14 +34,16 @@ export default class App extends Component {
             page: null,
             userId: undefined,
             zoom: 1,
-            online: false
+            online: false,
+            participantCode: null,
+            participantCodeText: "Code wird geladen"
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
-        // which windows zoom level the participant uses (in addition to other screen related infos)
-        ipcRenderer.once("appPageToRender", (event, page, displayInfo) => {
+        // which windows zoom level the participant uses (in addition to other screen related infos) and the user Id for the end of the study
+        ipcRenderer.once("appPageToRender", (event, page, displayInfo, participantCode) => {
             this.displayInfo = displayInfo;
-            this.setState({page: page, zoom: displayInfo.zoom});
+            this.setState({page: page, zoom: displayInfo.zoom, participantCode: participantCode ? participantCode : null})
         })
     }
 
@@ -99,10 +101,20 @@ export default class App extends Component {
         connectedRef.on("value", (snap) => {
             if (snap.val() === true) {
                 // set online state if the user is online
-                this.setState({online: true})
+                this.setState({online: true}, () => {
+                    // try to save the participantCode if the user reached the last page
+                    if (this.state.participantCode) {
+                        this.saveParticipantCode();
+                    }
+                })
             } else {
                 // set offline state if the user is offline
-                this.setState({online: false})
+                this.setState({online: false}, () => {
+                    // try to save the participantCode if the user reached the last page
+                    if (this.state.participantCode) {
+                        this.saveParticipantCode();
+                    }
+                })
             }
         });
 
@@ -176,6 +188,41 @@ export default class App extends Component {
         // console.log("File was saved locally with the save string " + saveString.toString());
     }
 
+    // function to save the participant code that is shown for students to receive course credit in exchange for their
+    // participation (it is saved in firebase)
+    saveParticipantCode() {
+
+        // if the user exists and is online
+        if (this.state.userId && this.state.online) {
+            firebase.database().ref("participantCodes").orderByChild("Id").equalTo(this.state.participantCode).once("value").then((snapshot) => {
+                // check if the id was already saved
+                if (snapshot.exists()) {
+                    console.log("ID already exists");
+                    this.setState({participantCodeText: String(this.state.participantCode)});
+                } else {
+                    // if not try to save the id
+                    firebase.database().ref("participantCodes").push({Id: this.state.participantCode}, (err) => {
+                        if (err) {
+                            console.log(err);
+                            // data saving error
+                            this.setState({participantCodeText: "Der Code konnte nicht geladen werden. Stellen Sie sicher, dass " +
+                                    "Sie mit dem Internet verbunden sind und starten Sie die Studien-App erneut"})
+                        } else {
+                            // data was successfully saved
+                            this.setState({participantCodeText: String(this.state.participantCode)});
+                        }
+                    })
+                }
+            })
+
+        } else {
+            console.log(this.state.userId, this.state.online);
+            // if the user is offline or doesnt exist
+            this.setState({participantCodeText: "Der Code konnte nicht geladen werden. Stellen Sie sicher, dass " +
+                    "Sie mit dem Internet verbunden sind und starten Sie die Studien-App erneut"})
+        }
+    }
+
     // UI Dev functions
 
     // For UI Development only: Create a startpage to switch between the tutorial and the Data Grabber
@@ -238,7 +285,8 @@ export default class App extends Component {
                                                                     mouseTaskSize={this.displayInfo.windBounds.width}/> :
                             this.state.page === "reshowTut" ? <ReshowAppInfo zoom={this.state.zoom}
                                                                              mouseTaskSize={this.displayInfo.windBounds.width}/> :
-                                this.state.page === "studyEnd" ? <StudyEnd zoom={this.state.zoom}/>
+                                this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}
+                                                                           zoom={this.state.zoom}/>
                                     : null
                 }
             </div>

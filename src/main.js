@@ -20,7 +20,7 @@ let tray = null;
 let logMousePosition;
 
 // function to create the app window in which the app is shown
-const createWindow = (appPage) => {
+const createWindow = (appPage, data) => {
 
   // keep the window size in line with the scale Factor of the screen (always
   // show the electron browser window in the same scale on the screen)
@@ -81,7 +81,7 @@ const createWindow = (appPage) => {
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay});
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, data);
     // show the window
     mainWindow.showInactive();
     // set the zoom factor of the page (always show it the same, independent of the window zoom)
@@ -111,6 +111,7 @@ const createWindow = (appPage) => {
       // after closing of a logger window, start the logging process again
       //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
       startLogger(55 * 60 * 1000) })
+
   } else if (appPage === "tutorial") {
 
     // handle close events
@@ -223,8 +224,9 @@ ipcMain.on("close", () => {
 
 // end of tutorial event
 ipcMain.on("tutorialEnd", () => {
-  // write a file to notify that the program has started
-  dataStorage.set("started", { started: Date.now() }, function (error) {
+  // write a file to notify that the program has started and add a participant identifier
+  const participantCode = Math.random().toString(36).substring(2);
+  dataStorage.set("started", { started: Date.now(), ident: participantCode }, function (error) {
     if (error) {
       // throw an error if the json save does not work (because the study wont work properly and show the tutorial again
       // on app restart
@@ -247,9 +249,9 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff >= 2) {
-      // show the study endPage
-      createWindow("studyEnd");
+    if (timeDiff >= 0) {
+      // show the study endPage and send the participant id
+      createWindow("studyEnd", data.ident);
     } else {
       // if the study is not finished yet, start the logger Process
 
