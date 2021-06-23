@@ -72,7 +72,7 @@ export default class App extends Component {
                 // loop the data from the local storage
                 for (const [key, value] of Object.entries(storage)) {
                     if (!key.includes("firebase")) {
-                        firebase.database().ref(user.uid).push(JSON.parse(value), (error) => {
+                        firebase.database().ref("data/" + user.uid).push(JSON.parse(value), (error) => {
                             // put the close window in the callback function?
                             if (error) {
                                 // dont do anything
@@ -128,7 +128,7 @@ export default class App extends Component {
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
         // check if the user logged into firebase and check if the user is online or offline
         if (this.state.userId && this.state.online) {
-            firebase.database().ref(this.state.userId).push(tutData, (error) => {
+            firebase.database().ref("data/" + this.state.userId).push(tutData, (error) => {
                 // put the close window in the callback function?
                 if (error) {
                     // Data Save error --> save the data locally and end the tutorial
@@ -157,7 +157,7 @@ export default class App extends Component {
 
         // check if the user has an id and check if the user is offline or online
         if (this.state.userId && this.state.online) {
-            firebase.database().ref(this.state.userId).push(grabbedData, (error) => {
+            firebase.database().ref("data/" + this.state.userId).push(grabbedData, (error) => {
                 // put the close window in the callback function?
                 if (error) {
                     // Data Save error --> Save the data locally
