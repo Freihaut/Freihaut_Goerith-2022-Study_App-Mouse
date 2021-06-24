@@ -107,31 +107,6 @@ Animation for the check boxes in the mouse task
 }
 
 /*
-Accordion Styles
- */
-
-
-.accordion-header {
-  cursor: pointer;
-  width: 95%;
-  text-align: left;
-}
-
-.accordion-header:after{
-  content: '\002B';
-  float: right;
-}
-
-.header-is-active:after{
-    content: "\2212";
-}
-
-
-.accordion-text{
-  margin-left: 0.5em;
-}
-
-/*
 Sociodemographic question text
  */
 

@@ -249,7 +249,7 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff >= 3) {
+    if (timeDiff > 14) {
       // show the study endPage and send the participant id
       createWindow("studyEnd", data.ident);
     } else {

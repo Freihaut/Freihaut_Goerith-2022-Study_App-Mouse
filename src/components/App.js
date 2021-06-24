@@ -125,14 +125,17 @@ export default class App extends Component {
     // end of tutorial (when the user finishes the tutorial, save the sociodemographic data and "start" the data logging
     endTutorial(tutData) {
 
+        // add the version number to the tut data to keep track of potential changes in the study app version
+        const studyStartData = {...tutData, ...{appVersion: "1.0"}}
+
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
         // check if the user logged into firebase and check if the user is online or offline
         if (this.state.userId && this.state.online) {
-            firebase.database().ref("data/" + this.state.userId).push(tutData, (error) => {
+            firebase.database().ref("data/" + this.state.userId).push(studyStartData, (error) => {
                 // put the close window in the callback function?
                 if (error) {
                     // Data Save error --> save the data locally and end the tutorial
-                    this.saveDataLocally(tutData); // disabled in test version
+                    this.saveDataLocally(studyStartData); // disabled in test version
                     ipcRenderer.send("tutorialEnd");
                 } else {
                     // Data saved successfully in firebase
@@ -142,7 +145,7 @@ export default class App extends Component {
         } else {
             // if the login was not successful or the user is offline when trying to send the data
             // send the data into the main process to save it locally and end the tutorial
-            this.saveDataLocally(tutData); //disabled in test version
+            this.saveDataLocally(studyStartData); //disabled in test version
             ipcRenderer.send("tutorialEnd");
         }
 
@@ -197,13 +200,11 @@ export default class App extends Component {
             firebase.database().ref("participantCodes").orderByChild("Id").equalTo(this.state.participantCode).once("value").then((snapshot) => {
                 // check if the id was already saved
                 if (snapshot.exists()) {
-                    console.log("ID already exists");
                     this.setState({participantCodeText: String(this.state.participantCode)});
                 } else {
                     // if not try to save the id
                     firebase.database().ref("participantCodes").push({Id: this.state.participantCode}, (err) => {
                         if (err) {
-                            console.log(err);
                             // data saving error
                             this.setState({participantCodeText: "Der Code konnte nicht geladen werden. Stellen Sie sicher, dass " +
                                     "Sie mit dem Internet verbunden sind und starten Sie die Studien-App erneut"})
@@ -216,7 +217,6 @@ export default class App extends Component {
             })
 
         } else {
-            console.log(this.state.userId, this.state.online);
             // if the user is offline or doesnt exist
             this.setState({participantCodeText: "Der Code konnte nicht geladen werden. Stellen Sie sicher, dass " +
                     "Sie mit dem Internet verbunden sind und starten Sie die Studien-App erneut"})

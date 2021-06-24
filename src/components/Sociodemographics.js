@@ -44,7 +44,7 @@ export default class Soziodemographics extends Component {
                         </p>
                         <p>
                             Wenn Sie auf "Studie beginnen" klicken, schließt sich dieses Fenster und die Studien-App
-                            bleibt passiv im Hintergrund ausgeführt, bis sie nach etwa 90 Minuten ein Fenster zur Datenerhebung öffnet.
+                            bleibt passiv im Hintergrund ausgeführt, bis sie nach etwa 60 Minuten ein Fenster zur Datenerhebung öffnet.
                         </p>
                         <p>
                             Falls Sie die Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen erneut
