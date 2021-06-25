@@ -46,23 +46,19 @@ export default class Tutorial extends Component {
 
     renderTutorialPage(state) {
         if (state === "welcome") {
-            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}
-                                       zoom={this.props.zoom}/>)
+            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}/>)
         } else if (state === "task") {
             return (<MouseTask intro={true}
                                endTask={() => this.switchPage("selfReport")}
-                               zoom={this.props.zoom}
                                mouseTaskSize={this.props.mouseTaskSize}/>)
         } else if (state === "selfReport") {
             return (<SelfReport intro={true}
                                 buttonText={"Weiter"}
-                                endReport={() => this.switchPage("sociodem")}
-                                zoom={this.props.zoom}/>)
+                                endReport={() => this.switchPage("sociodem")}/>)
         } else if (state === "sociodem") {
             return (<Sociodemographics answers={this.state.socioDemographics}
                                        inputChange={(data) => this.handleSocioDemInput(data)}
-                                       endSociodem={() => this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})}
-                                       zoom={this.props.zoom}/>)
+                                       endSociodem={() => this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})}/>)
         }
     }
 
@@ -73,7 +69,7 @@ export default class Tutorial extends Component {
                 <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
                     <div style={{margin: "auto"}}>
                         <nav className="navbar is-fixed-top is-expanded" role="navigation" aria-label="main navigation">
-                                <div className={this.props.zoom > 1 ? "tabs is-toggle is-fullwidth" : "tabs is-small is-toggle is-fullwidth"}>
+                                <div className={"tabs is-small is-toggle is-fullwidth"}>
                                     <ul>
                                         <li className={this.state.page === "welcome" ? "is-active" : ""}>
                                             <a onClick={() => this.switchPage("welcome")}>

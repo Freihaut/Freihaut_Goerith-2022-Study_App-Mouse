@@ -22,9 +22,6 @@ let logMousePosition;
 // function to create the app window in which the app is shown
 const createWindow = (appPage, data) => {
 
-  // keep the window size in line with the scale Factor of the screen (always
-  // show the electron browser window in the same scale on the screen)
-  const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
 
@@ -65,6 +62,7 @@ const createWindow = (appPage, data) => {
   });
 
   // get and log some infos about how the browser window is displayed on the screen
+  const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   const windowBounds = mainWindow.getBounds();
   const windowOnDisplay = screen.dipToScreenRect(mainWindow,
       {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
@@ -84,8 +82,7 @@ const createWindow = (appPage, data) => {
       screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, data);
     // show the window
     mainWindow.showInactive();
-    // set the zoom factor of the page (always show it the same, independent of the window zoom)
-    mainWindow.webContents.setZoomFactor(1.0 / zoomFactor);
+
     // if it the browser window is the logger
     if (appPage === "logger") {
       // send a windows notification that the logger started

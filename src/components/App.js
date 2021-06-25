@@ -33,7 +33,6 @@ export default class App extends Component {
         this.state = {
             page: null,
             userId: undefined,
-            zoom: 1,
             online: false,
             participantCode: null,
             participantCodeText: "Code wird geladen"
@@ -43,7 +42,7 @@ export default class App extends Component {
         // which windows zoom level the participant uses (in addition to other screen related infos) and the user Id for the end of the study
         ipcRenderer.once("appPageToRender", (event, page, displayInfo, participantCode) => {
             this.displayInfo = displayInfo;
-            this.setState({page: page, zoom: displayInfo.zoom, participantCode: participantCode ? participantCode : null})
+            this.setState({page: page, participantCode: participantCode ? participantCode : null})
         })
     }
 
@@ -278,15 +277,11 @@ export default class App extends Component {
                 {
                     /*this.state.page === "start" ? this.renderStartPage() : */
                     this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}
-                                                               zoom={this.state.zoom}
                                                                mouseTaskSize={this.displayInfo.windBounds.width}/> :
                         this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}
-                                                                    zoom={this.state.zoom}
                                                                     mouseTaskSize={this.displayInfo.windBounds.width}/> :
-                            this.state.page === "reshowTut" ? <ReshowAppInfo zoom={this.state.zoom}
-                                                                             mouseTaskSize={this.displayInfo.windBounds.width}/> :
-                                this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}
-                                                                           zoom={this.state.zoom}/>
+                            this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.displayInfo.windBounds.width}/> :
+                                this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}/>
                                     : null
                 }
             </div>

@@ -38,7 +38,7 @@ export default class MouseTask extends Component {
 
         // get the window size to set the task size window of the mouse task (add 10 to account for the navigation bar
         // on tutorial page + reshow app info page)
-        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * this.props.zoom) - 210;
+        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * 0.77);
 
         // create the coordinates for the circles in the task (4 by 4 grid)
         this.gridCoords = [];
@@ -125,7 +125,7 @@ export default class MouseTask extends Component {
 
         return (
 
-            <div className={this.state.modal} style={{textAlign: "left", fontSize: "18px"}}>
+            <div className={this.state.modal} style={{textAlign: "left"}}>
                 <div className="modal-background">{null}</div>
                 <div className="modal-content">
                     <header className="modal-card-head">
@@ -135,13 +135,13 @@ export default class MouseTask extends Component {
                             <div>
                                 <div className="media">
                                     <div className="media-left" style={{display: "flex", alignSelf: "center"}}>
-                                        <figure className="image" style={{width: "175px"}}>
+                                        <figure className="image" style={{width: "10rem"}}>
                                             <img src={MouseTaskImage}
-                                                 alt={"Placeholder image"}/>
+                                                 alt={"Placeholder image"}
+                                            />
                                         </figure>
                                     </div>
-                                    <div className={this.props.zoom > 2 ? "media-content is-size-4" :
-                                        this.props.zoom > 1 ? "media-content is-size-5" : "media-content"}>
+                                    <div className={"media-content"}>
                                         <p>
                                            Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
                                             vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
@@ -163,8 +163,7 @@ export default class MouseTask extends Component {
 
                     </section>
                     <footer className="modal-card-foot">
-                        <button className={this.props.zoom > 2 ? "button is-link is-large" :
-                            this.props.zoom > 1 ? "button is-link is-medium" : "button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
+                        <button className={"button is-link"} onClick={() => this.closeModal()}>Aufgabe starten</button>
                     </footer>
                 </div>
             </div>
@@ -186,12 +185,12 @@ export default class MouseTask extends Component {
         return(
             <div>
                 <MouseTracker onEvent={(e) => this.onMouseEvent(e)}/>
-                <div className="box">
+                <div className="box" style={this.props.intro ? {marginTop: "3em"} : {}}>
                     <svg style={{width:String(this.mouseTaskSize), height:String(this.mouseTaskSize), border:"2px solid black"}}>
                         {/*Create the basic circles*/}
                         {this.gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}
-                                    r="15"
+                                    r={String(Math.ceil(0.023 * this.mouseTaskSize)) + "px"}
                                     fill={this.clickOrder[this.state.clickedCircles] === ind ? "hsl(0, 0%, 21%)" :
                                         this.clickOrder.slice(0, this.state.clickedCircles).includes(ind) ? "hsl(217, 71%, 53%)" : "hsl(0, 0%, 86%)"}
                                     key={ind}
@@ -203,9 +202,9 @@ export default class MouseTask extends Component {
                         {/*Create the "activation circles around the basic circles to show if a circle was successfully clicked*/}
                         {this.gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}
-                                    r="35"
+                                    r={String(Math.ceil(0.055 * this.mouseTaskSize)) + "px"}
                                     stroke="hsl(217, 71%, 53%)"
-                                    strokeWidth="5px"
+                                    strokeWidth={String(Math.ceil(0.006 * this.mouseTaskSize)) + "px"}
                                     fill="none"
                                     key={ind}
                                     visibility={this.clickOrder.slice(0, this.state.clickedCircles).includes(ind) ? "visible" : "hidden"}
@@ -219,7 +218,7 @@ export default class MouseTask extends Component {
                                   y2={this.gridCoords[this.clickOrder[ind + 1]][1]}
                                   key={ind}
                                   stroke="hsl(217, 71%, 53%)"
-                                  strokeWidth="5px"
+                                  strokeWidth={String(Math.ceil(0.01 * this.mouseTaskSize)) + "px"}
                                   visibility={ind + 1 < this.state.clickedCircles ? "visible" : "hidden"}
                             />
                         ))}
@@ -230,7 +229,7 @@ export default class MouseTask extends Component {
                             + (this.gridCoords[gridNum][0] - 2).toString() + " " + (this.gridCoords[gridNum][1] + 6).toString() + " L"
                             + (this.gridCoords[gridNum][0] + 6).toString() + " " + (this.gridCoords[gridNum][1] - 6).toString()}
                                   stroke="white"
-                                  strokeWidth="3.5"
+                                  strokeWidth={String(Math.floor(0.005 * this.mouseTaskSize)) + "px"}
                                   fillRule="evenodd"
                                   clipRule="evenodd"
                                   fill="none"
