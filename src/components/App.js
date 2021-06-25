@@ -35,14 +35,23 @@ export default class App extends Component {
             userId: undefined,
             online: false,
             participantCode: null,
-            participantCodeText: "Code wird geladen"
+            participantCodeText: "Code wird geladen",
+            mouseTaskSize: null
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
         // which windows zoom level the participant uses (in addition to other screen related infos) and the user Id for the end of the study
         ipcRenderer.once("appPageToRender", (event, page, displayInfo, participantCode) => {
             this.displayInfo = displayInfo;
-            this.setState({page: page, participantCode: participantCode ? participantCode : null})
+            this.setState({page: page, participantCode: participantCode ? participantCode : null, mouseTaskSize: displayInfo.windBounds.width});
+        })
+
+        // listens to a resize event of the browser window and chnaged the mouse task size + additionally logs the
+        // information
+        ipcRenderer.on("resizedWindow", (event, size) => {
+            console.log(size);
+            this.setState({mouseTaskSize: size});
+            this.displayInfo = {...this.displayInfo, ...{resized: {newSize: size, date: Date.now()}}}
         })
     }
 
@@ -277,10 +286,10 @@ export default class App extends Component {
                 {
                     /*this.state.page === "start" ? this.renderStartPage() : */
                     this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}
-                                                               mouseTaskSize={this.displayInfo.windBounds.width}/> :
+                                                               mouseTaskSize={this.state.mouseTaskSize}/> :
                         this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}
-                                                                    mouseTaskSize={this.displayInfo.windBounds.width}/> :
-                            this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.displayInfo.windBounds.width}/> :
+                                                                    mouseTaskSize={this.state.mouseTaskSize}/> :
+                            this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.state.mouseTaskSize}/> :
                                 this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}/>
                                     : null
                 }

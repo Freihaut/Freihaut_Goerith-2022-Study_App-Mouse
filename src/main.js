@@ -29,18 +29,10 @@ const createWindow = (appPage, data) => {
   // choose the smaller value (height or width) and set the target size to that value to make sure that the targetSize
   // always fits on the screen
   let targetSize;
-  if (screen.getPrimaryDisplay().rotation === 0 || screen.getPrimaryDisplay().rotation === 180) {
-    if (screenSize.width > screenSize.height) {
-      targetSize = screenSize.height;
-    } else {
-      targetSize = screenSize.width;
-    }
+  if (screenSize.width > screenSize.height) {
+    targetSize = screenSize.height;
   } else {
-    if (screenSize.width > screenSize.height) {
-      targetSize = screenSize.height;
-    } else {
-      targetSize = screenSize.width;
-    }
+    targetSize = screenSize.width;
   }
 
   // let the browser window target take up 85% of the available screen size
@@ -82,6 +74,32 @@ const createWindow = (appPage, data) => {
       screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, data);
     // show the window
     mainWindow.showInactive();
+
+    // resizes the browser window when the browser window is dragged into another display with a different zoom level
+    // (etc. from a laptop to a desktop monitor)
+    mainWindow.on("move", () => {
+      // get the display the browser window is in
+      const display = screen.getDisplayNearestPoint(
+          {x: mainWindow.getBounds().x, y: mainWindow.getBounds().y});
+
+      let newSize;
+      if (display.workAreaSize.width > display.workAreaSize.height) {
+        newSize = Math.floor(display.workAreaSize.height * 0.85)
+      } else {
+        newSize = Math.floor(display.workAreaSize.width * 0.85)
+      }
+
+      // need to manually setResizable to true and false when resizing, because it wont work otherwise when the resizable
+      // option is turned off
+      if (newSize !== targetSize) {
+        targetSize = newSize;
+        mainWindow.setResizable(true);
+        mainWindow.setSize(targetSize, targetSize);
+        mainWindow.setResizable(false);
+        mainWindow.webContents.send("resizedWindow", targetSize);
+      }
+
+    })
 
     // if it the browser window is the logger
     if (appPage === "logger") {

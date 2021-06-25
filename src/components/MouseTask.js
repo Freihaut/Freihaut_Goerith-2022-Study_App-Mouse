@@ -10,11 +10,13 @@ import MouseTaskImage from "./base64Images/MouseTaskImage";
 export default class MouseTask extends Component {
 
     constructor(props) {
+
         super(props);
 
         this.state={
             modal: this.props.intro ? "modal is-active" : "modal",
-            clickedCircles: 0
+            clickedCircles: 0,
+            mouseTaskSize: Math.floor(this.props.mouseTaskSize * 0.77)
         }
 
         // hold all possible 25 task order coordinates in a variable (they were randomly generated with the constraint
@@ -36,29 +38,6 @@ export default class MouseTask extends Component {
         // select a randomly chosen click order from all 25 possible click orders
         this.clickOrder = allClickOrders[this.randomNumber];
 
-        // get the window size to set the task size window of the mouse task (add 10 to account for the navigation bar
-        // on tutorial page + reshow app info page)
-        this.mouseTaskSize = Math.floor(this.props.mouseTaskSize * 0.77);
-
-        // create the coordinates for the circles in the task (4 by 4 grid)
-        this.gridCoords = [];
-
-        // define a start position of the point and the size of each step between two points
-        // the start pos is 17,5% from the top and left side of the task box
-        // the end pos is 17,5% from the top and right side of the task box
-        // the steps fill up the space between the start circle and end circle equally
-        const startPos = Math.floor(this.mouseTaskSize * 0.175);
-        const step = Math.floor((this.mouseTaskSize - (2 * startPos)) / 3);
-
-        // do a 4x4 loop and create the coordinates of each mouse circle in the task
-        for (let i=1; i<5; i++) {
-            for (let k=1; k<5; k++) {
-                const xCoord = startPos + ((i%4) * step); // 70 * 120
-                const yCoord = startPos + ((k%4) * step);
-                this.gridCoords.push([xCoord, yCoord]);
-            }
-        }
-
         // "naive" media check to test if a mouse is connected (does not reliably detect if the task was done with a
         // mouse or not!
         this.noMouseConnected = window.matchMedia('not (pointer: fine), not (hover: hover)').matches;
@@ -79,6 +58,12 @@ export default class MouseTask extends Component {
             this.mainProcesesMouseData = data;
         })
 
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.mouseTaskSize !== this.props.mouseTaskSize) {
+            this.setState({mouseTaskSize: Math.floor(this.props.mouseTaskSize * 0.77)});
+        }
     }
 
 
@@ -181,16 +166,35 @@ export default class MouseTask extends Component {
 
     render() {
 
+        // create the coordinates for the circles in the task (4 by 4 grid)
+        let gridCoords = [];
+
+        // define a start position of the point and the size of each step between two points
+        // the start pos is 17,5% from the top and left side of the task box
+        // the end pos is 17,5% from the top and right side of the task box
+        // the steps fill up the space between the start circle and end circle equally
+        const startPos = Math.floor(this.state.mouseTaskSize * 0.175);
+        const step = Math.floor((this.state.mouseTaskSize - (2 * startPos)) / 3);
+
+        // do a 4x4 loop and create the coordinates of each mouse circle in the task
+        for (let i=1; i<5; i++) {
+            for (let k=1; k<5; k++) {
+                const xCoord = startPos + ((i%4) * step); // 70 * 120
+                const yCoord = startPos + ((k%4) * step);
+                gridCoords.push([xCoord, yCoord]);
+            }
+        }
+
 
         return(
             <div>
                 <MouseTracker onEvent={(e) => this.onMouseEvent(e)}/>
                 <div className="box" style={this.props.intro ? {marginTop: "3em"} : {}}>
-                    <svg style={{width:String(this.mouseTaskSize), height:String(this.mouseTaskSize), border:"2px solid black"}}>
+                    <svg style={{width:String(this.state.mouseTaskSize), height:String(this.state.mouseTaskSize), border:"2px solid black"}}>
                         {/*Create the basic circles*/}
-                        {this.gridCoords.map((coord, ind) => (
+                        {gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}
-                                    r={String(Math.ceil(0.023 * this.mouseTaskSize)) + "px"}
+                                    r={String(Math.ceil(0.023 * this.state.mouseTaskSize)) + "px"}
                                     fill={this.clickOrder[this.state.clickedCircles] === ind ? "hsl(0, 0%, 21%)" :
                                         this.clickOrder.slice(0, this.state.clickedCircles).includes(ind) ? "hsl(217, 71%, 53%)" : "hsl(0, 0%, 86%)"}
                                     key={ind}
@@ -200,11 +204,11 @@ export default class MouseTask extends Component {
                         ))}
 
                         {/*Create the "activation circles around the basic circles to show if a circle was successfully clicked*/}
-                        {this.gridCoords.map((coord, ind) => (
+                        {gridCoords.map((coord, ind) => (
                             <circle cx={coord[0]} cy={coord[1]}
-                                    r={String(Math.ceil(0.055 * this.mouseTaskSize)) + "px"}
+                                    r={String(Math.ceil(0.055 * this.state.mouseTaskSize)) + "px"}
                                     stroke="hsl(217, 71%, 53%)"
-                                    strokeWidth={String(Math.ceil(0.006 * this.mouseTaskSize)) + "px"}
+                                    strokeWidth={String(Math.ceil(0.006 * this.state.mouseTaskSize)) + "px"}
                                     fill="none"
                                     key={ind}
                                     visibility={this.clickOrder.slice(0, this.state.clickedCircles).includes(ind) ? "visible" : "hidden"}
@@ -212,24 +216,24 @@ export default class MouseTask extends Component {
                         ))}
                         {/* Create connecting lines between the "activated circles*/}
                         {[...Array(this.clickOrder.length - 1)].map((coord, ind) => (
-                            <line x1={this.gridCoords[this.clickOrder[ind]][0]}
-                                  y1={this.gridCoords[this.clickOrder[ind]][1]}
-                                  x2={this.gridCoords[this.clickOrder[ind + 1]][0]}
-                                  y2={this.gridCoords[this.clickOrder[ind + 1]][1]}
+                            <line x1={gridCoords[this.clickOrder[ind]][0]}
+                                  y1={gridCoords[this.clickOrder[ind]][1]}
+                                  x2={gridCoords[this.clickOrder[ind + 1]][0]}
+                                  y2={gridCoords[this.clickOrder[ind + 1]][1]}
                                   key={ind}
                                   stroke="hsl(217, 71%, 53%)"
-                                  strokeWidth={String(Math.ceil(0.01 * this.mouseTaskSize)) + "px"}
+                                  strokeWidth={String(Math.ceil(0.01 * this.state.mouseTaskSize)) + "px"}
                                   visibility={ind + 1 < this.state.clickedCircles ? "visible" : "hidden"}
                             />
                         ))}
                         {/*Create a check mark inside each target circle*/}
                         {this.clickOrder.map((gridNum, ind) => (
-                            <path d={"M" + (this.gridCoords[gridNum][0] - 8).toString() + " "
-                            + this.gridCoords[gridNum][1].toString() + " L"
-                            + (this.gridCoords[gridNum][0] - 2).toString() + " " + (this.gridCoords[gridNum][1] + 6).toString() + " L"
-                            + (this.gridCoords[gridNum][0] + 6).toString() + " " + (this.gridCoords[gridNum][1] - 6).toString()}
+                            <path d={"M" + (gridCoords[gridNum][0] - 8).toString() + " "
+                            + gridCoords[gridNum][1].toString() + " L"
+                            + (gridCoords[gridNum][0] - 2).toString() + " " + (gridCoords[gridNum][1] + 6).toString() + " L"
+                            + (gridCoords[gridNum][0] + 6).toString() + " " + (gridCoords[gridNum][1] - 6).toString()}
                                   stroke="white"
-                                  strokeWidth={String(Math.floor(0.005 * this.mouseTaskSize)) + "px"}
+                                  strokeWidth={String(Math.floor(0.005 * this.state.mouseTaskSize)) + "px"}
                                   fillRule="evenodd"
                                   clipRule="evenodd"
                                   fill="none"
