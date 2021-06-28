@@ -49,7 +49,6 @@ export default class App extends Component {
         // listens to a resize event of the browser window and chnaged the mouse task size + additionally logs the
         // information
         ipcRenderer.on("resizedWindow", (event, size) => {
-            console.log(size);
             this.setState({mouseTaskSize: size});
             this.displayInfo = {...this.displayInfo, ...{resized: {newSize: size, date: Date.now()}}}
         })

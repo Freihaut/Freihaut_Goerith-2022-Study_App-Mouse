@@ -107,7 +107,7 @@ const createWindow = (appPage, data) => {
       const notificationTitle = "Studien-App Datenerhebung";
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
-      new Notification({title: notificationTitle, body: notificationBody, icon: iconPath}).show();
+      new Notification({title: notificationTitle, body: notificationBody, icon: iconPath, silent: false}).show();
     }
   })
 
@@ -181,6 +181,9 @@ if (!gotTheLock) {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   app.on('ready', () => {
+
+    // set AppUserModelId
+    app.setAppUserModelId("freihaut.studien-app");
 
     // create a system Tray Icon when the app is opened
     tray = new Tray(iconPath); // insert iconPath if icon is selected

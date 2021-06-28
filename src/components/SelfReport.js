@@ -11,8 +11,7 @@ export default class SelfReport extends Component {
             modal: this.props.intro ? "modal is-active" : "modal",
             selfReport: {
                 valence: 50,
-                arousal: 50,
-                stress: 50}
+                arousal: 50}
         };
 
         // settings for the modal if its the task intro and the modal is triggered
@@ -56,7 +55,7 @@ export default class SelfReport extends Component {
 
                         <div className={"content"}>
                             <p>
-                               Nachdem Sie die Aufgabe beendet haben, werden Ihnen noch 3 Fragen zu Ihrem aktuellen Befinden
+                               Nachdem Sie die Aufgabe beendet haben, werden Ihnen noch 2 Fragen zu Ihrem aktuellen Befinden
                                 angezeigt.
                             </p>
                             <p>
@@ -103,21 +102,12 @@ export default class SelfReport extends Component {
                     </ul>
                 </div>
 
-                <div style={{marginTop: "5rem"}}>
+                <div style={{marginTop: "6rem"}}>
                     <p className={"title is-5"}>Ich fühle mich...</p>
                     <input className={"slider"} step="1" min="0" max="100" name="arousal" value={this.state.selfReport.arousal} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
                         <li className={"slider-start-label title is-5"}>aufgeregt</li>
                         <li className={"slider-end-label title is-5"}>ruhig</li>
-                    </ul>
-                </div>
-
-                <div style={{marginTop: "5rem"}}>
-                    <p className={"title is-5"}>Ich fühle mich...</p>
-                    <input className={"slider"} step="1" min="0" max="100" name="stress" value={this.state.selfReport.stress} type="range" onChange={this.handleInputChange}/>
-                    <ul className="slider-labels">
-                        <li className={"slider-start-label title is-5"}>gestresst</li>
-                        <li className={"slider-end-label title is-5"}>entspannt</li>
                     </ul>
                 </div>
 
