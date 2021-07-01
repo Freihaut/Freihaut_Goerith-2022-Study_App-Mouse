@@ -19,6 +19,7 @@ export default class Tutorial extends Component {
 
         this.state = {
             page: "welcome",
+            hasEnded: false,
             socioDemographics: {
                 age: -99,
                 sex: -99,
@@ -44,6 +45,16 @@ export default class Tutorial extends Component {
         })
     }
 
+    endTutorial() {
+
+        this.setState({
+            hasEnded: true
+        }, () => {
+            this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})
+        })
+
+    }
+
     renderTutorialPage(state) {
         if (state === "welcome") {
             return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}/>)
@@ -57,8 +68,9 @@ export default class Tutorial extends Component {
                                 endReport={() => this.switchPage("sociodem")}/>)
         } else if (state === "sociodem") {
             return (<Sociodemographics answers={this.state.socioDemographics}
+                                       hasEnded={this.state.hasEnded}
                                        inputChange={(data) => this.handleSocioDemInput(data)}
-                                       endSociodem={() => this.props.endTutorial({"Sociodemographics": this.state.socioDemographics})}/>)
+                                       endSociodem={() => this.endTutorial()}/>)
         }
     }
 
@@ -72,22 +84,22 @@ export default class Tutorial extends Component {
                                 <div className={"tabs is-small is-toggle is-fullwidth"}>
                                     <ul>
                                         <li className={this.state.page === "welcome" ? "is-active" : ""}>
-                                            <a onClick={() => this.switchPage("welcome")}>
+                                            <a onClick={() => this.state.hasEnded ? null : this.switchPage("welcome")}>
                                                 <span>1. Studien-App Infos</span>
                                             </a>
                                         </li>
                                         <li className={this.state.page === "task" ? "is-active" : ""}>
-                                            <a onClick={() => this.switchPage("task")}>
+                                            <a onClick={() => this.state.hasEnded ? null : this.switchPage("task")}>
                                                 <span>2. Vorschau Aufgabe</span>
                                             </a>
                                         </li>
                                         <li className={this.state.page === "selfReport" ? "is-active" : ""}>
-                                            <a onClick={() => this.switchPage("selfReport")}>
+                                            <a onClick={() => this.state.hasEnded ? null : this.switchPage("selfReport")}>
                                                 <span>3. Vorschau Fragen</span>
                                             </a>
                                         </li>
                                         <li className={this.state.page === "sociodem" ? "is-active" : ""}>
-                                            <a onClick={() => this.switchPage("sociodem")}>
+                                            <a onClick={() => this.state.hasEnded ? null : this.switchPage("sociodem")}>
                                                 <span>4. Studienstart</span>
                                             </a>
                                         </li>
