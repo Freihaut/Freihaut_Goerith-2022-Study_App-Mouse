@@ -9,6 +9,7 @@ export default class SelfReport extends Component {
         // set a state for each questionnaire item
         this.state = {
             modal: this.props.intro ? "modal is-active" : "modal",
+            hasEnded: false,
             selfReport: {
                 valence: 50,
                 arousal: 50}
@@ -37,6 +38,19 @@ export default class SelfReport extends Component {
 
         //set the new state
         this.setState({selfReport: state});
+    }
+
+    // end the self report
+    endSelfReport() {
+
+        // disable the end button to prevent participants from clicking on it multiple times and thus saving the data
+        // multiple times and trying to close the browser window multiple times
+        this.setState({
+            hasEnded: true
+        }, () => {
+            this.props.endReport({selfReportData: this.state.selfReport})
+        })
+
     }
 
 
@@ -112,7 +126,9 @@ export default class SelfReport extends Component {
                 </div>
 
                 <div style={{marginTop: "5rem", marginBottom: "1.5rem", width: "100%", textAlign: "center"}}>
-                    <button className={"button is-link"} onClick={() => this.props.endReport({selfReportData: this.state.selfReport})}>{this.props.buttonText}</button>
+                    <button className={this.state.hasEnded ? "button is-link is-loading" : "button is-link"}
+                            disabled={this.state.hasEnded}
+                            onClick={() => this.endSelfReport()}>{this.props.buttonText}</button>
                 </div>
                 {this.renderInstruction()}
             </div>

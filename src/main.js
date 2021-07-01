@@ -237,23 +237,30 @@ app.on('window-all-closed', (event) => {
 // initialize a listener that closes the current browserWindow (listener is called from the renderer process)
 ipcMain.on("close", () => {
   // close the current browser window
-  BrowserWindow.getFocusedWindow().close();
+  const window = BrowserWindow.getFocusedWindow();
+  if (window) {
+    window.close();
+  }
 })
 
 // end of tutorial event
 ipcMain.on("tutorialEnd", () => {
   // write a file to notify that the program has started and add a participant identifier
   const participantCode = Math.random().toString(36).substring(2);
-  dataStorage.set("started", { started: Date.now(), ident: participantCode }, function (error) {
-    if (error) {
-      // throw an error if the json save does not work (because the study wont work properly and show the tutorial again
-      // on app restart
-      throw error;
-    } else {
-      tutorialHasFinished = true;
-      BrowserWindow.getFocusedWindow().close();
-    }
-  })
+  const window = BrowserWindow.getFocusedWindow();
+
+  if (window) {
+    dataStorage.set("started", { started: Date.now(), ident: participantCode }, function (error) {
+      if (error) {
+        // throw an error if the json save does not work (because the study wont work properly and show the tutorial again
+        // on app restart
+        throw error;
+      } else {
+        tutorialHasFinished = true;
+        window.close();
+      }
+    })
+  }
 })
 
 

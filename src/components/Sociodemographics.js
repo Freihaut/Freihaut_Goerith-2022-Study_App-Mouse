@@ -6,6 +6,10 @@ export default class Soziodemographics extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            hasEnded: false
+        }
+
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
@@ -29,6 +33,18 @@ export default class Soziodemographics extends Component {
         socioDemAns[name] = value;
 
         this.props.inputChange(socioDemAns);
+
+    }
+
+    // end the tutorial when clicking the submit button
+    endTutorial() {
+
+        // disable the endTutorial Button to prevent sending the data twice
+        this.setState({
+            hasEnded: true
+        }, () => {
+            this.props.endSociodem()
+        })
 
     }
 
@@ -195,7 +211,9 @@ export default class Soziodemographics extends Component {
                     </div>
 
                     <div style={{marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                        <button className={"button is-link"} onClick={() => this.props.endSociodem()}>Studie beginnen</button>
+                        <button className={this.state.hasEnded ? "button is-link is-loading" : "button is-link"}
+                                disabled={this.state.hasEnded}
+                                onClick={() => this.endTutorial()}>Studie beginnen</button>
                     </div>
 
             </div>
