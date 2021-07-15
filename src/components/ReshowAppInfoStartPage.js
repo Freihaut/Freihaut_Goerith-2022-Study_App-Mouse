@@ -29,21 +29,21 @@ export default function ReshowAppInfoStartPage (props) {
                     Nach Beginn der Studie läuft die Studien-App im Hintergrund und wird automatisch beim Start ihres Computers ausgeführt.
                     Solange die Studien-App ausgeführt ist,
                     sehen Sie das <strong>Studien-App Symbol</strong>
-                    &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> in Ihrer <strong><i>Systemleiste</i></strong> (siehe Bild).
+                    &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> in Ihrer <strong><i>{process.platform === "darwin" ? "Menüleiste" : "Systemleiste"}</i></strong> (siehe Bild).
                     Sie können die Studien-App jederzeit beenden, in dem Sie auf dieses Studien-App Symbol klicken und dann "Studien-App beenden" auswählen.
                     Falls Sie die Studien-App nach dem Beenden
                     erneut starten möchten, klicken Sie auf das <strong>Studien-App Symbol</strong>
                     &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> auf Ihrem <strong><i>Desktop</i></strong>,
                     welches durch die Installation der Studien-App dort hinzugefügt wurde.
                     Über das Studien-App Symbol
-                    in der <strong><i>Systemleiste</i></strong> können Sie außerdem jederzeit diese Informationen zur Studien-App erneut aufrufen.
+                    in der <strong><i>{process.platform === "darwin" ? "Menüleiste" : "Systemleiste"}</i></strong> können Sie außerdem jederzeit diese Informationen zur Studien-App erneut aufrufen.
                 </p>
 
                 <figure className="image">
                     <img src={TaskSymbolImage} style={{"border": "1px solid black", "borderTopStyle": "none",
                         "borderBottomStyle": "none"}}/>
                     <figcaption>
-                        Das Studien-App Symbol in Ihrer Systemleiste zeigt, dass die Studien-App gestartet ist. Durch Klicken auf das Studien-App
+                        Das Studien-App Symbol in Ihrer {process.platform === "darwin" ? "Menüleiste" : "Systemleiste"} zeigt, dass die Studien-App gestartet ist. Durch Klicken auf das Studien-App
                         Symbol können Sie Optionen aufrufen, um die Studien-App zu beenden oder die Informationen zur Studien-App
                         erneut anzuzeigen.
                     </figcaption>

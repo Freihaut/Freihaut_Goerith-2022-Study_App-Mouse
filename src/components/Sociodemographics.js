@@ -50,7 +50,7 @@ export default class Soziodemographics extends Component {
                             Falls Sie die Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen erneut
                             aufrufen möchten, klicken Sie auf die entsprechende Seite in der obigen Navigation. Die
                             Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen können Sie nach Beginn
-                            der Studie auch jederzeit wieder über das Studien-App Symbol in Ihrer Systemleiste aufrufen.
+                            der Studie auch jederzeit wieder über das Studien-App Symbol in Ihrer {process.platform === "darwin" ? "Menüleiste" : "Systemleiste"} aufrufen.
                         </p>
                         <p>Vielen Dank für Ihre Bereitschaft, an dieser Studie teilzunehmen!</p>
                         <hr/>

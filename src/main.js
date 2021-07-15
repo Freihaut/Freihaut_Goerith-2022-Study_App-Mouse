@@ -5,7 +5,7 @@ const dataStorage = require("electron-json-storage");
 // paths
 const path = require('path');
 const windowsIcon = "Study-App-Icon.ico";
-const macIcon = "Mac-App-Icon";
+const macIcon = "Mac-App-Icon.png";
 const macTrayIcon = "mac-tray-icon.png";
 
 const windIconPath = path.join(__dirname, windowsIcon);
@@ -126,8 +126,12 @@ const createWindow = (appPage, data) => {
       const notificationTitle = "Studien-App Datenerhebung";
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
-      new Notification({title: notificationTitle, body: notificationBody,
-        icon: process.platform === "darwin" ? macIconPath: windIconPath, silent: false}).show();
+      if (process.platform === "darwin") {
+        new Notification({title: notificationTitle, body: notificationBody, silent: false}).show();
+      } else {
+        new Notification({title: notificationTitle, body: notificationBody,
+          icon: windIconPath, silent: false}).show();
+      }
     }
   })
 
