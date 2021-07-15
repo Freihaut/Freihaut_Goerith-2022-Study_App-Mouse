@@ -4,7 +4,14 @@ const dataStorage = require("electron-json-storage");
 
 // paths
 const path = require('path');
-const iconPath = path.join(__dirname, "Study-App-Icon.ico");
+const windowsIcon = "Study-App-Icon.ico";
+const macIcon = "mac-tray-icon.png"
+
+const windIconPath = path.join(__dirname, windowsIcon);
+const macIconPath = path.join(__dirname, macIcon);
+
+console.log(windIconPath, macIconPath);
+
 
 // check if the tutorial has finished
 let tutorialHasFinished = false;
@@ -19,8 +26,19 @@ let tray = null;
 // initialize an empty variable for logging the mousePositions (will be set to an interval later)
 let logMousePosition;
 
+// on mac, put the app in the autostart, on windows, the auto start is handled with a installer script
+// (installer.nsh file) to remove remainders of the app from the windows system
+if (process.platform === "darwin") {
+  app.setLoginItemSettings({
+    openAtLogin: true
+  })
+}
+
+
 // function to create the app window in which the app is shown
 const createWindow = (appPage, data) => {
+
+  console.log("Trying to open a Window");
 
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -44,7 +62,7 @@ const createWindow = (appPage, data) => {
     height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
-    icon: iconPath,
+    icon: process.platform !== "darwin" ? windIconPath : null,
     fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -56,7 +74,8 @@ const createWindow = (appPage, data) => {
   // get and log some infos about how the browser window is displayed on the screen
   const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   const windowBounds = mainWindow.getBounds();
-  const windowOnDisplay = screen.dipToScreenRect(mainWindow,
+  let windowOnDisplay;
+  process.platform === "darwin" ? windowOnDisplay = null : windowOnDisplay = screen.dipToScreenRect(mainWindow,
       {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
 
   // do not show a menu in the app
@@ -107,7 +126,8 @@ const createWindow = (appPage, data) => {
       const notificationTitle = "Studien-App Datenerhebung";
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
-      new Notification({title: notificationTitle, body: notificationBody, icon: iconPath, silent: false}).show();
+      new Notification({title: notificationTitle, body: notificationBody,
+        icon: process.platform !== "darwin" ? windIconPath : null, silent: false}).show();
     }
   })
 
@@ -182,12 +202,22 @@ if (!gotTheLock) {
   // initialization and is ready to create browser windows.
   app.on('ready', () => {
 
-    // set AppUserModelId
-    app.setAppUserModelId("freihaut.studien-app");
+    console.log("App is ready");
+
+    // set AppUserModelId on Windows 10
+    process.platform !== "darwin" ? app.setAppUserModelId("freihaut.studien-app") : null;
 
     // create a system Tray Icon when the app is opened
-    tray = new Tray(iconPath); // insert iconPath if icon is selected
+    let trayIcon;
+    if (process.platform !== "darwin") {
+      trayIcon = windIconPath;
+    } else {
+      trayIcon = macIconPath;
+    }
+
+    tray = new Tray(trayIcon); // insert iconPath if icon is selected
     // create a System Tray context menu
+
     const contextMenu = Menu.buildFromTemplate([
       // option to quit the app
       { label: "Studien-App beenden", click: () => { app.quit() } },
@@ -199,9 +229,12 @@ if (!gotTheLock) {
     tray.setContextMenu(contextMenu);
     tray.on("click", () => { tray.popUpContextMenu() })
 
+
     // Check if a file exists which indicates that the tutorial is finished and the study has started
     // -> if there is no such file (when the app is started for the first time), start the tutorial
     // -> if there is such a file (tutorial was finished), start the countdown timer for the logger
+
+    console.log("App wants to start");
 
     // check if a json exists that indicates that the app has started
     dataStorage.has("started", function (error, hasKey) {

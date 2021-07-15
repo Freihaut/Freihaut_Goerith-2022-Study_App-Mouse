@@ -23,6 +23,9 @@
       "target": "nsis",
       "icon": "src/Study-App-Icon.ico"
     },
+    "mac": {
+      "target": "dmg"
+    },
     "nsis": {
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
