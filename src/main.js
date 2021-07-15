@@ -4,11 +4,10 @@ const dataStorage = require("electron-json-storage");
 
 // paths
 const path = require('path');
-const windowsIcon = "Study-App-Icon.ico";
+
 const macIcon = "Mac-App-Icon.png";
 const macTrayIcon = "mac-tray-icon.png";
 
-const windIconPath = path.join(__dirname, windowsIcon);
 const macIconPath = path.join(__dirname, macIcon);
 const macTrayIconPath = path.join(__dirname, macTrayIcon);
 
@@ -28,11 +27,9 @@ let logMousePosition;
 
 // on mac, put the app in the autostart, on windows, the auto start is handled with a installer script
 // (installer.nsh file) to remove remainders of the app from the windows system
-if (process.platform === "darwin") {
-  app.setLoginItemSettings({
+app.setLoginItemSettings({
     openAtLogin: true
-  })
-}
+  });
 
 
 // function to create the app window in which the app is shown
@@ -62,7 +59,7 @@ const createWindow = (appPage, data) => {
     height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
-    icon: process.platform === "darwin" ? macIconPath: windIconPath,
+    icon: macIconPath,
     fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -74,9 +71,7 @@ const createWindow = (appPage, data) => {
   // get and log some infos about how the browser window is displayed on the screen
   const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   const windowBounds = mainWindow.getBounds();
-  let windowOnDisplay;
-  process.platform === "darwin" ? windowOnDisplay = null : windowOnDisplay = screen.dipToScreenRect(mainWindow,
-      {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
+  const windowOnDisplay = null;
 
   // do not show a menu in the app
   mainWindow.setMenu(null);
@@ -126,12 +121,7 @@ const createWindow = (appPage, data) => {
       const notificationTitle = "Studien-App Datenerhebung";
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
-      if (process.platform === "darwin") {
-        new Notification({title: notificationTitle, body: notificationBody, silent: false}).show();
-      } else {
-        new Notification({title: notificationTitle, body: notificationBody,
-          icon: windIconPath, silent: false}).show();
-      }
+      new Notification({title: notificationTitle, body: notificationBody, silent: false}).show();
     }
   })
 
@@ -209,17 +199,10 @@ if (!gotTheLock) {
     console.log("App is ready");
 
     // set AppUserModelId on Windows 10
-    process.platform !== "darwin" ? app.setAppUserModelId("freihaut.studien-app") : null;
+    // process.platform !== "darwin" ? app.setAppUserModelId("freihaut.studien-app") : null;
 
     // create a system Tray Icon when the app is opened
-    let trayIcon;
-    if (process.platform === "darwin") {
-      trayIcon = macTrayIconPath;
-    } else {
-      trayIcon = windIconPath;
-    }
-
-    tray = new Tray(trayIcon); // insert iconPath if icon is selected
+    tray = new Tray(macTrayIconPath); // insert iconPath if icon is selected
     // create a System Tray context menu
 
     const contextMenu = Menu.buildFromTemplate([
