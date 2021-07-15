@@ -5,12 +5,12 @@ const dataStorage = require("electron-json-storage");
 // paths
 const path = require('path');
 const windowsIcon = "Study-App-Icon.ico";
-const macIcon = "mac-tray-icon.png"
+const macIcon = "Mac-App-Icon";
+const macTrayIcon = "mac-tray-icon.png";
 
 const windIconPath = path.join(__dirname, windowsIcon);
 const macIconPath = path.join(__dirname, macIcon);
-
-console.log(windIconPath, macIconPath);
+const macTrayIconPath = path.join(__dirname, macTrayIcon);
 
 
 // check if the tutorial has finished
@@ -62,7 +62,7 @@ const createWindow = (appPage, data) => {
     height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
-    icon: process.platform !== "darwin" ? windIconPath : null,
+    icon: process.platform === "darwin" ? macIconPath: windIconPath,
     fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -127,7 +127,7 @@ const createWindow = (appPage, data) => {
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
       new Notification({title: notificationTitle, body: notificationBody,
-        icon: process.platform !== "darwin" ? windIconPath : null, silent: false}).show();
+        icon: process.platform === "darwin" ? macIconPath: windIconPath, silent: false}).show();
     }
   })
 
@@ -209,10 +209,10 @@ if (!gotTheLock) {
 
     // create a system Tray Icon when the app is opened
     let trayIcon;
-    if (process.platform !== "darwin") {
-      trayIcon = windIconPath;
+    if (process.platform === "darwin") {
+      trayIcon = macTrayIconPath;
     } else {
-      trayIcon = macIconPath;
+      trayIcon = windIconPath;
     }
 
     tray = new Tray(trayIcon); // insert iconPath if icon is selected

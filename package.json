@@ -24,7 +24,8 @@
       "icon": "src/Study-App-Icon.ico"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "src/Mac-App-Icon.png"
     },
     "nsis": {
       "createDesktopShortcut": true,
