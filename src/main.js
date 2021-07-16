@@ -35,8 +35,6 @@ app.setLoginItemSettings({
 // function to create the app window in which the app is shown
 const createWindow = (appPage, data) => {
 
-  console.log("Trying to open a Window");
-
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
 
@@ -196,8 +194,6 @@ if (!gotTheLock) {
   // initialization and is ready to create browser windows.
   app.on('ready', () => {
 
-    console.log("App is ready");
-
     // set AppUserModelId on Windows 10
     // process.platform !== "darwin" ? app.setAppUserModelId("freihaut.studien-app") : null;
 
@@ -220,8 +216,6 @@ if (!gotTheLock) {
     // Check if a file exists which indicates that the tutorial is finished and the study has started
     // -> if there is no such file (when the app is started for the first time), start the tutorial
     // -> if there is such a file (tutorial was finished), start the countdown timer for the logger
-
-    console.log("App wants to start");
 
     // check if a json exists that indicates that the app has started
     dataStorage.has("started", function (error, hasKey) {
@@ -294,7 +288,7 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff > 14) {
+    if (timeDiff > 1) {
       // show the study endPage and send the participant id
       createWindow("studyEnd", data.ident);
     } else {
