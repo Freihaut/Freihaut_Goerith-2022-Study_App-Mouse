@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "publish": "electron-forge publish",
-    "package": "electron-forge package",    
+    "package": "electron-forge package",
     "dist": "electron-builder"
   },
   "keywords": [],
@@ -19,13 +19,16 @@
   "build": {
     "appId": "freihaut.studien-app",
     "productName": "Studien-App",
+    "afterSign": "./afterSignHook.js",
     "win": {
       "target": "nsis",
       "icon": "src/Study-App-Icon.ico"
     },
     "mac": {
       "target": "dmg",
-      "icon": "src/Mac-App-Icon.png"
+      "icon": "src/Mac-App-Icon.png",
+      "hardenedRuntime": true,
+      "entitlements": "src/entitlements.mac.inherit.plist"
     },
     "nsis": {
       "createDesktopShortcut": true,
@@ -69,8 +72,10 @@
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^4.2.1",
+    "dotenv": "^10.0.0",
     "electron": "12.0.1",
     "electron-builder": "^22.10.5",
+    "electron-notarize": "^1.0.0",
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1"
   },
