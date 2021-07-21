@@ -7,7 +7,7 @@ const {ipcRenderer} = require("electron");
 
 import SelfReport from "./SelfReport";
 import MouseTask from "./MouseTask";
-import ReshowAppInfoStartPage from "./ReshowAppInfoStartPage";
+import AppStartPage from "./AppStartPage";
 
 
 export default class ReshowAppInfo extends Component {
@@ -23,8 +23,9 @@ export default class ReshowAppInfo extends Component {
     }
 
     renderTutorialPage(state) {
+
         if (state === "infoPage") {
-            return (<ReshowAppInfoStartPage endCurrentPage={() => this.switchPage("task")}/>)
+            return (<AppStartPage tutorial={false} endCurrentPage={() => this.switchPage("task")}/>)
         } else if (state === "task") {
             return (<MouseTask intro={true}
                                endTask={() => this.switchPage("selfReport")}

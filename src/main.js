@@ -15,6 +15,10 @@ const macTrayIconPath = path.join(__dirname, macTrayIcon);
 // check if the tutorial has finished
 let tutorialHasFinished = false;
 
+// intitialize the main browser window
+let mainWindow = null;
+// intitialize the side Browser Info (that shows the study information on request)
+let sideWindow = null;
 // primary instance lock (dont allow app to open a second time)
 let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
@@ -25,15 +29,8 @@ let tray = null;
 // initialize an empty variable for logging the mousePositions (will be set to an interval later)
 let logMousePosition;
 
-// on mac, put the app in the autostart, on windows, the auto start is handled with a installer script
-// (installer.nsh file) to remove remainders of the app from the windows system
-app.setLoginItemSettings({
-    openAtLogin: true
-  });
-
-
-// function to create the app window in which the app is shown
-const createWindow = (appPage, data) => {
+// function to create the main app window in which the app is shown
+const createWindow = (appPage, dateData) => {
 
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -83,7 +80,7 @@ const createWindow = (appPage, data) => {
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, data);
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, dateData);
     // show the window
     mainWindow.showInactive();
 
@@ -93,6 +90,7 @@ const createWindow = (appPage, data) => {
       // get the display the browser window is in
       const display = screen.getDisplayNearestPoint(
           {x: mainWindow.getBounds().x, y: mainWindow.getBounds().y});
+
 
       let newSize;
       if (display.workAreaSize.width > display.workAreaSize.height) {
@@ -178,6 +176,105 @@ const createWindow = (appPage, data) => {
   }
 };
 
+// function to create the side window in which the study information is shown (2 separate windows are initialized to
+// prevent an error message that happens when the user closes a window while another one is still open and then tries to
+// resize the window ("unbond" the windows by creating different browser windows)
+// This code likely is not a state-of-the-art solution, but was the simplest to implement, there was little documentation
+// about the potential bug
+const createSideWindow = (appPage) => {
+
+  // get the screen size without the taskbar
+  const screenSize = screen.getPrimaryDisplay().workAreaSize;
+
+  // always make a window size that takes up 85% of the screen height (or width if the screen is turned)
+  // choose the smaller value (height or width) and set the target size to that value to make sure that the targetSize
+  // always fits on the screen
+  let targetSize;
+  if (screenSize.width > screenSize.height) {
+    targetSize = screenSize.height;
+  } else {
+    targetSize = screenSize.width;
+  }
+
+  // let the browser window target take up 85% of the available screen size
+  targetSize = Math.floor(targetSize * 0.85);
+
+  // Create the browser window.
+  sideWindow = new BrowserWindow({
+    width: targetSize, // old fixed values: 800 or 900
+    height: targetSize, // old fixed values: 775 or 875
+    resizable: false,
+    show: false,
+    icon: iconPath,
+    fullscreenable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    }
+  });
+
+  // get and log some infos about how the browser window is displayed on the screen
+  const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
+  const windowBounds = sideWindow.getBounds();
+  const windowOnDisplay = screen.dipToScreenRect(sideWindow,
+      {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
+
+  // do not show a menu in the app
+  sideWindow.setMenu(null);
+
+  // load the entrypoint index.html of the app
+  sideWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  //sideWindow.webContents.openDevTools();
+
+  // send a message to the page to load the correct component and show the main window after it finished loading
+  // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
+  // main window does not work with "ready-to-show"
+  sideWindow.webContents.on("did-finish-load", () => {
+    // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
+    sideWindow.webContents.send("appPageToRender", appPage, {
+      zoom: zoomFactor,
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay
+    });
+    // show the window
+    sideWindow.show();
+  });
+
+  // resizes the browser window when the browser window is dragged into another display with a different zoom level
+  // (etc. from a laptop to a desktop monitor)
+  sideWindow.on("move", () => {
+    // get the display the browser window is in
+    const display = screen.getDisplayNearestPoint(
+        {x: sideWindow.getBounds().x, y: sideWindow.getBounds().y});
+
+
+    let newSize;
+    if (display.workAreaSize.width > display.workAreaSize.height) {
+      newSize = Math.floor(display.workAreaSize.height * 0.85)
+    } else {
+      newSize = Math.floor(display.workAreaSize.width * 0.85)
+    }
+
+    // need to manually setResizable to true and false when resizing, because it wont work otherwise when the resizable
+    // option is turned off
+    if (newSize !== targetSize) {
+      targetSize = newSize;
+      sideWindow.setResizable(true);
+      sideWindow.setSize(targetSize, targetSize);
+      sideWindow.setResizable(false);
+      sideWindow.webContents.send("resizedWindow", targetSize);
+    }
+
+  })
+
+  // "delete" the sideWindow Reference when it is closed
+  sideWindow.on("closed", () => {
+    sideWindow = null;
+  })
+
+};
+
 // check if the app is running
 if (!gotTheLock) {
   // if the app is already running, close the second window and focus the first window
@@ -188,6 +285,10 @@ if (!gotTheLock) {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
+    }
+    if (sideWindow) {
+      if (sideWindow.isMinimized()) sideWindow.restore()
+      sideWindow.focus()
     }
   })
   // This method will be called when Electron has finished
@@ -204,8 +305,8 @@ if (!gotTheLock) {
     const contextMenu = Menu.buildFromTemplate([
       // option to quit the app
       { label: "Studien-App beenden", click: () => { app.quit() } },
-      // option to show the task tutorial again
-      { label: "Studien-App Informationen anzeigen", click: () => { createWindow("reshowTut") } },
+      // option to show the task tutorial again (only allows to open the window once
+      { label: "Studien-App Informationen anzeigen", click: () => { if (!sideWindow) {createSideWindow("reshowTut")} } },
       // option to show the study information page
     ]);
     tray.setToolTip("Studien-App");
@@ -218,16 +319,17 @@ if (!gotTheLock) {
     // -> if there is such a file (tutorial was finished), start the countdown timer for the logger
 
     // check if a json exists that indicates that the app has started
-    dataStorage.has("started", function (error, hasKey) {
+    dataStorage.has("s", function (error, hasKey) {
       // throw an error if the data reading fails
-      if (error) throw error;
-      // if the json exists, the user has finished the tutorial and is participating in the study
-      if (hasKey) {
-        // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
-        startLogger(10 * 1000);
+      if (error) {
+        throw error;
       } else {
-        // if the json does not exist yet (user hasnt finished the tutorial), start the tutorial
-        createWindow("tutorial");
+        if (hasKey) {
+          // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
+          startLogger(10 * 1000);
+        } else {
+          createWindow("tutorial");
+        }
       }
     })
 
@@ -241,6 +343,7 @@ app.on('window-all-closed', (event) => {
   // reset the mainWindow to null to prevent an error message that shows when the app is started but in the system tray
   // and the user clicks on the app symbol on the desktop
   mainWindow = null;
+  sideWindow = null;
   // Do nothing: Program should still run with a app symbol in the system tray (from there, the app can be quit)
   event.preventDefault();
 });
@@ -259,21 +362,26 @@ ipcMain.on("close", () => {
 
 // end of tutorial event
 ipcMain.on("tutorialEnd", () => {
-  // write a file to notify that the program has started and add a participant identifier
-  const participantCode = Math.random().toString(36).substring(2);
+  // write a file to notify that the program has started
   const window = BrowserWindow.getFocusedWindow();
 
+  // save the start time of the study (end of the tutorial) to "let the app know when to end the study"
   if (window) {
-    dataStorage.set("started", { started: Date.now(), ident: participantCode }, function (error) {
+    dataStorage.set('s',{ d: Date.now() }, (error) => {
       if (error) {
         // throw an error if the json save does not work (because the study wont work properly and show the tutorial again
         // on app restart
         throw error;
       } else {
         tutorialHasFinished = true;
+        // add app into autostart after the tutorial finishes (alternatively, put it in the autostart after installation
+        // to remind participants to participate in the study after downloading the app
+        app.setLoginItemSettings({
+          openAtLogin: true
+        })
         window.close();
       }
-    })
+    });
   }
 })
 
@@ -282,15 +390,17 @@ ipcMain.on("tutorialEnd", () => {
 // xx minutes
 const startLogger = (startTime) => {
 
-  // check if the startTime of the Browser window creation is after the time limit of the study (30 days)
-  dataStorage.get("started", (err, data) => {
-    // get the time difference in days between the start of the current date and the study start date
-    let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
+  // check if the startTime of the Browser window creation is after the time limit of the study (14 days)
+  dataStorage.get("s", (err, data) => {
     // if the start time is older than xx days (length of the study), show the study end page
-    //TODO: Set an end time of the study in days
-    if (timeDiff > 14) {
+    //TODO: Set an end time of the study (12096e5 = in 2 weeks / + 14 days)
+    if (Date.now() > data.d - 12096e5) {
       // show the study endPage and send the participant id
-      createWindow("studyEnd", data.ident);
+      createWindow("studyEnd", data.d);
+      // remove the app from autostart
+      app.setLoginItemSettings({
+        openAtLogin: false
+      })
     } else {
       // if the study is not finished yet, start the logger Process
 

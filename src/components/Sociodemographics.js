@@ -37,40 +37,34 @@ export default class Soziodemographics extends Component {
         return(
             <div className="section" style={{marginTop: "1.5rem"}}>
                 <div className={"content"}>
-                        <h4>4. Einführung abschließen und Studie beginnen</h4>
+                        <h4>Schritt 4: Einführung abschließen und Studie starten</h4>
                         <p>
                             Sie sind am Ende der Einführung in die Studien-App angekommen. Machen Sie abschließend bitte noch
-                            einige Angaben zu Ihrer Person und bestätigen Sie dann, dass Sie die Studie beginnen möchten.
+                            einige Angaben zu Ihrer Person und bestätigen Sie dann, dass Sie die Studie starten möchten.
                         </p>
                         <p>
-                            Wenn Sie auf "Studie beginnen" klicken, schließt sich dieses Fenster und die Studien-App
-                            bleibt passiv im Hintergrund ausgeführt, bis sie nach etwa 60 Minuten ein Fenster zur Datenerhebung öffnet.
+                            Wenn Sie auf "Studie starten" klicken, schließt sich dieses Fenster und die Studien-App
+                            bleibt passiv im Hintergrund, bis sie nach etwa 60 Minuten ein Fenster zur ersten Datenerhebung öffnet.
                         </p>
-                        <p>
-                            Falls Sie die Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen erneut
-                            aufrufen möchten, klicken Sie auf die entsprechende Seite in der obigen Navigation. Die
-                            Studien-App Informationen, die Vorschau der Aufgabe oder die Vorschau der Fragen können Sie nach Beginn
-                            der Studie auch jederzeit wieder über das Studien-App Symbol in Ihrer {process.platform === "darwin" ? "Menüleiste" : "Systemleiste"} aufrufen.
-                        </p>
-                        <p>Vielen Dank für Ihre Bereitschaft, an dieser Studie teilzunehmen!</p>
+
                         <hr/>
                     </div>
 
                     <div className={"field"} style={{marginTop: "25px"}}>
-                        <p className="questionTextStyle">Ihr Alter in Jahren:</p>
+                        <p className="questionTextStyle">Ihr Alter:</p>
                         <div className="control">
-                            <label>
-                                <input
-                                    style={{width: "150px"}}
-                                    name="age"
-                                    className={"input"}
-                                    type="number"
-                                    placeholder="Ihr Alter"
-                                    value={this.props.answers.age === -99 ? "" : this.props.answers.age}
-                                    onChange={this.handleInputChange}
-                                    onWheel={()=> document.activeElement.blur()}
-                                />
-                            </label>
+                            <div className={"select is-info"}>
+                                <select name={"age"}
+                                        value={this.props.answers.age}
+                                        onChange={this.handleInputChange}>
+                                    <option value={-99} disabled={true} hidden={true}>Bitte wählen Sie aus</option>
+                                    <option value={1}>jünger als 30</option>
+                                    <option value={2}>30 bis 39</option>
+                                    <option value={3}>40 bis 49</option>
+                                    <option value={4}>50 bis 59</option>
+                                    <option value={5}>60 oder älter</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -111,23 +105,6 @@ export default class Soziodemographics extends Component {
                     </span>
                     </div>
 
-                    <div className={"field"} style={{marginTop: "25px"}}>
-                        <p className="questionTextStyle">Ihr Beruf:</p>
-                        <div className="control">
-                            <label>
-                                <input
-                                    style={{width: "300px"}}
-                                    name="occupation"
-                                    className={"input"}
-                                    type="text"
-                                    placeholder="Ihr Beruf"
-                                    value={this.props.answers.occupation === -99 ? "" : this.props.answers.occupation}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                        </div>
-                    </div>
-
                     <div className={"field"} style={{marginTop: "40px"}}>
                     <span>
                         <p className="questionTextStyle">Mit welcher Hand bedienen Sie die Computer-Maus:</p>
@@ -156,48 +133,10 @@ export default class Soziodemographics extends Component {
                     </span>
                     </div>
 
-                    <div className={"field"} style={{marginTop: "40px"}}>
-                    <span>
-                        <p className="questionTextStyle">Wie nutzen Sie Ihren Computer überwiegend?</p>
-                        <div className={"control"}>
-                            <label className={"radio"}>
-                                <input
-                                    style={{marginRight: 5}}
-                                    type="radio"
-                                    name="computer"
-                                    value="0"
-                                    checked={this.props.answers.computer === 0}
-                                    onChange={this.handleInputChange}
-                                />beruflich
-                            </label>
-                            <label className={"radio"} style={{marginLeft: 25}}>
-                                <input
-                                    style={{marginRight: 5}}
-                                    type="radio"
-                                    name="computer"
-                                    value="1"
-                                    checked={this.props.answers.computer === 1}
-                                    onChange={this.handleInputChange}
-                                />privat
-                            </label>
-                             <label className={"radio"} style={{marginLeft: 25}}>
-                                <input
-                                    style={{marginRight: 5}}
-                                    type="radio"
-                                    name="computer"
-                                    value="2"
-                                    checked={this.props.answers.computer === 2}
-                                    onChange={this.handleInputChange}
-                                />sowohl beruflich als auch privat
-                            </label>
-                        </div>
-                    </span>
-                    </div>
-
                     <div style={{marginTop: "3rem", width: "100%", textAlign: "center"}}>
                         <button className={this.props.hasEnded ? "button is-link is-loading" : "button is-link"}
                                 disabled={this.props.hasEnded}
-                                onClick={() => this.props.endSociodem()}>Studie beginnen</button>
+                                onClick={() => this.props.endSociodem()}>Studie starten</button>
                     </div>
 
             </div>

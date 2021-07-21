@@ -114,7 +114,7 @@ export default class MouseTask extends Component {
                 <div className="modal-background">{null}</div>
                 <div className="modal-content">
                     <header className="modal-card-head">
-                        <p className="modal-card-title"><b>2. Vorschau der Aufgabe</b></p>
+                        <p className="modal-card-title"><b>Schritt 2: Vorschau der Aufgabe</b></p>
                     </header>
                     <section className="modal-card-body">
                             <div>
@@ -128,12 +128,12 @@ export default class MouseTask extends Component {
                                     </div>
                                     <div className={"media-content"}>
                                         <p>
-                                           Jede Datenerhebung beginnt mit der Aufgabe, eine Anzahl an Punkten in einer
+                                           Jede Datenerhebung beginnt mit der Aufgabe, 7 erscheinende Punkte in einer
                                             vorgegebenen Reihenfolge anzuklicken (siehe oberes Bild).
                                         </p>
                                         <br/>
                                         <p>
-                                            Der Punkt, den Sie anklicken müssen ist schwarz markiert. Wenn Sie den schwarz markierten Punkt
+                                            Der Punkt, den Sie anklicken müssen, ist schwarz markiert. Wenn Sie den schwarz markierten Punkt
                                             angeklickt haben, wird dies angezeigt und Sie müssen den nächsten schwarzen
                                             Punkt anklicken (siehe unteres Bild) bis Sie alle schwarz markierten Punkte
                                             angeklickt haben.
