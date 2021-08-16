@@ -11,6 +11,7 @@ import Tutorial from "./Tutorial";
 import DataGrabber from "./DataGrabber";
 import ReshowAppInfo from "./ReshowAppInfo"
 import StudyEnd from "./StudyEnd";
+import Login from "./LoginPage";
 
 export default class App extends Component {
 
@@ -18,15 +19,16 @@ export default class App extends Component {
         super(props);
 
         // initialize Firebase
-        var firebaseConfig = {
-            apiKey: "AIzaSyDPmlCWKy4wn6gIf-7O-hBP7L6G9K1vZuE",
-            authDomain: "longitudinal-study21.firebaseapp.com",
-            databaseURL: "https://longitudinal-study21-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "longitudinal-study21",
-            storageBucket: "longitudinal-study21.appspot.com",
-            messagingSenderId: "709694742372",
-            appId: "1:709694742372:web:a990a8565bd535ef95a471",
+        //TODO: Changed Config to a test Firebase Project
+        const firebaseConfig = {
+            apiKey: "AIzaSyCO0IdxZEGms4ve6cdmzSDDgaYeCRQI7aA",
+            authDomain: "test-project-c54c0.firebaseapp.com",
+            projectId: "test-project-c54c0",
+            storageBucket: "test-project-c54c0.appspot.com",
+            messagingSenderId: "1041378300647",
+            appId: "1:1041378300647:web:863ad64eac44eb8e4b4842"
         };
+
 
         firebase.initializeApp(firebaseConfig);
 
@@ -34,6 +36,8 @@ export default class App extends Component {
             page: null,
             userId: undefined,
             online: false,
+            loginAttempt: false,
+            badLogin: false,
             participantCode: null,
             participantCodeText: "Code wird geladen",
             mouseTaskSize: null
@@ -56,16 +60,9 @@ export default class App extends Component {
 
     componentDidMount() {
 
-        // log into firebase anonymously and set the userId state to the firebase user id
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(function () {
-                return firebase.auth().signInAnonymously();
-            })
-            .catch(function (error) {
-                let errorCode = error.code;
-                let errorMessage = error.message;
-                // console.log(errorCode, errorMessage)
-            });
+        // Set the auth persistence on login to Local to keep the user logged into the app unless the user delets the
+        // local app data
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
         // if the user successfully logged in, set the user id to the state
         firebase.auth().onAuthStateChanged((user) => {
@@ -94,8 +91,8 @@ export default class App extends Component {
                     }
                 }
             } else {
-                // User is signed out
-                // Do nothing
+                // User is signed out, give him a bad user id
+                this.setState({userId: -99})
             }
         });
 
@@ -124,7 +121,16 @@ export default class App extends Component {
                 })
             }
         });
+    }
 
+    // function that logs into the App (and shows an error message if the login is not successful
+    appLogin(id, password) {
+
+        this.setState({loginAttempt: true}, () => {
+            firebase.auth().signInWithEmailAndPassword(id, password).catch((error) => {
+                console.log(error.code + " " + error.message);
+                this.setState({badLogin: true, loginAttempt: false});})
+            })
     }
 
     // Define functions that do the data handling when the user is done with the tutorial or data logger
@@ -274,6 +280,7 @@ export default class App extends Component {
     // to here (plus the navbar and the renderstartpage in the render function
 
     render() {
+
         return (
 
             <div>
@@ -284,13 +291,21 @@ export default class App extends Component {
                 </nav>*/}
                 {
                     /*this.state.page === "start" ? this.renderStartPage() : */
-                    this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}
-                                                               mouseTaskSize={this.state.mouseTaskSize}/> :
-                        this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}
-                                                                    mouseTaskSize={this.state.mouseTaskSize}/> :
-                            this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.state.mouseTaskSize}/> :
-                                this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}/>
-                                    : null
+                    /* Show a blank screen until it is decided if the user is logged in, if the user is logged in
+                    * show the study page, else show the login screen */
+                    this.state.userId ?
+                        this.state.userId === -99 ?
+                            <Login badLogin={this.state.badLogin}
+                                   loginAttempt={this.state.loginAttempt}
+                                   logIn={(id, pw) => this.appLogin(id, pw)}/> :
+                            this.state.page === "tutorial" ? <Tutorial endTutorial={(data)=> this.endTutorial(data)}
+                                                                       mouseTaskSize={this.state.mouseTaskSize}/> :
+                                this.state.page === "logger" ? <DataGrabber endDataGrabber={(data) => this.endDataGrabber(data)}
+                                                                            mouseTaskSize={this.state.mouseTaskSize}/> :
+                                    this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.state.mouseTaskSize}/> :
+                                        this.state.page === "studyEnd" ? <StudyEnd participantCode={this.state.participantCodeText}/>
+                                            : null
+                        : null
                 }
             </div>
         );

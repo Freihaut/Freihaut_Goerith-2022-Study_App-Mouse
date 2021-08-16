@@ -7,9 +7,8 @@ import React, { Component } from 'react';
 
 import SelfReport from "./SelfReport";
 import MouseTask from "./MouseTask";
-import TutorialStartPage from "./TutorialStartPage";
+import AppStartPage from "./AppStartPage";
 import Sociodemographics from "./Sociodemographics";
-
 
 
 export default class Tutorial extends Component {
@@ -56,8 +55,9 @@ export default class Tutorial extends Component {
     }
 
     renderTutorialPage(state) {
+
         if (state === "welcome") {
-            return (<TutorialStartPage endCurrentPage={() => this.switchPage("task")}/>)
+            return (<AppStartPage tutorial={true} endCurrentPage={() => this.switchPage("task")}/>)
         } else if (state === "task") {
             return (<MouseTask intro={true}
                                endTask={() => this.switchPage("selfReport")}

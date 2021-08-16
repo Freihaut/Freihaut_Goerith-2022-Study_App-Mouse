@@ -11,7 +11,7 @@ import AppSymbolImage from "./base64Images/AppSymbolImage";
 import CloseSymbolImage from "./base64Images/CloseSymbol";
 
 
-export default function TutorialStartPage (props) {
+export default function AppStartPage (props) {
 
     // scroll to the top of the page
     window.scrollTo(0, 0);
@@ -20,16 +20,20 @@ export default function TutorialStartPage (props) {
    return(
        <div className="section" style={{marginTop: "1.5rem"}}>
            <div className={"content"}>
-               <h3 className={"title is-4"}>
-                   Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
-               </h3>
-               <p>
-                   Diese Einführung beinhaltet
-                   vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studienstart".
-                   Sobald Sie alle vier Schritte der Einführung abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle
-                   Informationen aufmerksam durch.
-               </p>
-               <br/>
+               {props.tutorial ?
+                   <div>
+                       <h3 className={"title is-4"}>
+                           Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
+                       </h3>
+                       <p>
+                           Diese Einführung beinhaltet
+                           vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studienstart".
+                           Sobald Sie alle vier Schritte der Einführung abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle
+                           Informationen aufmerksam durch.
+                       </p>
+                       <br/>
+                   </div>:
+                   null}
                <h4>
                    1. Allgemeine Informationen zur Studien-App
                </h4>
