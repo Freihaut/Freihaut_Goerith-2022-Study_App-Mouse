@@ -7,10 +7,8 @@ export default class ParticipationCredit extends Component {
         super(props);
 
         this.state = {
-            checkVal: -99
+            checkVal: false
         }
-
-        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
 
@@ -18,13 +16,11 @@ export default class ParticipationCredit extends Component {
         window.scrollTo(0, 0);
     }
 
-    handleInputChange(event) {
 
-        // Get the name and value of the clicked radio button and save it to the corresponding question state
-        const target = event.target;
-        let value = parseInt(target.value);
+    handleInputChange() {
 
-        this.setState({checkVal: value})
+        // toggle the checkbox
+        this.setState({checkVal: !this.state.checkVal})
 
     }
 
@@ -33,97 +29,32 @@ export default class ParticipationCredit extends Component {
         return(
             <div className="section" style={{marginTop: "1.5rem"}}>
                 <div className={"content"}>
-                    <h4>Geschafft!</h4>
+                    <h4>Geschafft! Die Datenerhebung ist abgeschlossen.</h4>
                     <p>
-                       Bevor Sie die Studie beenden und die Studien-App deinstallieren,
-                        können Sie abschließend noch auswählen, ob Sie eine Vergütung für Ihre Studienteilnahme erhalten möchten.
-                        Wählen Sie dazu eine der Optionen aus und bestätigen Sie Ihre Auswahl indem Sie auf "Vergütung bestätigen"
-                        klicken.
+                       Für Ihre Teilnahme an dieser Studie erhalten Sie xx Treuepunkte (=xx Euro). Klicken Sie
+                        auf "Studie beenden", um diese gutgeschrieben zu bekommen. Falls Sie möchten, können Sie Ihre
+                        Treuepunkte auch zurück an das WiSoPanel spenden. Setzen Sie dafür einen Haken in der entsprechenden
+                        Box.
                     </p>
-                    <hr/>
                 </div>
-
-                <fieldset>
-                    <div className={"field"}>
-                        <label className={"radio"}>
-                            <input
-                                type={"radio"}
-                                style={{marginRight: 5}}
-                                name={"payment"}
-                                value={"1"}
-                                onChange={this.handleInputChange}
-                            />
-                            Ich spende meine Vergütung zurück an WiSoPanel
-                        </label>
+                <div>
+                    <label className="checkbox" style={{marginTop: "45px"}}>
+                        <input type="checkbox" style={{marginRight: "15px", outline: "none"}} checked={this.state.checkVal} onChange={()=> this.handleInputChange()}/>
+                        Ich verzichte auf die Treuepunkte und spende sie an WiSoPanel zurück.
+                    </label>
+                </div>
+                <div className={"field"} style={{marginTop: "3rem", width: "100%", textAlign: "center"}}>
+                    <div className="control">
+                        <p className={"help is-danger"} style={{visibility: this.props.savingFailed ? "visible" : "hidden"}}>
+                            Ihre Angabe konnte nicht gespeichert werden. Stellen Sie sicher, dass Sie mit dem Internet
+                            verbunden sind und probieren Sie es erneut.
+                        </p>
+                        <button className={this.props.savingAttempt ? "button is-link is-loading" : "button is-link"}
+                                disabled={this.props.savingAttempt}
+                                onClick={() => this.props.collectCredit(this.state.checkVal)}>Studie beenden
+                        </button>
                     </div>
-                </fieldset>
-
-                <fieldset>
-                    <div className={"field"} style={{marginTop: "2em"}}>
-                        <label className={"radio"}>
-                            <input
-                                type={"radio"}
-                                style={{marginRight: 5}}
-                                name={"payment"}
-                                value={"2"}
-                                onChange={this.handleInputChange}
-                            />
-                           Ich möchte einen Amazon-Gutschein erhalten
-                        </label>
-                    </div>
-                    <div className={"field"} style={{opacity: this.state.checkVal === 2 ? "1" : "0.5"}}>
-                        <p>Der Amazon-Gutschein soll an folgende E-Mail Adresse gesendet werden:</p>
-                        <div className="control" style={{maxWidth: "500px"}}>
-                            <input className="input" type="text" placeholder="Ihre E-Mail Adresse" disabled={this.state.checkVal !== 2}/>
-                        </div>
-                        <p className={"help"}> Bitte achten Sie darauf eine gültige E-Mail Adresse anzugeben</p>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <div className={"field"} style={{marginTop: "2em"}}>
-                        <label className={"radio"}>
-                            <input
-                                type={"radio"}
-                                style={{marginRight: 5}}
-                                name={"payment"}
-                                value={"3"}
-                                onChange={this.handleInputChange}
-                            />
-                            Ich möchte das Geld auf mein PayPal-Konto überwiesen haben
-                        </label>
-                    </div>
-                    <div className={"field"} style={{opacity: this.state.checkVal === 3 ? "1" : "0.5"}}>
-                        <p>Das Geld soll an folgende PayPal Adresse gesendet werden:</p>
-                        <div className="control" style={{maxWidth: "500px"}}>
-                            <input className="input" type="text" placeholder="Ihre E-Mail Adresse" disabled={this.state.checkVal !== 3}/>
-                        </div>
-                        <p className={"help"}> Bitte achten Sie darauf eine gültige E-Mail Adresse anzugeben</p>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <div className={"field"} style={{marginTop: "2em"}}>
-                        <label className={"radio"}>
-                            <input
-                                type={"radio"}
-                                style={{marginRight: 5}}
-                                name={"payment"}
-                                value={"4"}
-                                onChange={this.handleInputChange}
-                            />
-                            Ich möchte das Geld auf mein Bankkonto überwiesen haben
-                        </label>
-                    </div>
-                    <div className={"field"} style={{opacity: this.state.checkVal === 4 ? "1" : "0.5"}}>
-                        <p>Das Geld soll auf folgendes Bankkonto überwiesen werden:</p>
-                        <div className="control" style={{maxWidth: "500px"}}>
-                            <input className="input" type="text" placeholder="Ihre IBAN" disabled={this.state.checkVal !== 4}/>
-                        </div>
-                        <p className={"help"}> Bitte achten Sie darauf eine IBAN anzugeben</p>
-                    </div>
-                </fieldset>
-
+                </div>
 
 
             </div>

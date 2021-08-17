@@ -23,7 +23,7 @@ let tray = null;
 let logMousePosition;
 
 // function to create the main app window in which the app is shown
-const createWindow = (appPage, data) => {
+const createWindow = (appPage) => {
 
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -74,7 +74,7 @@ const createWindow = (appPage, data) => {
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, data);
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay});
     // show the window
     mainWindow.showInactive();
 
@@ -210,8 +210,8 @@ const createSideWindow = (appPage) => {
 
   // get and log some infos about how the browser window is displayed on the screen
   const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
-  const windowBounds = mainWindow.getBounds();
-  const windowOnDisplay = screen.dipToScreenRect(mainWindow,
+  const windowBounds = sideWindow.getBounds();
+  const windowOnDisplay = screen.dipToScreenRect(sideWindow,
       {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
 
   // do not show a menu in the app
@@ -313,22 +313,15 @@ if (!gotTheLock) {
     // check if a json exists that indicates that the app has started
     dataStorage.has("s", function (error, hasKey) {
       // throw an error if the data reading fails
-      if (error) throw error;
-      // if the json exists, the user has finished the tutorial and is participating in the study
-      if (hasKey) {
-        dataStorage.has("s.d", (error, hasKey) => {
-          if (error) throw error;
-
-          if (hasKey) {
-            // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
-            startLogger(10 * 1000);
-          } else {
-            createWindow("tutorial");
-          }
-        })
+      if (error) {
+        throw error;
       } else {
-        // if the json does not exist yet (user hasnt finished the tutorial), start the tutorial
-        createWindow("login");
+        if (hasKey) {
+          // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
+          startLogger(10 * 1000);
+        } else {
+          createWindow("tutorial");
+        }
       }
     })
 
@@ -359,36 +352,20 @@ ipcMain.on("close", () => {
   }
 })
 
-// user successfully "logged" into the app
-ipcMain.on("successfulLogin", (event, data) => {
-
-  console.log(data);
-
-  dataStorage.set("s", {c: data}, function (error) {
-    if (error) {
-      throw error
-    } else {
-      console.log("saved data successfully")
-    }
-  })
-})
-
 // end of tutorial event
 ipcMain.on("tutorialEnd", () => {
-  // write a file to notify that the program has started and add a participant identifier
-  const participantCode = Math.random().toString(36).substring(2);
+  // write a file to notify that the program has started
   const window = BrowserWindow.getFocusedWindow();
 
+  // save the start time of the study (end of the tutorial) to "let the app know when to end the study"
   if (window) {
-    dataStorage.get('s',(error, data) =>{
-      if (error) throw error;
-      data.keys.push(...{ d: Date.now(), ident: participantCode });
-      dataStorage.set('s', data,(err) => {
-        if (err) {throw err
-        } else {
-          tutorialHasFinished = true;
-          window.close();
-        }});
+    dataStorage.set('s',{ d: Date.now() }, (error) => {
+      if (error) {
+        throw error;
+      } else {
+        tutorialHasFinished = true;
+        window.close();
+      }
     });
   }
 })
@@ -398,15 +375,15 @@ ipcMain.on("tutorialEnd", () => {
 // xx minutes
 const startLogger = (startTime) => {
 
-  // check if the startTime of the Browser window creation is after the time limit of the study (30 days)
+  // check if the startTime of the Browser window creation is after the time limit of the study (14 days)
   dataStorage.get("s", (err, data) => {
     // get the time difference in days between the start of the current date and the study start date
-    let timeDiff = Math.floor((Date.now() - data.started) / 1000 / 60 / 60 / 24);
+    let timeDiff = Math.floor((Date.now() - data.d) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff > 14) {
+    if (timeDiff > 2) {
       // show the study endPage and send the participant id
-      createWindow("studyEnd", data.ident);
+      createWindow("studyEnd");
     } else {
       // if the study is not finished yet, start the logger Process
 
