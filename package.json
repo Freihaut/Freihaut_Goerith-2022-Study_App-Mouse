@@ -21,7 +21,8 @@
     "productName": "Studien-App",
     "win": {
       "target": "nsis",
-      "icon": "src/Study-App-Icon.ico"
+      "icon": "src/Study-App-Icon.ico",
+      "publisherName": "Albert-Ludwigs-Universität Freiburg"
     },
     "nsis": {
       "createDesktopShortcut": true,

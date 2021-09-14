@@ -116,7 +116,7 @@ const createWindow = (appPage) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -220,7 +220,7 @@ const createSideWindow = (appPage) => {
   // load the entrypoint index.html of the app
   sideWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  sideWindow.webContents.openDevTools();
+  //sideWindow.webContents.openDevTools();
 
   // send a message to the page to load the correct component and show the main window after it finished loading
   // in the electron docs, ready-to-show is recommended for showing the main window, but IPC communication to the
@@ -381,7 +381,7 @@ const startLogger = (startTime) => {
     let timeDiff = Math.floor((Date.now() - data.d) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study in days
-    if (timeDiff > 2) {
+    if (timeDiff > 14) {
       // show the study endPage and send the participant id
       createWindow("studyEnd");
     } else {

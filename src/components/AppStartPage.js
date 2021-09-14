@@ -74,7 +74,8 @@ export default function AppStartPage (props) {
                </p>
                <p>
                    Die Studie endet nach 14 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
-                   und es öffnet sich kein Fenster zur Datenerhebung mehr.
+                   und es öffnet sich kein Fenster zur Datenerhebung mehr. Nach Abschluss der Studie erhalten Sie
+                   xx Treuepunkte (=xx Euro) für Ihre Teilnahme gutgeschrieben.
                </p>
                <p>
                    Nach dem Ende der Studie oder falls Sie Ihre Studienteilnahme vorzeitig beenden möchten, können Sie die
@@ -85,12 +86,6 @@ export default function AppStartPage (props) {
                <p>
                    In den nächsten Schritten der Einführung werden Ihnen zunächst die Aufgabe und anschließend die Fragen vorgestellt, welche Sie bei
                    der Datenerhebung bearbeiten.
-               </p>
-
-               <p>
-                   Falls Sie Psychologie an der Albert-Ludwigs Universität Freiburg studieren und für Ihre
-                   Studienteilnahme Versuchspersonenstunden erhalten möchten, finden Sie einen Versuchspersonencode sowie eine Anleitung
-                   zur Einlösung der Versuchspersonenstunden am Ende der Studie.
                </p>
 
                <p>

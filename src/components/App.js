@@ -77,10 +77,9 @@ export default class App extends Component {
         // if the user successfully logged in, set the user id to the state
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                console.log(user);
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/firebase.User
-                //console.log("User signed in with user ID: " + user.uid);
+                // console.log("User signed in with user ID: " + user.uid);
                 // save the info that the user has logged in
                 this.setState({userId: user.uid}, () => {firebase.database().ref("userData/" + user.uid).update({"loggedIn": true})});
                 // check if there is locally saved data that hasnt been pushed to firebase yet (e.g. because the user was offline)
@@ -103,6 +102,12 @@ export default class App extends Component {
                         });
                     }
                 }
+
+                // if the user reached the end page, save that the user finished the study
+                if (this.state.page === "studyEnd") {
+                    firebase.database().ref("userData/" + user.uid).update({"finishedStudy": true})
+                }
+
             } else {
                 // User is signed out, give him a bad user id
                 this.setState({userId: -99})
@@ -130,14 +135,18 @@ export default class App extends Component {
     appLogin(id, password) {
 
         // disable the login button until the logging is completed (or fails)
-        this.setState({callingFirebase: true}, () => {
-            firebase.auth().signInWithEmailAndPassword(id, password).catch((error) => {
-                if (error) {
-                    this.setState({fireBaseCallFails: true, callingFirebase: false});
-                } else {
-                    this.setState({fireBaseCallFails: false, callingFirebase: false});
-                }
+        this.setState({fireBaseCallFails: false, callingFirebase: true}, () => {
+
+            // add a "loading timeout" of 400ms to visualize that the user clicked a button and the app is working
+            setTimeout(()=> {
+                firebase.auth().signInWithEmailAndPassword(id, password).catch((error) => {
+                    if (error) {
+                        this.setState({fireBaseCallFails: true, callingFirebase: false});
+                    } else {
+                        this.setState({fireBaseCallFails: false, callingFirebase: false});
+                    }
                 })
+            }, 400)
             })
     }
 
@@ -147,6 +156,7 @@ export default class App extends Component {
     endTutorial(tutData) {
 
         // add the version number to the tut data to keep track of potential changes in the study app version
+        //TODO: Update the appVersion name to the correct version, e.g. "test", "pilot", "production"...
         const studyStartData = {...tutData, ...{appVersion: "panel_test"}}
 
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
@@ -216,19 +226,29 @@ export default class App extends Component {
     saveParticipationCredit(bool) {
 
         // disable the data saving button until the saving completes or fails
-        this.setState({callingFirebase: true}, () => {
-            // save the participant Info about the study credit in the database
-            firebase.database().ref("userData/" + this.state.userId).update({"donatesBack": bool}, (error) => {
-                if (error) {
-                    // could not save the data, show a warning
-                    this.setState({fireBaseCallFails: true, callingFirebase: false})
-                } else {
-                    // show the last page and save the information that the user already received the study credit in the localStorage
-                    this.setState({endPage: true, fireBaseCallFails: false, callingFirebase: false}, () => {
-                        window.localStorage.setItem("endPage", "true");
+        this.setState({fireBaseCallFails: false, callingFirebase: true}, () => {
+
+            // add a "loading timeout" of 400ms to visualize that the user clicked a button and the app is working
+            setTimeout(()=> {
+                if (this.state.userId && this.state.online) {
+                    // save the participant Info about the study credit in the database
+                    firebase.database().ref("userData/" + this.state.userId).update({"donatesBack": bool}, (error) => {
+                        if (error) {
+                            // could not save the data, show a warning
+                            this.setState({fireBaseCallFails: true, callingFirebase: false})
+                        } else {
+                            // show the last page and save the information that the user already received the study credit in the localStorage
+                            this.setState({endPage: true, fireBaseCallFails: false, callingFirebase: false}, () => {
+                                window.localStorage.setItem("endPage", "true");
+                            })
+                        }
                     })
+                } else {
+                    // not connected to the internet, show a warning
+                    this.setState({fireBaseCallFails: true, callingFirebase: false})
                 }
-            })
+            }, 400)
+
         })
 
     }
