@@ -63,18 +63,17 @@ export default class SelfReport extends Component {
                 <div className="modal-background">{null}</div>
                 <div className="modal-content">
                     <header className="modal-card-head">
-                        <p className="modal-card-title"><b>3. Vorschau der Fragen</b></p>
+                        <p className="modal-card-title"><b>Schritt 3: Vorschau der Fragen</b></p>
                     </header>
                     <section className="modal-card-body">
 
                         <div className={"content"}>
                             <p>
-                               Nachdem Sie die Aufgabe beendet haben, werden Ihnen noch 2 Fragen zu Ihrem aktuellen Befinden
+                               Zum Abschluss jeder Datenerhebung werden Ihnen 2 Fragen zu Ihrem aktuellen Befinden
                                 angezeigt.
                             </p>
                             <p>
-                                Verschieben Sie die Regler bei jeder Frage so, dass er Ihrem aktuellen Befinden am ehesten
-                                entspricht. Beantworten Sie die Fragen spontan, es gibt keine richtigen oder falschen
+                                Beantworten Sie die Fragen spontan, es gibt keine richtigen oder falschen
                                 Antworten.
                             </p>
                         </div>
@@ -102,13 +101,13 @@ export default class SelfReport extends Component {
             <div className="container is-fluid" style={this.props.intro ? {marginTop: "3em"} : {}}>
                 <div>
                     <h3 className={"title is-5"}>
-                        Bitte verschieben Sie die Regler so, dass sie Ihrem aktuellen Befinden am besten entsprechen.
+                        Bitte verschieben Sie die blauen Regler so, dass sie Ihrem aktuellen Befinden am besten entsprechen.
                     </h3>
                     <hr style={{margin: "0 0", height: "3px"}}/>
                 </div>
 
-                <div style={{marginTop: "2.5rem"}}>
-                    <p className={"title is-5"}>Ich fühle mich...</p>
+                <div style={{marginTop: "2.5rem", textAlign: "center"}}>
+                    <p className={"title is-5"} style={{marginBottom: "4rem"}}>Ich fühle mich...</p>
                     <input className={"slider"} step="1" min="0" max="100" name="valence" value={this.state.selfReport.valence} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
                         <li className={"slider-start-label title is-5"}>negativ</li>
@@ -116,8 +115,7 @@ export default class SelfReport extends Component {
                     </ul>
                 </div>
 
-                <div style={{marginTop: "6rem"}}>
-                    <p className={"title is-5"}>Ich fühle mich...</p>
+                <div style={{marginTop: "5.5rem"}}>
                     <input className={"slider"} step="1" min="0" max="100" name="arousal" value={this.state.selfReport.arousal} type="range" onChange={this.handleInputChange}/>
                     <ul className="slider-labels">
                         <li className={"slider-start-label title is-5"}>aufgeregt</li>

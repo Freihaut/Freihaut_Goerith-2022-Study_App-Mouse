@@ -20,11 +20,14 @@ export default function StudyEnd () {
                         Die Studie ist beendet
                     </h3>
                     <p>
-                        Die Studie ist beendet und die Datenerhebung mit der Studien-App ist abgeschlossen. Die Studien-App
-                        erfüllt nun kein Zweck mehr und Sie können die Studien-App deinstallieren.
+                       Die Datenerhebung endete am xxxx, 14 Tage Ihrem Beginn der Studie.
+                        Die Studien-App erfüllt nun kein Zweck mehr und Sie können die Studien-App deinstallieren. Es ist empfohlen,
+                        die Studien-App zu deinstallieren, die Deinstallation der Studien-App ist jedoch nicht notwendig.
+                        Unter folgendem Link finden Sie eine kurze Anleitung zur Deinstallation der Studien-App. Falls Sie
+                        Hilfe mit der Deinstallation benötigen, wenden Sie sich gerne jederzeit an den unten stehenden Kontakt.
                     </p>
                     <h4 className={"title"}>
-                        Vielen herzlichen Dank für ihre Teilnahme an dieser Studie und Ihren Beitrag zur Wissenschaft!
+                        Vielen herzlichen Dank für Ihre Teilnahme an dieser Studie und Ihren Beitrag zur Wissenschaft!
                     </h4>
                     <br/>
                     <p>

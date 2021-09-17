@@ -23,38 +23,38 @@ export default function AppStartPage (props) {
                {props.tutorial ?
                    <div>
                        <h3 className={"title is-4"}>
-                           Willkommen zur Einführung über den Ablauf der Studie mit der Studien-App
+                           Willkommen zur Einführung über den Ablauf der Studie
                        </h3>
                        <p>
-                           Diese Einführung beinhaltet
-                           vier Schritte. Schritt 1: "Studien-App Infos"; Schritt 2: "Vorschau Aufgabe"; Schritt 3: "Vorschau Fragen"; Schritt 4: "Studienstart".
-                           Sobald Sie alle vier Schritte der Einführung abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle
-                           Informationen aufmerksam durch.
+                           Diese Einführung beinhaltet vier Schritte. Sobald Sie alle vier Schritte der Einführung
+                           abgeschlossen haben, beginnt die Studie. Bitte lesen Sie sich alle Informationen aufmerksam durch.
                        </p>
                        <br/>
                    </div>:
                    null}
                <h4>
-                   1. Allgemeine Informationen zur Studien-App
+                   Schritt 1: Allgemeine Informationen zur Studien-App
                </h4>
                <p>
                    Während Sie an der Studie teilnehmen und solange die Studien-App ausgeführt wird, öffnet die Studien-App in
-                   regelmäßigen Zeitabständen von 60 Minuten ein Fenster zur Datenerhebung. Die Datenerhebung umfasst dabei zwei Teile und dauert
+                   regelmäßigen Zeitabständen von 60 Minuten ein Fenster zur Datenerhebung. Die Datenerhebung umfasst zwei Teile und dauert
                    etwa 30 Sekunden. Im ersten Teil geht es darum, eine Aufgabe zu bearbeiten. Im zweiten Teil werden Sie gebeten, Fragen zu beantworten.
-                   Beide Teile werden Ihnen in Schritt 2: "Vorschau Aufgabe" und Schritt 3: "Vorschau Fragen" genauer erläutert.
+                   Beide Teile werden Ihnen in Schritt 2 und Schritt 3 dieser Einführung genauer erläutert.
                </p>
                <p>
-                   Nach Beginn der Studie läuft die Studien-App im Hintergrund und wird automatisch beim Start ihres Computers ausgeführt.
+                  Die Datenerhebung über die Studien-App erfolgt automatisch, ohne, dass Sie aktiv eingreifen müssen. Dafür wird die
+                   Studien-App automatisch ausgeführt. Bei Start dieses Computers wird die Studien-App ebenfalls automatisch gestartet.
                    Solange die Studien-App ausgeführt ist,
                    sehen Sie das <strong>Studien-App Symbol</strong>
                    &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> in Ihrer <strong><i>Systemleiste</i></strong> (siehe Bild).
-                   Sie können die Studien-App jederzeit beenden, in dem Sie auf dieses Studien-App Symbol klicken und dann "Studien-App beenden" auswählen.
-                   Falls Sie die Studien-App nach dem Beenden
-                   erneut starten möchten, klicken Sie auf das <strong>Studien-App Symbol</strong>
-                   &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> auf Ihrem <strong><i>Desktop</i></strong>,
-                   welches durch die Installation der Studien-App dort hinzugefügt wurde.
-                   Über das Studien-App Symbol
-                   in der <strong><i>Systemleiste</i></strong> können Sie außerdem jederzeit diese Informationen zur Studien-App erneut aufrufen.
+               </p>
+               <p>
+                   Falls Sie die automatische Ausführung der Studie unterbrechen möchten, können die Studien-App manuell beenden, in dem Sie auf dieses
+                   Studien-App Symbol klicken und dann "Studien-App beenden" auswählen.
+                   Um die Studien-App nach dem Beenden manuell wieder zu starten, klicken Sie auf das <strong>Studien-App Symbol</strong>
+                   &nbsp;<img style={{width: "20px", height: "20px"}} src={AppSymbolImage}/> auf Ihrem <strong><i>Desktop</i></strong>.
+                   Über das Studien-App Symbol in der <strong><i>Systemleiste</i></strong> können Sie außerdem jederzeit
+                   diese Informationen zur Studien-App erneut aufrufen.
                </p>
 
                <figure className="image">
@@ -68,26 +68,20 @@ export default function AppStartPage (props) {
                </figure>
 
                <p>
-                   Wenn die Studien-App ein Fenster zur Datenerhebung öffnet und Sie nicht an dieser Datenerhebung teilnehmen möchten,
+                   Wenn die Studien-App ein Fenster zur Datenerhebung öffnet und Sie dieses mal nicht an der Datenerhebung teilnehmen möchten oder können,
                    schließen Sie das Fenster mit dem <strong>Schließen Symbol</strong> <img style={{height: "13px"}} src={CloseSymbolImage}/> Das
                    Auslassen einer Datenerhebung beendet nicht Ihre Studienteilnahme.
                </p>
                <p>
-                   Die Studie endet nach 14 Tagen. Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
-                   und es öffnet sich kein Fenster zur Datenerhebung mehr. Nach Abschluss der Studie erhalten Sie
+                   Die Studie endet automatisch 14 Tage nachdem Sie die Studie in Schritt 4 gestartet haben.
+                   Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
+                   und es öffnet sich danach kein Fenster zur Datenerhebung mehr. Nach Abschluss der Studie erhalten Sie
                    xx Treuepunkte (=xx Euro) für Ihre Teilnahme gutgeschrieben.
                </p>
                <p>
                    Nach dem Ende der Studie oder falls Sie Ihre Studienteilnahme vorzeitig beenden möchten, können Sie die
-                   Studien-App deinstallieren. Sobald Sie die Studien-App
-                   deinstallieren endet Ihre Teilnahme an dieser Studie und Sie können die Studienteilnahme nicht wieder aufnehmen.
+                   Studien-App deinstallieren.
                </p>
-
-               <p>
-                   In den nächsten Schritten der Einführung werden Ihnen zunächst die Aufgabe und anschließend die Fragen vorgestellt, welche Sie bei
-                   der Datenerhebung bearbeiten.
-               </p>
-
                <p>
                    Bei weiteren Fragen zur Studien-App wenden Sie sich an:
                </p>

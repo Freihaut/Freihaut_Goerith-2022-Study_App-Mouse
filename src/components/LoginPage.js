@@ -13,15 +13,15 @@ export default function Login (props) {
                     <div className="content">
                         <div className={"notification is-light is-info"}>
                             <h4 className="title">
-                                Herzlichen Dank für die Installation der Studien-App.
+                                Herzlichen Dank für die Installation der Studien-App!
                             </h4>
                             <p>
-                                Um die Studie zu starten, melden Sie sich bitte mit Ihrem Zugangscode- und passwort an, welche
+                                Um die Studie zu starten, melden Sie sich bitte mit Ihrem Zugangscode und -passwort an, welche
                                 Sie in der Einladungsmail zu dieser Studie erhalten haben (z.B. Zugangscode: GHB-7HG-KHL, Passwort: xyz).
                             </p>
                             <p>
                                 Falls Sie sich bereits mit Ihren Zugangsdaten angemeldet haben und diese Nachricht erneut sehen, wurden
-                                sie vermutlich versehentlich abgemeldet. Bitte melden Sie sich erneut mit denselben Zugangsdaten an,
+                                Sie versehentlich abgemeldet. Bitte melden Sie sich erneut mit denselben Zugangsdaten an,
                                 um die Studie fortzusetzen.
                             </p>
                             <form onSubmit={(event) => {event.preventDefault(); props.logIn(loginId.current.value + "@test.de", loginPassword.current.value)}}>

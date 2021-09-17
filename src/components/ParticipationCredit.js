@@ -35,8 +35,8 @@ export default class ParticipationCredit extends Component {
                         <h5 className={"subtitle"}> Die Datenerhebung ist abgeschlossen.</h5>
                         <p>
                             Für Ihre Teilnahme an dieser Studie erhalten Sie xx Treuepunkte (=xx Euro). Klicken Sie
-                            auf "Studie beenden", um diese gutgeschrieben zu bekommen. Falls Sie möchten, können Sie Ihre
-                            Treuepunkte auch zurück an das WiSoPanel spenden. Setzen Sie dafür einen Haken in der entsprechenden
+                            auf "Studie beenden", um diese in den nächsten Tagen gutgeschrieben zu bekommen. Falls Sie möchten, können Sie Ihre
+                            Treuepunkte auch an das WiSoPanel zurück spenden. Setzen Sie dafür einen Haken in der entsprechenden
                             Box.
                         </p>
                         <div>
