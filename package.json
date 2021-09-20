@@ -29,8 +29,7 @@
       "createStartMenuShortcut": true,
       "oneClick": true,
       "deleteAppDataOnUninstall": true,
-      "runAfterFinish": true,
-      "include": "src/installer.nsh"
+      "runAfterFinish": true
     }
   },
   "config": {

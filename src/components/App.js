@@ -50,14 +50,17 @@ export default class App extends Component {
             fireBaseCallFails: false,
             dataSaveId: dataSaveId,
             mouseTaskSize: null,
-            endPage: window.localStorage.getItem("endPage") === "true"
+            // check if the current date is after the study end date, if no, check if the participant has already seen the participation credit page
+            //TODO: Set the correct study end date
+            endPage: Date.now() > new Date(2021, 8, 20, 10, 45) ? true : window.localStorage.getItem("endPage") === "true",
+            startDate: null
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
         // which windows zoom level the participant uses (in addition to other screen related infos) and the user Id for the end of the study
-        ipcRenderer.once("appPageToRender", (event, page, displayInfo) => {
+        ipcRenderer.once("appPageToRender", (event, page, displayInfo, startDate) => {
             this.displayInfo = displayInfo;
-            this.setState({page: page, mouseTaskSize: displayInfo.windBounds.width});
+            this.setState({page: page, mouseTaskSize: displayInfo.windBounds.width, startDate: startDate});
         })
 
         // listens to a resize event of the browser window and chnaged the mouse task size + additionally logs the
@@ -321,6 +324,7 @@ export default class App extends Component {
                                                                             mouseTaskSize={this.state.mouseTaskSize}/> :
                                     this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.state.mouseTaskSize}/> :
                                         this.state.page === "studyEnd" ? <StudyEnd endPage={this.state.endPage}
+                                                                                   startDate={this.state.startDate}
                                                                                    savingAttempt={this.state.callingFirebase}
                                                                                    savingFailed={this.state.fireBaseCallFails}
                                                                                    collectCredit={(bool) => this.saveParticipationCredit(bool)}/>

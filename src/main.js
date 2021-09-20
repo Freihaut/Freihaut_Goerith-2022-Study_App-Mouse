@@ -23,7 +23,7 @@ let tray = null;
 let logMousePosition;
 
 // function to create the main app window in which the app is shown
-const createWindow = (appPage) => {
+const createWindow = (appPage, dateData) => {
 
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -74,7 +74,7 @@ const createWindow = (appPage) => {
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay});
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, dateData);
     // show the window
     mainWindow.showInactive();
 
@@ -116,7 +116,7 @@ const createWindow = (appPage) => {
   })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -364,6 +364,11 @@ ipcMain.on("tutorialEnd", () => {
         throw error;
       } else {
         tutorialHasFinished = true;
+        // add app into autostart after the tutorial finishes (alternatively, put it in the autostart after installation
+        // to remind participants to participate in the study after downloading the app
+        app.setLoginItemSettings({
+          openAtLogin: true
+        })
         window.close();
       }
     });
@@ -383,7 +388,11 @@ const startLogger = (startTime) => {
     //TODO: Set an end time of the study in days
     if (timeDiff >= 0) {
       // show the study endPage and send the participant id
-      createWindow("studyEnd");
+      createWindow("studyEnd", data.d);
+      // remove the app from autostart
+      app.setLoginItemSettings({
+        openAtLogin: false
+      })
     } else {
       // if the study is not finished yet, start the logger Process
 

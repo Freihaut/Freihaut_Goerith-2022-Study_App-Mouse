@@ -17,20 +17,25 @@ export default function Login (props) {
                             </h4>
                             <p>
                                 Um die Studie zu starten, melden Sie sich bitte mit Ihrem Zugangscode und -passwort an, welche
-                                Sie in der Einladungsmail zu dieser Studie erhalten haben (z.B. Zugangscode: GHB-7HG-KHL, Passwort: xyz).
+                                Sie in der Einladungsmail zu dieser Studie erhalten haben (z.B. Zugangscode: GHB-7HG-KHL-4FS, Passwort: abc987).
+                            </p>
+                            <p>
+                                Beachten Sie, dass die Anmeldung nur bis zum xx.xx.21 freigeschalten ist. Falls Sie sich bis dahin
+                                nicht angemeldet haben, laufen Ihre Zugangsdaten ab und eine Teilnahme an der Studie ist nicht mehr möglich.
                             </p>
                             <p>
                                 Falls Sie sich bereits mit Ihren Zugangsdaten angemeldet haben und diese Nachricht erneut sehen, wurden
                                 Sie versehentlich abgemeldet. Bitte melden Sie sich erneut mit denselben Zugangsdaten an,
-                                um die Studie fortzusetzen.
+                                um die Studie fortzusetzen. Eine erneute Anmeldung ist auch nach dem xx.xx.21 möglich.
                             </p>
                             <form onSubmit={(event) => {event.preventDefault(); props.logIn(loginId.current.value + "@test.de", loginPassword.current.value)}}>
                                 <div className="field">
                                     <div className="control">
                                         <p className={"help is-danger"} style={{visibility: props.badLogin ? "visible" : "hidden"}}>
                                             Die eingegebenen Zugangsdaten sind ungültig oder Sie sind nicht mit dem Internet verbunden.
-                                            Bitte geben Sie Ihre Zugangsdaten erneut ein und stellen Sie sicher, dass Sie mit dem Internet
-                                            verbunden sind.
+                                            Bitte prüfen Sie, dass Sie die Zugangsdaten korrekt eingegeben haben und stellen Sie sicher, dass Sie mit dem Internet
+                                            verbunden sind. Beachten Sie, dass Ihre Zugangsdaten zum xx.xx.21 ablaufen, falls
+                                            Sie sich bis dahin noch nicht angemeldet haben.
                                         </p>
                                         <input className={props.badLogin ? "input is-danger" : "input is-link"}
                                                type="text" placeholder="Ihr Anmeldecode" ref={loginId}/>
