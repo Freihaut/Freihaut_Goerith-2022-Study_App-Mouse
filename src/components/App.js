@@ -52,7 +52,7 @@ export default class App extends Component {
             mouseTaskSize: null,
             // check if the current date is after the study end date, if no, check if the participant has already seen the participation credit page
             //TODO: Set the correct study end date
-            endPage: Date.now() > new Date(2021, 8, 20, 10, 45) ? true : window.localStorage.getItem("endPage") === "true",
+            endPage: Date.now() > new Date(2021, 8, 22) ? true : window.localStorage.getItem("endPage") === "true",
             startDate: null
         }
 
@@ -202,8 +202,11 @@ export default class App extends Component {
                     // close the logger window
                     ipcRenderer.send("close");
                 } else {
-                    // The data was successfully saved in firebase
-                    ipcRenderer.send("close");
+                    // If the data was successfully saved in firebase, notify that the participant participated in data collection
+                    firebase.database().ref("userData/" + this.state.userId).update({"dataWasLogged": true}, () => {
+                            // close the logger window
+                            ipcRenderer.send("close");
+                    })
                 }
             });
         } else {

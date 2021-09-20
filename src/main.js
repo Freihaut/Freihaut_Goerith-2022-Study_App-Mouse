@@ -116,7 +116,7 @@ const createWindow = (appPage, dateData) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -382,11 +382,9 @@ const startLogger = (startTime) => {
 
   // check if the startTime of the Browser window creation is after the time limit of the study (14 days)
   dataStorage.get("s", (err, data) => {
-    // get the time difference in days between the start of the current date and the study start date
-    let timeDiff = Math.floor((Date.now() - data.d) / 1000 / 60 / 60 / 24);
     // if the start time is older than xx days (length of the study), show the study end page
-    //TODO: Set an end time of the study in days
-    if (timeDiff >= 0) {
+    //TODO: Set an end time of the study (12096e5 = in 2 weeks / + 14 days)
+    if (Date.now() > data.d - 12096e5) {
       // show the study endPage and send the participant id
       createWindow("studyEnd", data.d);
       // remove the app from autostart

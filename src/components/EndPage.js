@@ -3,7 +3,7 @@ This function component renders the end page that shows that the study has ended
  */
 
 import React from 'react'
-const {ipcRenderer} = require("electron");
+const {ipcRenderer, shell} = require("electron");
 
 
 export default function StudyEnd (props) {
@@ -20,10 +20,11 @@ export default function StudyEnd (props) {
                         Die Studie ist beendet
                     </h3>
                     <p>
-                       Die Datenerhebung endete am {new Date(props.startDate).toLocaleDateString("de")}, 14 Tage Ihrem Beginn der Studie.
+                       Die Datenerhebung endete am {new Date(props.startDate + 12096e5).toLocaleDateString("de")}.
                         Die Studien-App erfüllt nun kein Zweck mehr und Sie können die Studien-App deinstallieren. Es ist empfohlen,
-                        die Studien-App zu deinstallieren, die Deinstallation der Studien-App ist jedoch nicht notwendig.
-                        Unter folgendem Link finden Sie eine kurze Anleitung zur Deinstallation der Studien-App. Falls Sie
+                        die Studien-App zu deinstallieren. Die Deinstallation der Studien-App ist jedoch nicht notwendig.
+                        &nbsp;<a onClick={()=> {shell.openExternal("https://drive.google.com/file/d/1A30KQoS_uOBAIvriIuZRSg7MuZ7GzOmU/view?usp=sharing")}}>In den Unterlagen zur Studien-App</a>&nbsp;
+                        finden Sie eine kurze Anleitung zur Deinstallation. Falls Sie
                         Hilfe mit der Deinstallation benötigen, wenden Sie sich gerne jederzeit an den unten stehenden Kontakt.
                     </p>
                     <h4 className={"title"}>
