@@ -4,7 +4,15 @@ const dataStorage = require("electron-json-storage");
 
 // paths
 const path = require('path');
-const iconPath = path.join(__dirname, "Study-App-Icon.ico");
+
+const macIcon = "Mac-App-Icon.png";
+const macTrayIcon = "mac-tray-icon.png";
+
+const macIconPath = path.join(__dirname, macIcon);
+const macTrayIconPath = path.join(__dirname, macTrayIcon);
+
+const windowsIconPath = path.join(__dirname, "Study-App-Icon.ico");
+
 
 // check if the tutorial has finished
 let tutorialHasFinished = false;
@@ -47,7 +55,7 @@ const createWindow = (appPage, dateData) => {
     height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
-    icon: iconPath,
+    icon: process.platform === "darwin" ? macIconPath : windowsIconPath,
     fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -59,7 +67,7 @@ const createWindow = (appPage, dateData) => {
   // get and log some infos about how the browser window is displayed on the screen
   const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   const windowBounds = mainWindow.getBounds();
-  const windowOnDisplay = screen.dipToScreenRect(mainWindow,
+  const windowOnDisplay =process.platform === "darwin" ? null : screen.dipToScreenRect(mainWindow,
       {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
 
   // do not show a menu in the app
@@ -111,7 +119,10 @@ const createWindow = (appPage, dateData) => {
       const notificationTitle = "Studien-App Datenerhebung";
       const notificationBody = "Die Studien-App hat ein Fenster zur Datenerhebung geöffnet. Herzlichen Dank für Ihre Teilnahme!"
 
-      new Notification({title: notificationTitle, body: notificationBody, icon: iconPath, silent: false}).show();
+      new Notification({title: notificationTitle,
+        body: notificationBody,
+        icon: process.platform === "darwin" ? "" : windowsIconPath,
+        silent: false}).show();
     }
   })
 
@@ -164,7 +175,7 @@ const createWindow = (appPage, dateData) => {
     })
     // if the End Study Window is closed, close the study app
   } else if (appPage === "studyEnd") {
-    mainWindow.on("close", (ev) => {
+    mainWindow.on("close", () => {
       app.quit();
     })
   }
@@ -199,7 +210,7 @@ const createSideWindow = (appPage) => {
     height: targetSize, // old fixed values: 775 or 875
     resizable: false,
     show: false,
-    icon: iconPath,
+    icon: process.platform === "darwin" ? macIconPath : windowsIconPath,
     fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -274,7 +285,7 @@ if (!gotTheLock) {
   // if the app is already running, close the second window and focus the first window
   app.quit()
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+  app.on('second-instance', () => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
@@ -289,12 +300,13 @@ if (!gotTheLock) {
   // initialization and is ready to create browser windows.
   app.on('ready', () => {
 
-    // set AppUserModelId
-    app.setAppUserModelId("freihaut.studien-app");
+    // set AppUserModelId on Windows 10
+    process.platform !== "darwin" ? app.setAppUserModelId("freihaut.studien-app") : null;
 
     // create a system Tray Icon when the app is opened
-    tray = new Tray(iconPath); // insert iconPath if icon is selected
+    tray = new Tray(process.platform === "darwin" ? macTrayIconPath : windowsIconPath); // insert iconPath if icon is selected
     // create a System Tray context menu
+
     const contextMenu = Menu.buildFromTemplate([
       // option to quit the app
       { label: "Studien-App beenden", click: () => { app.quit() } },
@@ -412,13 +424,11 @@ const startLogger = (startTime) => {
             mousePositions.shift();
           }
         }, 20);
-        // set another timeout that ends the cursor position logging and opens a browser window
+        // set another timeout that opens a browser window
         setTimeout(() => {
-          // clearInterval(logMousePosition);
           createWindow("logger")
         },
-          // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
-          // interval)
+          // open the data logger window after 5 minutes (or choose an alternative interval)
           // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
           5 * 60 * 1000)
 

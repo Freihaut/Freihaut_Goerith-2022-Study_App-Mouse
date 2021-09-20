@@ -159,8 +159,7 @@ export default class App extends Component {
     endTutorial(tutData) {
 
         // add the version number to the tut data to keep track of potential changes in the study app version
-        //TODO: Update the appVersion name to the correct version, e.g. "test", "pilot", "production"...
-        const studyStartData = {...tutData, ...{appVersion: "panel_test"}}
+        const studyStartData = {...tutData, ...{appVersion: "1.1"}, ...{"os": process.platform}}
 
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
         // check if the user logged into firebase and check if the user is online or offline
