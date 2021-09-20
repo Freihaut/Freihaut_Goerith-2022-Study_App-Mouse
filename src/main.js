@@ -20,7 +20,6 @@ let mainWindow = null;
 // intitialize the side Browser Info (that shows the study information on request)
 let sideWindow = null;
 // primary instance lock (dont allow app to open a second time)
-let mainWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();
 
 // declare system tray variable
@@ -164,7 +163,7 @@ const createWindow = (appPage, dateData) => {
         }
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
-        //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
+        //TODO: Set a timer to start the logger after x minutes (60 minutes, 55 min silence + 5 min logging)
         startLogger(55 * 60 * 1000);
       }
     })
@@ -422,13 +421,11 @@ const startLogger = (startTime) => {
             mousePositions.shift();
           }
         }, 20);
-        // set another timeout that ends the cursor position logging and opens a browser window
+        // set another timeout that opens a browser window
         setTimeout(() => {
-          // clearInterval(logMousePosition);
           createWindow("logger")
         },
-          // stop recording mouse position data and open the data logger window after 5 minutes (or choose an alternative
-          // interval)
+          // open the data logger window after 5 minutes (or choose an alternative interval)
           // TODO: set the time the mouse position logging starts prior to opening the logger window: minutes * 60 seconds * 1000 milliseconds
           5 * 60 * 1000)
 
