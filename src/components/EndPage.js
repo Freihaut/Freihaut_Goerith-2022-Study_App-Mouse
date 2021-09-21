@@ -6,7 +6,7 @@ import React from 'react'
 const {ipcRenderer, shell} = require("electron");
 
 
-export default function StudyEnd (props) {
+export default function StudyEnd () {
 
     // scroll to the top of the page
     window.scrollTo(0, 0);
@@ -20,12 +20,11 @@ export default function StudyEnd (props) {
                         Die Studie ist beendet
                     </h3>
                     <p>
-                       Die Datenerhebung endete am {new Date(props.startDate + 12096e5).toLocaleDateString("de")}.
-                        Die Studien-App erfüllt nun kein Zweck mehr und Sie können die Studien-App deinstallieren. Es ist empfohlen,
+                        Die Studien-App erfüllt nun keinen Zweck mehr und Sie können die Studien-App deinstallieren. Es ist empfohlen,
                         die Studien-App zu deinstallieren. Die Deinstallation der Studien-App ist jedoch nicht notwendig.
-                        &nbsp;<a onClick={()=> {shell.openExternal("https://drive.google.com/file/d/1A30KQoS_uOBAIvriIuZRSg7MuZ7GzOmU/view?usp=sharing")}}>In den Unterlagen zur Studien-App</a>&nbsp;
+                        &nbsp;<a onClick={()=> {shell.openExternal(process.platform === "darwin" ? "https://docs.google.com/document/d/1OjjxwFjfRO83d0ctsauO82l8eMlxSePy/edit?usp=sharing&ouid=114343052481935359453&rtpof=true&sd=true" : "https://drive.google.com/file/d/1cSdlVT-7aJiDZxuvFXICG-ndO6q5cQwt/view?usp=sharing")}}>In den Unterlagen zur Studien-App</a>&nbsp;
                         finden Sie eine kurze Anleitung zur Deinstallation. Falls Sie
-                        Hilfe mit der Deinstallation benötigen, wenden Sie sich gerne jederzeit an den unten stehenden Kontakt.
+                        Hilfe bei der Deinstallation benötigen, wenden Sie sich gerne jederzeit an den unten stehenden Kontakt.
                     </p>
                     <h4 className={"title"}>
                         Vielen herzlichen Dank für Ihre Teilnahme an dieser Studie und Ihren Beitrag zur Wissenschaft!

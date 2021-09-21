@@ -51,8 +51,7 @@ export default class App extends Component {
             dataSaveId: dataSaveId,
             mouseTaskSize: null,
             // check if the current date is after the study end date, if no, check if the participant has already seen the participation credit page
-            //TODO: Set the correct study end date
-            endPage: Date.now() > new Date(2021, 8, 22) ? true : window.localStorage.getItem("endPage") === "true",
+            endPage: window.localStorage.getItem("endPage") === "true",
             startDate: null
         }
 
@@ -83,8 +82,8 @@ export default class App extends Component {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/firebase.User
                 // console.log("User signed in with user ID: " + user.uid);
-                // save the info that the user has logged in
-                this.setState({userId: user.uid}, () => {firebase.database().ref("userData/" + user.uid).update({"loggedIn": true})});
+                // save the info that the user has logged in, unless the study is over, then only show the last page
+                this.setState({userId: user.uid, fireBaseCallFails: false, callingFirebase: false}, () => {firebase.database().ref("userData/" + user.uid).update({"loggedIn": true})});
                 // check if there is locally saved data that hasnt been pushed to firebase yet (e.g. because the user was offline)
                 const storage = {...localStorage};
                 // loop the data from the local storage
@@ -112,7 +111,8 @@ export default class App extends Component {
                 }
 
             } else {
-                // User is signed out, give him a bad user id
+                // User is signed out, give him a bad user id, unless the study is already over, then prevent from
+                // showing the login page
                 this.setState({userId: -99})
             }
         });
@@ -145,8 +145,6 @@ export default class App extends Component {
                 firebase.auth().signInWithEmailAndPassword(id, password).catch((error) => {
                     if (error) {
                         this.setState({fireBaseCallFails: true, callingFirebase: false});
-                    } else {
-                        this.setState({fireBaseCallFails: false, callingFirebase: false});
                     }
                 })
             }, 400)
@@ -159,7 +157,7 @@ export default class App extends Component {
     endTutorial(tutData) {
 
         // add the version number to the tut data to keep track of potential changes in the study app version
-        const studyStartData = {...tutData, ...{appVersion: "1.1"}, ...{"os": process.platform}}
+        const studyStartData = {...tutData, ...{appVersion: "Panel_Pilot_cond"}, ...{"os": process.platform}}
 
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
         // check if the user logged into firebase and check if the user is online or offline

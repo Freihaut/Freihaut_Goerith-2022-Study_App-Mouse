@@ -30,8 +30,11 @@ let tray = null;
 // initialize an empty variable for logging the mousePositions (will be set to an interval later)
 let logMousePosition;
 
+// set a hard coded study end date
+const studyEndDate = new Date(2021, 8, 23);
+
 // function to create the main app window in which the app is shown
-const createWindow = (appPage, dateData) => {
+const createWindow = (appPage) => {
 
   // get the screen size without the taskbar
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -82,7 +85,7 @@ const createWindow = (appPage, dateData) => {
   mainWindow.webContents.on("did-finish-load", () => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     mainWindow.webContents.send("appPageToRender", appPage, {zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay}, dateData);
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay});
     // show the window
     mainWindow.showInactive();
 
@@ -127,7 +130,7 @@ const createWindow = (appPage, dateData) => {
   })
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -138,9 +141,14 @@ const createWindow = (appPage, dateData) => {
       // remove the event listener in the start logger function that listens for the task start to send the last 5 minutes
       // to the renderer process
       ipcMain.removeAllListeners("mouseTaskStarted");
-      // after closing of a logger window, start the logging process again
-      //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
-      startLogger(55 * 60 * 1000) })
+      // after closing of a logger window, start the logging process again if the study end has not been reached
+      if (Date.now() > studyEndDate) {
+        endStudy();
+      } else {
+        //TODO: Choose a time until the logger starts (90 minutes --> 85 silence + 5 min logging)
+        startLogger(55 * 60 * 1000)
+      }
+    })
 
   } else if (appPage === "tutorial") {
 
@@ -169,8 +177,13 @@ const createWindow = (appPage, dateData) => {
         }
       } else {
         // start the logger if the tutorial window was closed because the participant finished the tutorial
-        //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
-        startLogger(55 * 60 * 1000);
+        // if the study end date has not been reached
+        if (Date.now() > studyEndDate) {
+          endStudy();
+        } else {
+          //TODO: Set a timer to start the logger after x minutes (90 minutes, 85 min silence + 5 min logging)
+          startLogger(55 * 60 * 1000)
+        }
       }
     })
     // if the End Study Window is closed, close the study app
@@ -328,11 +341,17 @@ if (!gotTheLock) {
       if (error) {
         throw error;
       } else {
-        if (hasKey) {
-          // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
-          startLogger(10 * 1000);
+        // if the hard coded end time of the study has been reached
+        if (Date.now() > studyEndDate) {
+          endStudy();
         } else {
-          createWindow("tutorial");
+          if (hasKey) {
+            // TODO: start the logger after 10 seconds (very shortly after the computer started with a short delay)
+            startLogger(10 * 1000);
+          } else {
+            // start the tutorial
+            createWindow("tutorial");
+          }
         }
       }
     })
@@ -396,13 +415,9 @@ const startLogger = (startTime) => {
   dataStorage.get("s", (err, data) => {
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study (12096e5 = in 2 weeks / + 14 days)
-    if (Date.now() > data.d - 12096e5) {
-      // show the study endPage and send the participant id
-      createWindow("studyEnd", data.d);
-      // remove the app from autostart
-      app.setLoginItemSettings({
-        openAtLogin: false
-      })
+    if (Date.now() > data.d + 1000 * 60 * 60 * 12) {
+      // end the study if the study time is over
+      endStudy();
     } else {
       // if the study is not finished yet, start the logger Process
 
@@ -446,4 +461,14 @@ const startLogger = (startTime) => {
 
     }
   });
+}
+
+// function to end the study
+const endStudy = () => {
+  // remove the app from autostart
+  app.setLoginItemSettings({
+    openAtLogin: false
+  })
+  // show the study endPage
+  createWindow("studyEnd");
 }
