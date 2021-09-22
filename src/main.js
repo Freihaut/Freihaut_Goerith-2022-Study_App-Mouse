@@ -31,6 +31,7 @@ let tray = null;
 let logMousePosition;
 
 // set a hard coded study end date
+// TODO: Set a hard coded study end date
 const studyEndDate = new Date(2021, 8, 23);
 
 // function to create the main app window in which the app is shown
@@ -130,7 +131,7 @@ const createWindow = (appPage) => {
   })
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // conditionally add event listeners to the Browser window instance
   if (appPage === "logger") {
@@ -235,8 +236,6 @@ const createSideWindow = (appPage) => {
   // get and log some infos about how the browser window is displayed on the screen
   const zoomFactor = screen.getPrimaryDisplay().scaleFactor;
   const windowBounds = sideWindow.getBounds();
-  const windowOnDisplay = screen.dipToScreenRect(sideWindow,
-      {x: windowBounds.x, y: windowBounds.y, width: windowBounds.width, height: windowBounds.height});
 
   // do not show a menu in the app
   sideWindow.setMenu(null);
@@ -253,7 +252,7 @@ const createSideWindow = (appPage) => {
     // send the info about which page to render and the infos about the screen (how the window is displayed on the screen)
     sideWindow.webContents.send("appPageToRender", appPage, {
       zoom: zoomFactor,
-      screenSize: screenSize, windBounds: windowBounds, windOnDisp: windowOnDisplay
+      screenSize: screenSize, windBounds: windowBounds, windOnDisp: null
     });
     // show the window
     sideWindow.show();

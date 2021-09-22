@@ -11,6 +11,7 @@ export default function Login (props) {
     return (
         <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
             <div style={{margin: "auto"}}>
+                {/*TODO: Set a hard coded study end date*/}
                 {Date.now() > new Date(2021, 8, 23) ? <EndPage/>
                     :
                     <section className="section">
