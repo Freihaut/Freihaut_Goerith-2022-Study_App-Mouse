@@ -22,7 +22,7 @@ export default function StudyEnd () {
                     <p>
                         Die Studien-App erfüllt nun keinen Zweck mehr und Sie können die Studien-App deinstallieren. Es ist empfohlen,
                         die Studien-App zu deinstallieren. Die Deinstallation der Studien-App ist jedoch nicht notwendig.
-                        &nbsp;<a onClick={()=> {shell.openExternal(process.platform === "darwin" ? "https://docs.google.com/document/d/1OjjxwFjfRO83d0ctsauO82l8eMlxSePy/edit?usp=sharing&ouid=114343052481935359453&rtpof=true&sd=true" : "https://drive.google.com/file/d/1cSdlVT-7aJiDZxuvFXICG-ndO6q5cQwt/view?usp=sharing")}}>In den Unterlagen zur Studien-App</a>&nbsp;
+                        &nbsp;<a onClick={()=> {shell.openExternal(process.platform === "darwin" ? "https://drive.google.com/file/d/1bPv0CN6n8bzzbgProqr-98PG2PxeD6O7/view?usp=sharing" : "https://drive.google.com/file/d/1CdDVEIA2M_EhA0ogzL_K6_hNRYWm0WQY/view?usp=sharing")}}>In den Unterlagen zur Studien-App</a>&nbsp;
                         finden Sie eine kurze Anleitung zur Deinstallation. Falls Sie
                         Hilfe bei der Deinstallation benötigen, wenden Sie sich gerne jederzeit an den unten stehenden Kontakt.
                     </p>

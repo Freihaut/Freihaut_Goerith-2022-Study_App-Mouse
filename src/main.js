@@ -32,7 +32,7 @@ let logMousePosition;
 
 // set a hard coded study end date
 // TODO: Set a hard coded study end date
-const studyEndDate = new Date(2021, 8, 23);
+const studyEndDate = new Date(2021, 9, 27);
 
 // function to create the main app window in which the app is shown
 const createWindow = (appPage) => {
@@ -414,7 +414,7 @@ const startLogger = (startTime) => {
   dataStorage.get("s", (err, data) => {
     // if the start time is older than xx days (length of the study), show the study end page
     //TODO: Set an end time of the study (12096e5 = in 2 weeks / + 14 days)
-    if (Date.now() > data.d + 1000 * 60 * 60 * 12) {
+    if (Date.now() > data.d + 12096e5) {
       // end the study if the study time is over
       endStudy();
     } else {

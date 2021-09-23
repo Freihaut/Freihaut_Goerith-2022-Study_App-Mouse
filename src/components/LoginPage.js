@@ -12,7 +12,7 @@ export default function Login (props) {
         <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
             <div style={{margin: "auto"}}>
                 {/*TODO: Set a hard coded study end date*/}
-                {Date.now() > new Date(2021, 8, 23) ? <EndPage/>
+                {Date.now() > new Date(2021, 9, 27) ? <EndPage/>
                     :
                     <section className="section">
                         <div className="content">
@@ -25,13 +25,13 @@ export default function Login (props) {
                                     Sie in der Einladungsmail zu dieser Studie erhalten haben (z.B. Zugangscode: GHB-7HG-KHL-4FS, Passwort: abc987).
                                 </p>
                                 <p>
-                                    Beachten Sie, dass die Anmeldung nur bis zum xx.xx.21 freigeschalten ist. Falls Sie sich bis dahin
+                                    Beachten Sie, dass die Anmeldung nur bis einschließlich Mittwoch, den 06.10.21 freigeschalten ist. Falls Sie sich bis dahin
                                     nicht angemeldet haben, laufen Ihre Zugangsdaten ab und eine Teilnahme an der Studie ist nicht mehr möglich.
                                 </p>
                                 <p>
                                     Falls Sie sich bereits mit Ihren Zugangsdaten angemeldet haben und diese Nachricht erneut sehen, wurden
                                     Sie versehentlich abgemeldet. Bitte melden Sie sich erneut mit denselben Zugangsdaten an,
-                                    um die Studie fortzusetzen. Eine erneute Anmeldung ist auch nach dem xx.xx.21 möglich.
+                                    um die Studie fortzusetzen. Eine erneute Anmeldung ist auch nach dem 06.10.21 möglich.
                                 </p>
                                 <form onSubmit={(event) => {event.preventDefault(); props.logIn(loginId.current.value + "@panel.de", loginPassword.current.value)}}>
                                     <div className="field">
@@ -39,7 +39,7 @@ export default function Login (props) {
                                             <p className={"help is-danger"} style={{visibility: props.badLogin ? "visible" : "hidden"}}>
                                                 Die eingegebenen Zugangsdaten sind ungültig oder Sie sind nicht mit dem Internet verbunden.
                                                 Bitte prüfen Sie, dass Sie die Zugangsdaten korrekt eingegeben haben und stellen Sie sicher, dass Sie mit dem Internet
-                                                verbunden sind. Beachten Sie, dass Ihre Zugangsdaten zum xx.xx.21 ablaufen, falls
+                                                verbunden sind. Beachten Sie, dass Ihre Zugangsdaten zum 07.10.21 ablaufen, falls
                                                 Sie sich bis dahin noch nicht angemeldet haben.
                                             </p>
                                             <input className={props.badLogin ? "input is-danger" : "input is-link"}
