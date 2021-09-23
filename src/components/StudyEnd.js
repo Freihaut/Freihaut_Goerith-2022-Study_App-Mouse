@@ -16,7 +16,7 @@ export default function StudyEnd (props) {
 
         <div style={{display: "flex", alignItems: "center", height: "100vh"}}>
             <div style={{margin: "auto"}}>
-                {props.endPage ? <EndPage startDate={props.startDate}/> : <ParticipationCredit savingAttempt={props.savingAttempt}
+                {props.endPage ? <EndPage/> : <ParticipationCredit savingAttempt={props.savingAttempt}
                                                                    savingFailed={props.savingFailed}
                                                                    collectCredit={(bool) => props.collectCredit(bool)}/>}
             </div>

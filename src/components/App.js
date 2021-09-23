@@ -51,15 +51,15 @@ export default class App extends Component {
             dataSaveId: dataSaveId,
             mouseTaskSize: null,
             // check if the current date is after the study end date, if no, check if the participant has already seen the participation credit page
-            endPage: window.localStorage.getItem("endPage") === "true",
-            startDate: null
+            // "Hack" in the control condition --> endPage is set to true to always show the endPage (dirty solution)
+            endPage: true,
         }
 
         // listen to the message from the main process that tells the renderer process which page to load and
         // which windows zoom level the participant uses (in addition to other screen related infos) and the user Id for the end of the study
-        ipcRenderer.once("appPageToRender", (event, page, displayInfo, startDate) => {
+        ipcRenderer.once("appPageToRender", (event, page, displayInfo) => {
             this.displayInfo = displayInfo;
-            this.setState({page: page, mouseTaskSize: displayInfo.windBounds.width, startDate: startDate});
+            this.setState({page: page, mouseTaskSize: displayInfo.windBounds.width});
         })
 
         // listens to a resize event of the browser window and chnaged the mouse task size + additionally logs the
@@ -157,7 +157,7 @@ export default class App extends Component {
     endTutorial(tutData) {
 
         // add the version number to the tut data to keep track of potential changes in the study app version
-        const studyStartData = {...tutData, ...{appVersion: "Panel_Pilot_10Econd"}, ...{"os": process.platform}}
+        const studyStartData = {...tutData, ...{appVersion: "Panel_Pilot_0Econd"}, ...{"os": process.platform}}
 
         // get the tutorial data (sociodemographics) and send them to firebase when the tutorial is done
         // check if the user logged into firebase and check if the user is online or offline
@@ -324,7 +324,6 @@ export default class App extends Component {
                                                                             mouseTaskSize={this.state.mouseTaskSize}/> :
                                     this.state.page === "reshowTut" ? <ReshowAppInfo mouseTaskSize={this.state.mouseTaskSize}/> :
                                         this.state.page === "studyEnd" ? <StudyEnd endPage={this.state.endPage}
-                                                                                   startDate={this.state.startDate}
                                                                                    savingAttempt={this.state.callingFirebase}
                                                                                    savingFailed={this.state.fireBaseCallFails}
                                                                                    collectCredit={(bool) => this.saveParticipationCredit(bool)}/>
