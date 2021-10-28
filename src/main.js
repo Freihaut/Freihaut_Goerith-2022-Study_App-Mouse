@@ -32,7 +32,7 @@ let logMousePosition;
 
 // set a hard coded study end date
 // TODO: Set a hard coded study end date
-const studyEndDate = new Date(2021, 9, 27);
+const studyEndDate = new Date(2021, 10, 29);
 
 // function to create the main app window in which the app is shown
 const createWindow = (appPage) => {
