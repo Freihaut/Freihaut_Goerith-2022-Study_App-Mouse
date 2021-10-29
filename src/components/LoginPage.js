@@ -25,7 +25,7 @@ export default function Login (props) {
                                     Sie in der Einladungsmail zu dieser Studie erhalten haben (z.B. Zugangscode: GHB-7HG-KHL-4FS, Passwort: abc987).
                                 </p>
                                 <p>
-                                    Beachten Sie, dass die Anmeldung nur bis einschließlich Mittwoch, den 07.11.21 freigeschalten ist. Falls Sie sich bis dahin
+                                    Beachten Sie, dass die Anmeldung nur bis einschließlich Sonntag, den 07.11.21 freigeschalten ist. Falls Sie sich bis dahin
                                     nicht angemeldet haben, laufen Ihre Zugangsdaten ab und eine Teilnahme an der Studie ist nicht mehr möglich.
                                 </p>
                                 <p>
