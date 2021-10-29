@@ -76,7 +76,7 @@ export default function AppStartPage (props) {
                    Die Studie endet automatisch 14 Tage nachdem Sie die Studie in Schritt 4 gestartet haben.
                    Die Studien-App zeigt Ihnen an, dass die Datenerhebung beendet ist
                    und es öffnet sich danach kein Fenster zur Datenerhebung mehr. Nach Abschluss der Studie erhalten Sie
-                   100 Treuepunkte (=10 Euro) für Ihre Teilnahme gutgeschrieben.
+                   50 Treuepunkte (=5 Euro) für Ihre Teilnahme gutgeschrieben.
                </p>
                <p>
                    Nach dem Ende der Studie oder falls Sie Ihre Studienteilnahme vorzeitig beenden möchten, können Sie die
