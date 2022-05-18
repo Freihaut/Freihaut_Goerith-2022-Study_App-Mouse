@@ -19,15 +19,15 @@ export default class App extends Component {
         super(props);
 
         // initialize Firebase
-        //TODO: Changed Config to a test Firebase Project
+        //Put your firebase credentials here
         const firebaseConfig = {
-            apiKey: "AIzaSyCO0IdxZEGms4ve6cdmzSDDgaYeCRQI7aA",
-            authDomain: "test-project-c54c0.firebaseapp.com",
-            projectId: "test-project-c54c0",
-            storageBucket: "test-project-c54c0.appspot.com",
-            messagingSenderId: "1041378300647",
-            appId: "1:1041378300647:web:863ad64eac44eb8e4b4842",
-            databaseURL: "https://test-project-c54c0-default-rtdb.europe-west1.firebasedatabase.app"
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: "",
+            databaseURL: ""
         };
 
 
