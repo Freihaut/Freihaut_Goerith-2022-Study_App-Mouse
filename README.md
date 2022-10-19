@@ -5,6 +5,8 @@
 This repository contains the Study-App that was used for a longitudinal study about the relationship between emotional
 states and computer mouse usage.
 
+The corresponding research manuscript is: Freihaut, P. & Göritz, A. S. (2022). Show me how you use your mouse and I tell you how you feel? Tracking the computer mouse to measure affect. Manuscript in review
+
 ### Study-App Description
 
 After installation, the Study-App logged participants computer mouse usage as well as their emotional state ratings  
